@@ -32,7 +32,7 @@ exports.putItemHandler = async (event) => {
     const result = await docClient.put(params).promise();
 
     const response = {
-        statusCode: 202,
+        statusCode: 200,
         body: JSON.stringify(body)
     };
 
