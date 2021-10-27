@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - master
     # makes it so this job only runs when the backend is changed
     paths:
       - backend/**
