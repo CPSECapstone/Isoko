@@ -30,7 +30,7 @@ exports.getByIdHandler = async (event) => {
   const item = data.Item;
  
   const response = {
-    statusCode: 200,
+    statusCode: 202,
     body: JSON.stringify(item)
   };
  
