@@ -25,7 +25,9 @@
       "eject": "react-scripts eject",
       "cypress:open": "cypress open-ct",
       "format": "prettier --write \"**/*.+(js|jsx|json|ts|tsx)\"",
-      "format-check": "prettier --check \"**/*.+(js|jsx|json|ts|tsx)\""
+      "format-check": "prettier --check \"**/*.+(js|jsx|json|ts|tsx)\"",
+      "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src --quiet",
+      "lint-autofix": "eslint --ext .js,.jsx,.ts,.tsx ./src --quiet --fix"
    },
    "eslintConfig": {
       "extends": "react-app"
@@ -45,7 +47,11 @@
    "devDependencies": {
       "@cypress/react": "^5.10.2",
       "@cypress/webpack-dev-server": "^1.7.0",
+      "@typescript-eslint/eslint-plugin": "^5.3.1",
+      "@typescript-eslint/parser": "^5.3.1",
       "cypress": "^8.7.0",
+      "eslint": "^7.32.0",
+      "eslint-plugin-react": "^7.27.0",
       "html-webpack-plugin": "^4.5.2",
       "prettier": "2.4.1",
       "react-scripts": "4.0.3"
