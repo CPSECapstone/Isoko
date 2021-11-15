@@ -1,8 +1,9 @@
-const BusinessDash = () =>
-   (
-      <main>
-         <h1>Business Owner Dashboard</h1>
-      </main>
-   );
+import React from 'react';
+
+const BusinessDash = () => (
+   <main>
+      <h1>Business Owner Dashboard</h1>
+   </main>
+);
 
 export default BusinessDash;
