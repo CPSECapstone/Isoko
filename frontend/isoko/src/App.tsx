@@ -5,6 +5,7 @@ import BusinessDash from './pages/BusinessDash';
 import Home from './pages/Home';
 import ListBusiness from './pages/ListBusiness';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 import ModDash from './pages/ModDash';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
@@ -26,6 +27,7 @@ const App = () => (
          <Route path="search" element={<Search />} />
          <Route path="signup" element={<SignUp />} />
          <Route path="login" element={<Login />} />
+         <Route path="forgotPassword" element={<ForgotPassword />} />
          <Route path="business" element={<Business />} />
          <Route path="businessDash" element={<BusinessDash />} />
          <Route path="listBusiness" element={<ListBusiness />} />
