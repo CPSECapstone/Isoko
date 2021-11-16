@@ -112,12 +112,12 @@ const Login = () => {
       justify-content: center;
       align-items: center;
       text-align: left;
-      width: 50%;
+      max-width: 45%;
       margin: 30% auto;
       min-height: 30%;
       background-color: white;
       opacity: 1;
-      padding: 8%;
+      padding: 24px 12px 24px 24px;
       border-radius: 15px;
       box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
    `;
@@ -137,10 +137,6 @@ const Login = () => {
                <MainContent>
                   <RowDiv>
                      <Title>ISOKO</Title>
-                     <img
-                        src={process.env.PUBLIC_URL + 'logo.svg'}
-                        width={64}
-                     />
                   </RowDiv>
                   <InputContainer>
                      <StyledLabel> Email</StyledLabel>
