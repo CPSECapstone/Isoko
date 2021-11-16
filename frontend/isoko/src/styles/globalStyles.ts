@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import device from './devices';
 
 const GlobalStyle = createGlobalStyle`
 a {
@@ -13,17 +12,8 @@ body {
     font-size: 0.75rem;  
 }
 div {
-    display: flex; 
-    flex-direction: row; 
-
-    @media ${device.mobile} {
-        flex-direction: column; 
-    }
-
     font-family: Open Sans; 
     font-size: 0.75rem; 
-    padding: 10px; 
-    margin: 10px; 
 }
 h1 {
     font-family: Comfortaa, sans-serif; 
