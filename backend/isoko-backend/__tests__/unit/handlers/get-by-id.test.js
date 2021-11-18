@@ -39,7 +39,7 @@ describe('Test getByIdHandler', () => {
         const result = await lambda.getByIdHandler(event); 
  
         const expectedResult = { 
-            statusCode: 202, 
+            statusCode: 200, 
             body: JSON.stringify(item) 
         }; 
  
