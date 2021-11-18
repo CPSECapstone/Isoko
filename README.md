@@ -39,6 +39,5 @@ For minority and socially conscious consumers who are looking to support minorit
 ```todo```
 
 ## Project Architecture
-```todo```
-![Project Architecture Image](https://drive.google.com/file/d/1pShh9dRIGLgJCwGtXi0PC7K0Gu20T01a/view?usp=sharing)
+![Project Architecture Image](frontend/isoko/public/ArchitectureDiagram.png?raw=true "Title")
 
