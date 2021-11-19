@@ -1,7 +1,7 @@
 # Isoko
 2021 Software Engineering Capstone - AWS Minority Owned Business Team
 
-## Table of Contents
+# Table of Contents
 1. [ Overview. ](#over)
 2. [ Vision Statements. ](#vision)
 3. [ Meet The Team. ](#meet)
@@ -14,10 +14,10 @@ Despite making up 32% of the population, ethnic minorities own only 18% of busin
 
 <a name="vision"></a>
 ## Vision Statements
-#### For Business Owners
+### For Business Owners
 For business owners who are minorities the Minority Markets (Application)  is a web application that displays various minority owned businesses unlike Yelp/Google, our product strives to increase traction for minority owned businesses specifically .
 
-#### For Consumers
+### For Consumers
 For minority and socially conscious consumers who are looking to support minority owned businesses the Minority Markets is a web application that displays various minority owned businesses unlike Yelp/Google, our product is not oversaturated and serves a specific need to find a variety of minority group owned businesses.
 
 <a name="meet"></a>
@@ -39,14 +39,30 @@ For minority and socially conscious consumers who are looking to support minorit
 
 <a name="onboard"></a>
 ## Set-up/Onboarding Instructions
+
+### Prerequisites
+1. Make sure to clone this repo by runnning ```git clone https://github.com/CPSECapstone/Isoko.git```
+2. Make sure that you have your AWS IAM credentials. Message one of the team members if you still need these. 
+3. Have node installed. (Preferably version 14.0.1 or later)
+4. Have docker installed.
+
 ### Setting up the Frontend
-```todo```
+1. From the root directory, navigate to our frontend directory ```cd frontend/isoko/```
+2. Install all of our frontend dependicies ```npm i```
+3. To start your server, run ```npm start```
+4. Navigate to http://localhost:3000 to view the frontend
 
 ### Setting up the Backend
-```todo```
+1. From the root directory, navigate to our backend directory ```cd backend/isoko-backend/```
+2. Install all of our backend dependicies ```npm i```
+3. To start your backend server, run the command ```sam local start-api```
 
 ### Setting up the Test Environment
-```todo```
+1. To run our frontend tests, navigate to our frontend directory ```cd frontend/isoko/```
+2. Then, run the command ```npm run cypress:open```, to run our cypress tests. 
+
+3. To run our backend tests: From the root directory, navigate to our backend directory ```cd backend/isoko-backend/```
+4. Then, run the command ```npm test```.
 
 <a name="arch"></a>
 ## Project Architecture
