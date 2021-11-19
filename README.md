@@ -6,7 +6,9 @@
 2. [ Vision Statements. ](#vision)
 3. [ Meet The Team. ](#meet)
 4. [ Onboarding Instructions ](#onboard)
-5. [ Project Architecture ](#arch)
+5. [ CI Server ](#ciserver)
+6. [ Technical Specification Guide ](#techspecs)
+7. [ Project Architecture ](#arch)
 
 <a name="over"></a>
 ## Overview
@@ -63,6 +65,14 @@ For minority and socially conscious consumers who are looking to support minorit
 
 3. To run our backend tests: From the root directory, navigate to our backend directory ```cd backend/isoko-backend/```
 4. Then, run the command ```npm test```.
+
+<a name="ciserver"></a>
+## CI Server
+1. We are using AWS codebuild for continuous integration. You can view our <a href="https://us-west-2.console.aws.amazon.com/codesuite/codebuild/builds/build-history?region=us-west-2&builds-meta=eyJmIjp7InRleHQiOiIifSwicyI6e30sIm4iOjUwLCJpIjowfQ" target="_blank"> build history here. </a>
+
+<a name="techspecs"></a>
+## Tech Spec Guide
+1. For more detailed information about our project's specifics, check out our <a href="https://docs.google.com/document/d/1ZXuMEAB2FJuRg9m0L3j22Jd5vqAORDWLx7ZzBlTzTp8/edit?usp=sharing" target="_blank"> Technical Specification Guide here. </a>
 
 <a name="arch"></a>
 ## Project Architecture
