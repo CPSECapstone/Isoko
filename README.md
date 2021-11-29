@@ -43,10 +43,11 @@ For minority and socially conscious consumers who are looking to support minorit
 ## Set-up/Onboarding Instructions
 
 ### Prerequisites
-1. Make sure to clone this repo by runnning ```git clone https://github.com/CPSECapstone/Isoko.git```
-2. Make sure that you have your AWS IAM credentials. Message one of the team members if you still need these. 
-3. Have node installed. (Preferably version 14.0.1 or later)
-4. Have docker installed.
+1. Make sure to clone this repo by runnning ```git clone https://github.com/CPSECapstone/Isoko.git``` 
+2. Have node installed. (Preferably version 14.0.1 or later)
+3. Have docker installed.
+4. Have the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed.
+4. **OPTIONAL** If you are planning on deploying our AWS backend stack to your personal AWS account, make sure you have the [AWS CLI](https://aws.amazon.com/cli/)  installed and properly configured with your account details.
 
 ### Setting up the Frontend
 1. From the root directory, navigate to our frontend directory ```cd frontend/isoko/```
@@ -65,6 +66,12 @@ For minority and socially conscious consumers who are looking to support minorit
 
 3. To run our backend tests: From the root directory, navigate to our backend directory ```cd backend/isoko-backend/```
 4. Then, run the command ```npm test```.
+
+### Deploying the Backend
+1. To deploy the AWS backend stack to an AWS account, first ensure that your AWS CLI is configured with the account details you wish to deploy your stack to. You can check this by running ```aws configure list```.
+2. Then, navigate to our backend directory ```cd backend/isoko-backend/```.
+3. Next, build the SAM template by running ```sam build```.
+4. Finally, deploy the stack to your AWS account ```sam deploy```.
 
 <a name="ciserver"></a>
 ## CI Server
