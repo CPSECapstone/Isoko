@@ -2,9 +2,9 @@
 2021 Software Engineering Capstone - AWS Minority Owned Business Team
 
 # Table of Contents
-1. [ Overview. ](#over)
-2. [ Vision Statements. ](#vision)
-3. [ Meet The Team. ](#meet)
+1. [ Overview ](#over)
+2. [ Vision Statements ](#vision)
+3. [ Meet The Team ](#meet)
 4. [ Onboarding Instructions ](#onboard)
 5. [ CI Server ](#ciserver)
 6. [ Technical Specification Guide ](#techspecs)
