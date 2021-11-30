@@ -31,8 +31,9 @@ const SignUp = () => {
       @media ${device.tablet} {
          flex-direction: column;
       }
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
    `;
 
    const RightDiv = styled.div`
@@ -248,10 +249,12 @@ const SignUp = () => {
                   </InputContainer>
                   <br />
                   <WideButton primary>Sign Up</WideButton>
-                  <StyledLink>
-                     Have an account? &nbsp;
-                     <Link to="/login">Log in here</Link>
-                  </StyledLink>
+                  <div>
+                     <StyledLink>
+                        Have an account? &nbsp;
+                        <Link to="/login">Log in here</Link>
+                     </StyledLink>
+                  </div>
                </MainContent>
             </RightDiv>
          </Container>
