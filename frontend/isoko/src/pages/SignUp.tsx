@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StyledButton from '../styles/StyledButton';
 import device from '../styles/devices';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ const SignUp = () => {
    `;
 
    const Title = styled.h1`
-      font-size: 2.5rem;
+      font-size: 4rem;
       margin-right: 18px;
       margin: none;
       margin-block-start: 0em;
@@ -95,6 +95,11 @@ const SignUp = () => {
       justify-content: start;
    `;
 
+   const StyledLabelListBusiness = styled.label`
+      margin-left: auto;
+      margin-right: auto;
+   `;
+
    const StyledLink = styled.div`
       margin-top: 5px;
       align-items: flex-end;
@@ -129,6 +134,7 @@ const SignUp = () => {
       width: 100%;
       justify-content: center;
       gap: 20px;
+      margin-top: 10px;
    `;
 
    const NameDiv = styled.div`
@@ -142,7 +148,7 @@ const SignUp = () => {
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: left;
+      text-align: center;
       max-width: 45%;
       margin: 30% auto;
       min-height: 30%;
@@ -153,19 +159,16 @@ const SignUp = () => {
       box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
    `;
 
-   const [checkedOne, setCheckedOne] = React.useState(false);
-   const [checkedTwo, setCheckedTwo] = React.useState(false);
+   const [listBusinessState, setListBusinessState] = useState('');
 
-   const handleChangeOne = () => {
-      if (!checkedOne) {
-         setCheckedOne(true);
-         setCheckedTwo(false);
+   const handleNoListBusinessClick = () => {
+      if (!(listBusinessState === 'NO')) {
+         setListBusinessState('NO');
       }
    };
-   const handleChangeTwo = () => {
-      if (!checkedTwo) {
-         setCheckedTwo(true);
-         setCheckedOne(false);
+   const handleYesListBusinessClick = () => {
+      if (!(listBusinessState === 'YES')) {
+         setListBusinessState('YES');
       }
    };
 
@@ -221,23 +224,23 @@ const SignUp = () => {
                         placeholder="confirm password"
                      ></StyledInput>{' '}
                      <br />
-                     <StyledLabel>
+                     <StyledLabelListBusiness>
                         Would you like to list a business on ISOKO right now?
-                     </StyledLabel>
+                     </StyledLabelListBusiness>
                      <CheckboxInputContainer>
                         <label>
                            <StyledCheckboxInput
                               type="checkbox"
-                              checked={checkedOne}
-                              onChange={handleChangeOne}
+                              checked={listBusinessState === 'YES'}
+                              onChange={handleYesListBusinessClick}
                            />
                            Yes
                         </label>
                         <label>
                            <StyledCheckboxInput
                               type="checkbox"
-                              checked={checkedTwo}
-                              onChange={handleChangeTwo}
+                              checked={listBusinessState === 'NO'}
+                              onChange={handleNoListBusinessClick}
                            />
                            No
                         </label>
