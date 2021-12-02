@@ -113,7 +113,76 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
+  UserPool: 
+    Type: AWS::Cognito::UserPool
+    Properties: 
+      AccountRecoverySetting: 
+        RecoveryMechanisms: 
+          - Name: verified_email
+            Priority: 1
+      AutoVerifiedAttributes:
+        - email
+      EmailConfiguration: 
+        EmailSendingAccount: COGNITO_DEFAULT 
+      MfaConfiguration: "OFF"
+      Policies: 
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+      Schema: 
+        - AttributeDataType: String
+          Mutable: true
+          Name: name
+          Required: true
+        - AttributeDataType: String
+          Mutable: true
+          Name: family_name
+          Required: true
+        - AttributeDataType: String
+          Mutable: false
+          Name: email
+          Required: true 
+      UsernameAttributes: 
+        - email
+      UserPoolName: Isoko Users
+      VerificationMessageTemplate: 
+          DefaultEmailOption: CONFIRM_WITH_LINK
+      
+  UserPoolClient: 
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      CallbackURLs:
+        - http://localhost:3000/
+        - http://localhost:3000/search
+      DefaultRedirectURI: http://localhost:3000/
+      LogoutURLs: 
+        - http://localhost:3000/
+      SupportedIdentityProviders:
+        - COGNITO
+      UserPoolId: !Ref UserPool
+      ClientName: Isoko Web App
+      GenerateSecret: false
+
+  UserPoolGroup: 
+    Type: AWS::Cognito::UserPoolGroup
+    Properties: 
+      Description: Users who are able to access moderator dashboard
+      GroupName: Moderators
+      Precedence: 0
+      UserPoolId: !Ref UserPool
+
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  UserPoolId:
+    Value: !Ref UserPool
+    Export:
+      Name: "UserPool::Id"
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+    Export:
+      Name: "UserPoolClient::Id"
