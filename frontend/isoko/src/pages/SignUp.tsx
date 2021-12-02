@@ -167,17 +167,6 @@ const SignUp: React.FC = () => {
    const [password, setPassword] = useState('');
    const [confirmPassword, setConfirmPassword] = useState('');
 
-   const handleNoListBusinessClick = () => {
-      if (!(listBusinessState === 'NO')) {
-         setListBusinessState('NO');
-      }
-   };
-   const handleYesListBusinessClick = () => {
-      if (!(listBusinessState === 'YES')) {
-         setListBusinessState('YES');
-      }
-   };
-
    const checkAllFieldsEntered = () => {
       if (
          listBusinessState.length === 0 ||
@@ -257,7 +246,7 @@ const SignUp: React.FC = () => {
                            <StyledCheckboxInput
                               type="checkbox"
                               checked={listBusinessState === 'YES'}
-                              onChange={handleYesListBusinessClick}
+                              onChange={() => setListBusinessState('YES')}
                            />
                            Yes
                         </label>
@@ -265,7 +254,7 @@ const SignUp: React.FC = () => {
                            <StyledCheckboxInput
                               type="checkbox"
                               checked={listBusinessState === 'NO'}
-                              onChange={handleNoListBusinessClick}
+                              onChange={() => setListBusinessState('NO')}
                            />
                            No
                         </label>
