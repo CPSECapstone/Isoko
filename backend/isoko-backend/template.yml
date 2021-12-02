@@ -113,6 +113,83 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
+  SearchResults:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: city
+          AttributeType: S
+        - AttributeName: category#businessId
+          AttributeType: S
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: city
+        - KeyType: RANGE
+          AttributeName: category#businessId
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: SearchResults
+  
+    Businesses:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: businessId
+          AttributeType: S
+        - AttributeName: 
+          AttributeType: S
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: city
+        - KeyType: RANGE
+          AttributeName: category#businessId
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Businesses
+
+  Businesses:
+    KeySchema:
+      - KeyType: HASH
+        AttributeName: businessId
+      - KeyType: RANGE
+        AttributeName: review#{ts}#{user} || info
+    AttributeDefinitions:
+      - AttributeName: businessId
+        AttributeType: S
+      - AttributeName: review#{ts}#{user} || info
+        AttributeType: S
+      - AttributeName: reviewAuthor
+        AttributeType: S
+      - AttributeName: ts
+        AttributeType: S
+    GlobalSecondaryIndexes:
+      - IndexName: reviews
+        Projection:
+          ProjectionType: ALL
+        KeySchema:
+          - AttributeName: reviewAuthor
+            KeyType: HASH
+          - AttributeName: ts
+            KeyType: RANGE
+    ProvisionedThroughput:
+      ReadCapacityUnits: 5
+      WriteCapacityUnits: 5
+    TableName: Businesses
+
+  Users:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: user-sub
+        Type: S
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  
+
+
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
