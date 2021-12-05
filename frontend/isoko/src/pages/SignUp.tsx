@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import StyledButton from '../styles/StyledButton';
 import device from '../styles/devices';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+   CognitoUserPool,
+   CognitoUserAttribute,
+} from 'amazon-cognito-identity-js';
+import { environment } from '../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -167,6 +172,8 @@ const SignUp: React.FC = () => {
    const [password, setPassword] = useState('');
    const [confirmPassword, setConfirmPassword] = useState('');
 
+   const navigate = useNavigate();
+
    const checkAllFieldsEntered = () => {
       if (
          listBusinessState.length === 0 ||
@@ -179,6 +186,46 @@ const SignUp: React.FC = () => {
          return false;
       }
       return true;
+   };
+
+   const onSignup = () => {
+      if (checkAllFieldsEntered()) {
+         const userPool = new CognitoUserPool({
+            UserPoolId: environment.cognitoUserPoolId,
+            ClientId: environment.cognitoAppClientId,
+         });
+
+         userPool.signUp(
+            email,
+            password,
+            [
+               new CognitoUserAttribute({
+                  Name: 'name',
+                  Value: firstName,
+               }),
+               new CognitoUserAttribute({
+                  Name: 'family_name',
+                  Value: lastName,
+               }),
+               new CognitoUserAttribute({
+                  Name: 'email',
+                  Value: email,
+               }),
+            ],
+            [],
+            (err, result) => {
+               if (err) {
+                  alert(err.message || JSON.stringify(err));
+                  return;
+               }
+               if (listBusinessState === 'YES') {
+                  navigate('/listBusiness');
+               } else {
+                  navigate('/login');
+               }
+            }
+         );
+      }
    };
 
    return (
@@ -261,11 +308,13 @@ const SignUp: React.FC = () => {
                      </CheckboxInputContainer>
                   </InputContainer>
                   <br />
-                  {checkAllFieldsEntered() ? (
-                     <WideButton primary>Sign Up</WideButton>
-                  ) : (
-                     <WideButton> Sign Up</WideButton>
-                  )}
+                  <WideButton
+                     primary={checkAllFieldsEntered()}
+                     onClick={onSignup}
+                  >
+                     {' '}
+                     Sign Up
+                  </WideButton>
                   <div>
                      <StyledLink>
                         Have an account? &nbsp;
