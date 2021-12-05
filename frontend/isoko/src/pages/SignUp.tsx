@@ -189,43 +189,41 @@ const SignUp: React.FC = () => {
    };
 
    const onSignup = () => {
-      if (checkAllFieldsEntered()) {
-         const userPool = new CognitoUserPool({
-            UserPoolId: environment.cognitoUserPoolId,
-            ClientId: environment.cognitoAppClientId,
-         });
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
 
-         userPool.signUp(
-            email,
-            password,
-            [
-               new CognitoUserAttribute({
-                  Name: 'name',
-                  Value: firstName,
-               }),
-               new CognitoUserAttribute({
-                  Name: 'family_name',
-                  Value: lastName,
-               }),
-               new CognitoUserAttribute({
-                  Name: 'email',
-                  Value: email,
-               }),
-            ],
-            [],
-            (err, result) => {
-               if (err) {
-                  alert(err.message || JSON.stringify(err));
-                  return;
-               }
-               if (listBusinessState === 'YES') {
-                  navigate('/listBusiness');
-               } else {
-                  navigate('/login');
-               }
+      userPool.signUp(
+         email,
+         password,
+         [
+            new CognitoUserAttribute({
+               Name: 'name',
+               Value: firstName,
+            }),
+            new CognitoUserAttribute({
+               Name: 'family_name',
+               Value: lastName,
+            }),
+            new CognitoUserAttribute({
+               Name: 'email',
+               Value: email,
+            }),
+         ],
+         [],
+         (err, result) => {
+            if (err) {
+               alert(err.message || JSON.stringify(err));
+               return;
             }
-         );
-      }
+            if (listBusinessState === 'YES') {
+               navigate('/listBusiness');
+            } else {
+               navigate('/login');
+            }
+         }
+      );
    };
 
    return (
