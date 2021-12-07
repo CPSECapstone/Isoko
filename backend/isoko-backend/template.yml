@@ -113,6 +113,88 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
+  Users:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Users
+      PrimaryKey:
+        Name: pk
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+
+  SearchResults:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: SearchResults
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: pk
+        - KeyType: RANGE
+          AttributeName: sk
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  Flags:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Flags
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: pk
+        - KeyType: RANGE
+          AttributeName: sk
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+    
+  Businesses:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Businesses
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: pk
+        - KeyType: RANGE
+          AttributeName: sk
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+        - AttributeName: reviewAuthor
+          AttributeType: S
+        - AttributeName: ts
+          AttributeType: S
+      GlobalSecondaryIndexes:
+        - IndexName: reviews-index
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: reviewAuthor
+              KeyType: HASH
+            - AttributeName: ts
+              KeyType: RANGE
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
   UserPool: 
     Type: AWS::Cognito::UserPool
     Properties: 
