@@ -13,7 +13,9 @@
         "test": "jest"
     },
     "jest": {
-        "testPathIgnorePatterns": ["/node_modules/", "/.aws-sam/"]
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "/.aws-sam/"
+        ]
     }
 }
-

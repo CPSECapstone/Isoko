@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import StyledButton from '../styles/StyledButton';
 import device from '../styles/devices';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+   AuthenticationDetails,
+   CognitoUser,
+   CognitoUserPool,
+} from 'amazon-cognito-identity-js';
+import { environment } from '../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -126,9 +132,34 @@ const Login: React.FC = () => {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
 
+   const navigate = useNavigate();
+
    const login = () => {
-      console.log(email, password);
+      const authDetails = new AuthenticationDetails({
+         Username: email,
+         Password: password,
+      });
+
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
+
+      const cognitoUser = new CognitoUser({
+         Username: email,
+         Pool: userPool,
+      });
+
+      cognitoUser.authenticateUser(authDetails, {
+         onSuccess: (result) => {
+            navigate('/');
+         },
+         onFailure: (err) => {
+            alert(err.message || JSON.stringify(err));
+         },
+      });
    };
+
    return (
       <main>
          <Container>
