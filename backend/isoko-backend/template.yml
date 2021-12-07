@@ -256,6 +256,12 @@ Resources:
       Precedence: 0
       UserPoolId: !Ref UserPool
 
+  IsokoUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties: 
+      Domain: isoko
+      UserPoolId: !Ref UserPool
+
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
