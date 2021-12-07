@@ -1,3 +1,15 @@
+describe('Test nothing', () => { 
+ 
+    it('should test nothing', async () => { 
+        result = 1
+ 
+        const expectedResult = 1
+ 
+        // Compare the result with the expected result 
+        expect(result).toEqual(expectedResult); 
+    }); 
+}); 
+
 // // Import all functions from get-all-items.js 
 // const lambda = require('../../../src/handlers/get-all-items.js'); 
 // // Import dynamodb from aws-sdk 
