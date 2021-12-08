@@ -105,7 +105,7 @@ Resources:
           Type: Api
           Properties:
             Path: /business/{businessId}
-            Method: DEL
+            Method: DELETE
 
   getUserObjectFunction:
     Type: AWS::Serverless::Function
@@ -173,7 +173,7 @@ Resources:
           Type: Api
           Properties:
             Path: /review/{reviewId}
-            Method: DEL
+            Method: DELETE
 
   postReviewFlagFunction:
     Type: AWS::Serverless::Function

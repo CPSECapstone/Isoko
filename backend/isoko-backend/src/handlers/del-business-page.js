@@ -3,7 +3,7 @@
  * HTTP del method that deletes a business page.
  */
 exports.delBusinessPageHandler = async (event) => {
-    if (event.httpMethod !== 'DEL') {
+    if (event.httpMethod !== 'DELETE') {
         throw new Error(`delBusinessPage only accept DEL method, you tried: ${event.httpMethod}`);
     }
 

@@ -3,7 +3,7 @@
  * HTTP del method that deletes a specified review.
  */
 exports.delUserReviewHandler = async (event) => {
-    if (event.httpMethod !== 'DEL') {
+    if (event.httpMethod !== 'DELETE') {
         throw new Error(`delUserReview only accept DEL method, you tried: ${event.httpMethod}`);
     }
 
