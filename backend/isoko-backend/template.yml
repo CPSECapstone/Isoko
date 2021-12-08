@@ -18,87 +18,336 @@ Resources:
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-  # This is a Lambda function config associated with the source code: get-all-items.js
-  getAllItemsFunction:
+ # This is a Lambda function config associated with the source code: get-search-businesses.js
+  getSearchResultsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-all-items.getAllItemsHandler
+      Handler: src/handlers/get-search-results.getSearchResultsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref SampleTable
+      Description: Includes a HTTP get method to get all businesses that match search criteria.
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /
+            Path: /business
             Method: GET
+            RequestParameters: 
+              - method.request.querystring.location:
+                  Required: true
+
+  postListBusinessFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/post-list-business.postListBusinessHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP post method to allow a user to list a new business.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business
+            Method: POST
+  
+  getBusinessPageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-business-page.getBusinessPageHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method to get business page with details and reviews  for specific businessId.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business/{businessId}
+            Method: GET
+
+  putEditBusinessPageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/put-edit-business-page.putEditBusinessPageHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP put method that allows only the business owner to modify the details of their business page.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business/{businessId}
+            Method: PUT
+
+  delBusinessPageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/del-business-page.delBusinessPageHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP del method that deletes a business page.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business/{businessId}
+            Method: DELETE
+
+  getUserObjectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-user-object.getUserObjectHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method that returns a user object based off of the userSub specified in the request.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /user/{userSub}
+            Method: GET
+
+  putUserObjectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/put-user-object.putUserObjectHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP put method that allows the user object specified to be updated according to the request body.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /user/{userSub}
+            Method: PUT
+
+  getUserReviewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-user-reviews.getUserReviewsHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method that lists all of the reviews a user has authored.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /user/{userSub}/reviews
+            Method: GET
+
+  delUserReviewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/del-user-review.delUserReviewHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP del method that deletes the specified review.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /review/{reviewId}
+            Method: DELETE
+
+  postReviewFlagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/post-review-flag.postReviewFlagHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP post method that creates a new flag for the specified review.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /review/{reviewId}/flag
+            Method: POST
+    
+  postBusinessFlagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/post-business-flag.postBusinessFlagHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP post method that creates a new flag for the specified business.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business/{businessId}/flag
+            Method: POST
+
+  getFlagFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-flag.getFlagHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method that lists the flag information for both business and reviews.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /flag
+            Method: GET
+
+  getBusinessFlagsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-business-flags.getBusinessFlagsHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method  that lists all the flags for the specified business.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /flag/business/{businessId}
+            Method: GET
+
+  getReviewFlagsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-review-flags.getReviewFlagsHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method that lists all the flags for the specified review.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /flag/review/{reviewId}
+            Method: GET
+
+
+
+
+ 
+ # This is a Lambda function config associated with the source code: get-all-items.js
+  # getAllItemsFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/get-all-items.getAllItemsHandler
+  #     Runtime: nodejs14.x
+  #     Architectures:
+  #       - x86_64
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref SampleTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref SampleTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: GET
+
+
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: get-by-id.js
-  getByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/get-by-id.getByIdHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref SampleTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /{id}
-            Method: GET
+  # getByIdFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/get-by-id.getByIdHandler
+  #     Runtime: nodejs14.x
+  #     Architectures:
+  #       - x86_64
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref SampleTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref SampleTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /{id}
+  #           Method: GET
+
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: put-item.js
-  putItemFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/put-item.putItemHandler
-      Runtime: nodejs14.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref SampleTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: POST
+  # putItemFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/put-item.putItemHandler
+  #     Runtime: nodejs14.x
+  #     Architectures:
+  #       - x86_64
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref SampleTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref SampleTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: POST
   # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
 
