@@ -22,7 +22,7 @@ Resources:
   getSearchResultsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-search-results.getSearchResultsHandler
+      Handler: src/handlers/business/get-search-results.getSearchResultsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -42,7 +42,7 @@ Resources:
   postListBusinessFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/post-list-business.postListBusinessHandler
+      Handler: src/handlers/business/post-list-business.postListBusinessHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -59,7 +59,7 @@ Resources:
   getBusinessPageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-business-page.getBusinessPageHandler
+      Handler: src/handlers/business/get-business-page.getBusinessPageHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -76,7 +76,7 @@ Resources:
   putEditBusinessPageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put-edit-business-page.putEditBusinessPageHandler
+      Handler: src/handlers/business/put-edit-business-page.putEditBusinessPageHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -93,7 +93,7 @@ Resources:
   delBusinessPageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/del-business-page.delBusinessPageHandler
+      Handler: src/handlers/business/del-business-page.delBusinessPageHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -110,7 +110,7 @@ Resources:
   getUserObjectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-user-object.getUserObjectHandler
+      Handler: src/handlers/user/get-user-object.getUserObjectHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -127,7 +127,7 @@ Resources:
   putUserObjectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put-user-object.putUserObjectHandler
+      Handler: src/handlers/user/put-user-object.putUserObjectHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -144,7 +144,7 @@ Resources:
   getUserReviewsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-user-reviews.getUserReviewsHandler
+      Handler: src/handlers/user/get-user-reviews.getUserReviewsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -161,7 +161,7 @@ Resources:
   delUserReviewFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/del-user-review.delUserReviewHandler
+      Handler: src/handlers/review/del-user-review.delUserReviewHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -178,7 +178,7 @@ Resources:
   postReviewFlagFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/post-review-flag.postReviewFlagHandler
+      Handler: src/handlers/review/post-review-flag.postReviewFlagHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -195,7 +195,7 @@ Resources:
   postBusinessFlagFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/post-business-flag.postBusinessFlagHandler
+      Handler: src/handlers/business/post-business-flag.postBusinessFlagHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -212,7 +212,7 @@ Resources:
   getFlagFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-flag.getFlagHandler
+      Handler: src/handlers/flag/get-flag.getFlagHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -229,7 +229,7 @@ Resources:
   getBusinessFlagsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-business-flags.getBusinessFlagsHandler
+      Handler: src/handlers/flag/get-business-flags.getBusinessFlagsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
@@ -246,7 +246,7 @@ Resources:
   getReviewFlagsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get-review-flags.getReviewFlagsHandler
+      Handler: src/handlers/flag/get-review-flags.getReviewFlagsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
