@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import StyledButton from '../styles/StyledButton';
-import device from '../styles/devices';
+import StyledButton from '../../styles/StyledButton';
+import device from '../../styles/devices';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +8,7 @@ import {
    CognitoUser,
    CognitoUserPool,
 } from 'amazon-cognito-identity-js';
-import { environment } from '../environment/environment';
+import { environment } from '../../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;

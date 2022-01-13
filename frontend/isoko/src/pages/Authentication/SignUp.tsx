@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import StyledButton from '../styles/StyledButton';
-import device from '../styles/devices';
+import StyledButton from '../../styles/StyledButton';
+import device from '../../styles/devices';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import {
    CognitoUserPool,
    CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
-import { environment } from '../environment/environment';
+import { environment } from '../../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -78,13 +78,6 @@ const StyledInput = styled.input`
    text-indent: 10px;
 `;
 
-const StyledCheckboxInput = styled.input`
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);     
-   border: 1px solid rgba(0, 0, 0, 0.41)
-   border-radius: 3px;
-   box-sizing: border-box;
-`;
-
 const HalfStyledInput = styled.input`
    width: 100%;
    border-radius: 10px;
@@ -98,11 +91,6 @@ const StyledLabel = styled.label`
    text-align: left;
    align-items: flex-start;
    justify-content: start;
-`;
-
-const StyledLabelListBusiness = styled.label`
-   margin-left: auto;
-   margin-right: auto;
 `;
 
 const StyledLink = styled.div`
@@ -131,15 +119,6 @@ const NameInputContainer = styled.div`
    flex-direction: row;
    width: 100%;
    justify-content: space-between;
-`;
-
-const CheckboxInputContainer = styled.div`
-   display: flex;
-   flex-direction: row;
-   width: 100%;
-   justify-content: center;
-   gap: 20px;
-   margin-top: 10px;
 `;
 
 const NameDiv = styled.div`
@@ -173,7 +152,6 @@ const FormError = styled.p`
 `;
 
 const SignUp: React.FC = () => {
-   const [listBusinessState, setListBusinessState] = useState('');
    const [firstName, setFirstName] = useState('');
    const [lastName, setLastName] = useState('');
    const [email, setEmail] = useState('');
@@ -185,7 +163,6 @@ const SignUp: React.FC = () => {
 
    const checkAllFieldsEntered = () => {
       if (
-         listBusinessState.length === 0 ||
          firstName.length === 0 ||
          lastName.length === 0 ||
          email.length === 0 ||
@@ -242,11 +219,7 @@ const SignUp: React.FC = () => {
                setErr(err.message || JSON.stringify(err));
                return;
             }
-            if (listBusinessState === 'YES') {
-               navigate('/listBusiness');
-            } else {
-               navigate('/login');
-            }
+            navigate('/emailVerification');
          }
       );
    };
@@ -323,31 +296,10 @@ const SignUp: React.FC = () => {
                         }}
                      ></StyledInput>{' '}
                      <br />
-                     <StyledLabelListBusiness>
-                        Would you like to list a business on ISOKO right now?
-                     </StyledLabelListBusiness>
-                     <CheckboxInputContainer>
-                        <label>
-                           <StyledCheckboxInput
-                              type="checkbox"
-                              checked={listBusinessState === 'YES'}
-                              onChange={() => setListBusinessState('YES')}
-                           />
-                           Yes
-                        </label>
-                        <label>
-                           <StyledCheckboxInput
-                              type="checkbox"
-                              checked={listBusinessState === 'NO'}
-                              onChange={() => setListBusinessState('NO')}
-                           />
-                           No
-                        </label>
-                     </CheckboxInputContainer>
                   </InputContainer>
                   <br />
                   {err ? <FormError>{err}</FormError> : null}
-                  <WideButton onClick={checkAllFieldsEntered}>
+                  <WideButton primary onClick={checkAllFieldsEntered}>
                      {' '}
                      Sign Up
                   </WideButton>
