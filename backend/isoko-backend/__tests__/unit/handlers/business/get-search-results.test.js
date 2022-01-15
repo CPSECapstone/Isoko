@@ -18,6 +18,20 @@ describe('GetSearchResultsHandler tests', () => {
    });
 
    describe('Invalid location query param tests', () => {
+      it('Should throw an error when location is missing altogether', async () => {
+         // arrange
+         const event = {
+            httpMethod: 'GET',
+         };
+
+         // act
+
+         // assert
+         await expect(async () => {
+            await getSearchResultsHandler(event);
+         }).rejects.toThrowError();
+      });
+
       it('Should throw an error when location is missing information', async () => {
          // arrange
          const event = {
