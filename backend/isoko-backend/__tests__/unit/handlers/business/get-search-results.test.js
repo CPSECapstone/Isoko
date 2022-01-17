@@ -36,9 +36,9 @@ describe('GetSearchResultsHandler tests', () => {
          // arrange
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
+            body: JSON.stringify({
                location: 'CA',
-            },
+            }),
          };
 
          // act
@@ -53,9 +53,9 @@ describe('GetSearchResultsHandler tests', () => {
          // arrange
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
+            body: JSON.stringify({
                location: 'CA/Sunnyvale/SantaClara',
-            },
+            }),
          };
 
          // act
@@ -107,9 +107,9 @@ describe('GetSearchResultsHandler tests', () => {
          });
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
+            body: JSON.stringify({
                location: 'CA/Sunnyvale',
-            },
+            }),
          };
 
          const expectedItems = [
@@ -182,11 +182,9 @@ describe('GetSearchResultsHandler tests', () => {
          });
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
-               location: 'CA/Sunnyvale',
-            },
             body: JSON.stringify({
                category: 'restaurant',
+               location: 'CA/Sunnyvale',
             }),
          };
 
@@ -280,12 +278,10 @@ describe('GetSearchResultsHandler tests', () => {
          });
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
-               location: 'CA/Sunnyvale',
-            },
             body: JSON.stringify({
                category: 'restaurant',
                tags: ['Asian-Owned', 'Latinx-Owned'],
+               location: 'CA/Sunnyvale',
             }),
          };
 
@@ -392,12 +388,10 @@ describe('GetSearchResultsHandler tests', () => {
          });
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
-               location: 'CA/Sunnyvale',
-            },
             body: JSON.stringify({
                category: 'restaurant',
                keyword: 'Korean',
+               location: 'CA/Sunnyvale',
             }),
          };
 
@@ -491,13 +485,11 @@ describe('GetSearchResultsHandler tests', () => {
          });
          const event = {
             httpMethod: 'GET',
-            queryStringParameters: {
-               location: 'CA/Sunnyvale',
-            },
             body: JSON.stringify({
                category: 'restaurant',
                tags: ['Asian-Owned'],
                keyword: 'Korean',
+               location: 'CA/Sunnyvale',
             }),
          };
 

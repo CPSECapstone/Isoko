@@ -47,9 +47,7 @@ exports.getSearchResultsHandler = async (event) => {
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
 
-   const location = processLocationParam(
-      _.get(event, ['queryStringParameters', 'location'])
-   );
+   const location = processLocationParam(_.get(requestBody, 'location'));
    const category = _.get(requestBody, 'category');
    const keyword = _.get(requestBody, 'keyword');
    const tags = _.get(requestBody, 'tags');
