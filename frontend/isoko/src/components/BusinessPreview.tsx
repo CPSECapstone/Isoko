@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import { Table } from 'react-bootstrap';
+import MinorityTag from './MinorityTag';
+import KeywordTag from './KeywordTag';
 
 const BusinessContainer = styled(Table)`
    width: 85%;
@@ -21,37 +23,36 @@ const Photo = styled.img`
 `;
 
 const RightContainer = styled(Table)`
-   justify-content: left;
+   justify-content: flex-start;
    display: flex;
    flex-grow: 1;
    flex-direction: column;
+   padding-left: 0.25em;
 `;
 
 const Text = styled.div`
    font-size: 0.75rem;
    display: flex;
    flex-shrink: 1;
-   padding-left: 1em;
-   padding-top: 0.01em;
+   padding-bottom: 0.5em;
 `;
 
 const Title = styled.h2`
    align-self: left;
    font-size: 1rem;
+   margin: auto 5px auto 0px;
    margin-right: 18px;
-   margin-left: 15px;
    margin-top: 15px;
    margin: none;
    margin-block-start: 0em;
    margin-block-end: 0em;
-   padding-top: 15px;
+   padding-bottom: 0.25em;
 `;
 
 const StarContainer = styled.div`
    justify-self: left;
    flex-shrink: 1;
-   padding-left: 1em;
-   padding-top: 0.01em;
+   padding-top: 0.5em;
 `;
 
 const TableRow = styled.tr`
@@ -70,19 +71,21 @@ const PictureData = styled.td`
     min-width: 30vh; 
 `;
 
-interface FeaturedBusinessProps extends React.HTMLProps<HTMLDivElement> {
+interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
    type: 'B&M' | 'Online';
    name: string;
    imageUrl: string;
    description: string;
    stars: number;
+   minorityTags: string[];
+   keywordTags: string[];
 }
 
-const FeaturedBusiness = ({
+const BusinessPreview = ({
    children,
    type = 'B&M',
    ...rest
-}: FeaturedBusinessProps) => {
+}: BusinessPreviewProps) => {
    return (
       <BusinessContainer>
          <tbody>
@@ -96,6 +99,11 @@ const FeaturedBusiness = ({
                         <TableData>
                            <Title>{rest.name}</Title>{' '}
                         </TableData>
+                     </TableRow>
+                     <TableRow>
+                        {rest.minorityTags.map((tag, index) => (
+                           <MinorityTag key={index} name={tag} />
+                        ))}
                      </TableRow>
                      <TableRow>
                         <TableData>
@@ -115,6 +123,11 @@ const FeaturedBusiness = ({
                            <Text>{rest.description}</Text>
                         </TableData>
                      </TableRow>
+                     <TableRow>
+                        {rest.keywordTags.map((tag, index) => (
+                           <KeywordTag key={index} name={tag} />
+                        ))}
+                     </TableRow>
                   </RightContainer>
                </TableData>
             </TableRow>
@@ -123,4 +136,4 @@ const FeaturedBusiness = ({
    );
 };
 
-export default FeaturedBusiness;
+export default BusinessPreview;
