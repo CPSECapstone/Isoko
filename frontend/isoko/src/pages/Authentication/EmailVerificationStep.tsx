@@ -39,12 +39,12 @@ const EmailVerification = () => {
       <Background>
          <Description>
             <Header> Your account is almost ready for use! </Header>
-            <h3> Please Check your email inbox to verify your account. </h3>
+            <h3> Please check your email inbox to verify your account. </h3>
             <h3>
                {' '}
                Once you have verified your email, head to{' '}
                <a onClick={() => navigate('/login')}>our login page</a> and
-               begin supporting Minority Owned Businesses!
+               begin supporting minority-owned businesses!
             </h3>
          </Description>
       </Background>

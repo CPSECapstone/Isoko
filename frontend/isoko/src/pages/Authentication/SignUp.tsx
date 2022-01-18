@@ -158,10 +158,13 @@ const SignUp: React.FC = () => {
    const [password, setPassword] = useState('');
    const [confirmPassword, setConfirmPassword] = useState('');
    const [err, setErr] = useState('');
+   const regExpPassword = RegExp(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{8,}$/
+   );
 
    const navigate = useNavigate();
 
-   const checkAllFieldsEntered = () => {
+   const checkAllFieldsEnteredProperly = () => {
       if (
          firstName.length === 0 ||
          lastName.length === 0 ||
@@ -172,15 +175,15 @@ const SignUp: React.FC = () => {
          setErr('Make sure all fields are filled out');
          return false;
       }
-      checkPasswordsMatch();
+      checkPasswordValidity();
    };
 
-   const checkPasswordsMatch = () => {
+   const checkPasswordValidity = () => {
       if (password !== confirmPassword) {
          setErr('Make sure your passwords match');
          return false;
       }
-      if (password.length < 8 || confirmPassword.length < 8) {
+      if (!regExpPassword.test(password)) {
          // AWS cognito actually checks the password is valid, this is just to provide helpful error feedback to the users
          setErr(
             'Make sure your password is at least 8 digits, and contains a lowercase, uppercase, and special character'
@@ -299,7 +302,7 @@ const SignUp: React.FC = () => {
                   </InputContainer>
                   <br />
                   {err ? <FormError>{err}</FormError> : null}
-                  <WideButton primary onClick={checkAllFieldsEntered}>
+                  <WideButton primary onClick={checkAllFieldsEnteredProperly}>
                      {' '}
                      Sign Up
                   </WideButton>
