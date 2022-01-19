@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import StyledButton from '../styles/StyledButton';
-import device from '../styles/devices';
+import StyledButton from '../../styles/StyledButton';
+import device from '../../styles/devices';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +8,7 @@ import {
    CognitoUser,
    CognitoUserPool,
 } from 'amazon-cognito-identity-js';
-import { environment } from '../environment/environment';
+import { environment } from '../../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -101,6 +101,14 @@ const SignUpHere = styled.div`
    margin-right: 15%;
 `;
 
+const FormError = styled.p`
+   justify-content: center;
+   color: red;
+   text-align: left;
+   width: 70%;
+   margin: 0 auto;
+`;
+
 const WideButton = styled(StyledButton)`
    width: 70%;
    border-radius: 10px;
@@ -131,6 +139,7 @@ const Description = styled.div`
 const Login: React.FC = () => {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const [err, setErr] = useState('');
 
    const navigate = useNavigate();
 
@@ -155,7 +164,7 @@ const Login: React.FC = () => {
             navigate('/');
          },
          onFailure: (err) => {
-            alert(err.message || JSON.stringify(err));
+            setErr(err.message || JSON.stringify(err));
          },
       });
    };
@@ -183,6 +192,7 @@ const Login: React.FC = () => {
                         placeholder="example@gmail.com"
                         onChange={(e) => {
                            setEmail(e.target.value);
+                           setErr('');
                         }}
                      ></StyledInput>{' '}
                      <br />
@@ -192,11 +202,13 @@ const Login: React.FC = () => {
                         placeholder="password"
                         onChange={(e) => {
                            setPassword(e.target.value);
+                           setErr('');
                         }}
                      ></StyledInput>
                   </InputContainer>
                   <StyledLink to="/forgotPassword">Forgot Password?</StyledLink>{' '}
                   <br /> <br />
+                  {err ? <FormError>{err}</FormError> : null}
                   <WideButton primary onClick={login}>
                      Log In
                   </WideButton>

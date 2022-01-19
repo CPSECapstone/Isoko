@@ -4,7 +4,10 @@ const GlobalStyle = createGlobalStyle`
 a {
     color: #0645AD; 
     font-family: Open Sans; 
-    font-size: 0.75rem;
+}
+a:hover {
+  color: #00368c;
+  cursor: pointer;
 }
 body {
     background: #E5E5E5; 
