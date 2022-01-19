@@ -27,11 +27,12 @@ exports.postListBusinessHandler = async (event) => {
    const hours = _.get(requestBody, 'hours');
    const links = _.get(requestBody, 'links');
    const address = _.get(requestBody, 'address');
-   const owner = _.get(requestBody, 'owner', "");
-   const ownerName = _.get(requestBody, 'ownerName', ""); 
-   const ownerPhone = _.get(requestBody, 'ownerPhone', "");
-   const ownerDesc = _.get(requestBody, 'ownerDesc', "");
-   const photo = _.get(requestBody, 'photo', "");
+   const aboutOwner = _.get(requestBody, 'aboutOwner', null);
+   const owner = _.get(aboutOwner, 'owner', "");
+   const ownerName = _.get(aboutOwner, 'ownerName', ""); 
+   const ownerPhone = _.get(aboutOwner, 'ownerPhone', "");
+   const ownerDesc = _.get(aboutOwner, 'ownerDesc', "");
+   const photo = _.get(aboutOwner, 'photo', "");
    const lister = _.get(requestBody, 'lister');
    
 
@@ -47,12 +48,14 @@ exports.postListBusinessHandler = async (event) => {
          "businessId": businessId, 
          "hours": hours, 
          "links": links, 
-         "address": address, 
-         "owner": owner,
-         "ownerName": ownerName, 
-         "ownerPhone": ownerPhone, 
-         "ownerDesc": ownerDesc,
-         "photo": photo, 
+         "address": address,
+         "aboutOwner": {
+            "owner": owner,
+            "ownerName": ownerName, 
+            "ownerPhone": ownerPhone, 
+            "ownerDesc": ownerDesc,
+            "photo": photo, 
+         }, 
          "lister": lister
       }
    }
@@ -64,11 +67,9 @@ exports.postListBusinessHandler = async (event) => {
    
    // if request is coming from non-owner list a business page, following params will not be included 
    if (owner == "") {
-         delete queryParams.Item.owner; 
-         delete queryParams.Item.ownerName;
-         delete queryParams.Item.ownerPhone; 
-         delete queryParams.Item.ownerDesc; 
-         delete queryParams.Item.photo; 
+         delete queryParams.Item.aboutOwner.owner;
+         delete queryParams.Item.aboutOwner.ownerDesc; 
+         delete queryParams.Item.aboutOwner.photo;  
          delete queryParams.Item.shortDesc; 
          delete queryParams.Item.hours; 
          delete queryParams.Item.links; 

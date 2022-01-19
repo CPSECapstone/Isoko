@@ -61,11 +61,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
             }; 
             putSpy.mockReturnValue({
@@ -94,11 +96,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
                })
             };
@@ -124,11 +128,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
             }; 
    
@@ -160,11 +166,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
                }
             });
@@ -196,11 +204,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
             }; 
             putSpy.mockReturnValue({
@@ -228,11 +238,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
                })
             };
@@ -257,11 +269,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
             }; 
    
@@ -292,11 +306,13 @@ const {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
                 address: '70 Newport Pier, Newport Beach, CA 92663',
-                owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-                ownerName: 'Maeby Funke', 
-                ownerPhone: '123-456-7890', 
-                ownerDesc: 'Marry me!', 
-                photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                aboutOwner: {
+                    owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: 'Marry me!', 
+                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                },
                 lister: 'George Michael Bluth'
                }
             });
@@ -314,6 +330,10 @@ const {
                 keywords:['Desserts'],
                 businessId: 'BUSID1',
                 address: '70 Newport Pier, Newport Beach, CA 92663',
+                aboutOwner: {
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890'
+                },
                 lister: 'George Michael Bluth'
             }; 
             putSpy.mockReturnValue({
@@ -328,6 +348,10 @@ const {
                 keywords:['Desserts'],
                 businessId: 'BUSID1',
                 address: '70 Newport Pier, Newport Beach, CA 92663',
+                aboutOwner: {
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890'
+                },
                 lister: 'George Michael Bluth'
                })
             };
@@ -339,6 +363,10 @@ const {
                 keywords:['Desserts'],
                 businessId: 'BUSID1',
                 address: '70 Newport Pier, Newport Beach, CA 92663',
+                aboutOwner: {
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890'
+                },
                 lister: 'George Michael Bluth'
             }; 
    
@@ -356,6 +384,10 @@ const {
                 keywords:['Desserts'],
                 businessId: 'BUSID1',
                 address: '70 Newport Pier, Newport Beach, CA 92663',
+                aboutOwner: {
+                    ownerName: 'Maeby Funke', 
+                    ownerPhone: '123-456-7890'
+                },
                 lister: 'George Michael Bluth'
                }
             });
