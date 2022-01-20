@@ -52,10 +52,10 @@ exports.getSearchResultsHandler = async (event) => {
    const keyword = _.get(requestBody, 'keyword');
    const tags = _.get(requestBody, 'tags');
 
-   const dyanmoResult = await docClient
+   const dynamoResult = await docClient
       .query(buildQueryParams(location, category))
       .promise();
-   let queryResults = dyanmoResult.Items;
+   let queryResults = dynamoResult.Items;
 
    if (tags && tags.length && keyword) {
       queryResults = queryResults.filter(
