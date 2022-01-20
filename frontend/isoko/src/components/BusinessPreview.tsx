@@ -6,20 +6,27 @@ import MinorityTag from './MinorityTag';
 import KeywordTag from './KeywordTag';
 
 const BusinessContainer = styled(Table)`
-   width: 85%;
-   height: 25%;
+   display: flex;
+   flex-grow: 1;
+   flex-shrink: 1;
+   width: 100%;
+   height: 148px;
    background-color: #fff;
    border: 1px solid #cecece;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 3px;
    min-height: 20vh;
    min-width: 60vh;
    margin-bottom: 3%;
 `;
 
 const Photo = styled.img`
-   height: 100%;
-   width: 100%;
+   height: 120px;
+   width: 120px;
+   border-radius: 3px;
    object-fit: cover;
+   border: 1px solid #cecece;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const RightContainer = styled(Table)`
@@ -32,18 +39,17 @@ const RightContainer = styled(Table)`
 
 const Text = styled.div`
    font-size: 0.75rem;
-   display: flex;
-   flex-shrink: 1;
+   display: inline-block;
    padding-bottom: 0.5em;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
 `;
 
 const Title = styled.h2`
    align-self: left;
    font-size: 1rem;
-   margin: auto 5px auto 0px;
-   margin-right: 18px;
-   margin-top: 15px;
-   margin: none;
+   margin: auto;
    margin-block-start: 0em;
    margin-block-end: 0em;
    padding-bottom: 0.25em;
@@ -61,14 +67,13 @@ const TableRow = styled.tr`
 `;
 
 const TableData = styled.td`
+   word-wrap: break-word;
    white-space: nowrap;
-   width: 80%;
+   text-overflow: ellipsis;
 `;
 
 const PictureData = styled.td`
-    padding: 0.5rem; 
-    width: 15%
-    min-width: 30vh; 
+   padding: 0.5rem;
 `;
 
 interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {

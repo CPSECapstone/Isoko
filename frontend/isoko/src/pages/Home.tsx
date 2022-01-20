@@ -7,6 +7,7 @@ import MinorityTag from '../components/MinorityTag';
 const ContentContainer = styled.div`
    display: flex;
    justify-content: center;
+   flex-shrink: 1;
    width: 100%;
    height: 100%;
    min-height: 100vh;
@@ -21,11 +22,14 @@ const SearchContainer = styled.div`
 const FeaturedBusinesses = styled.div`
    align-self: center;
    display: flex;
+   flex-grow: 1;
+   flex-shrink: 1;
    flex-direction: column;
    align-items: flex-start;
    height: 50%;
    margin-left: 10%;
-   margin-right: 5%;
+   margin-right: 10%;
+   max-width: 1200px;
 `;
 
 const Title = styled.h2`
@@ -58,7 +62,7 @@ const Home = () => (
                type="Online"
                name="Bob's Burgers"
                imageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
-               description="Most average burger place"
+               description="Bob rallies the team to cook up some business, so he sends middle child Gene to push samples in the streets, eldest daughter Tina to work the grill and youngest daughter Louise to staff the counter. Here are some more words."
                stars={3}
                minorityTags={['Black-Owned']}
                keywordTags={['Burgers']}
