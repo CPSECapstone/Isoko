@@ -16,27 +16,27 @@ exports.postListBusinessHandler = async (event) => {
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
    
+   // add defaultVal param for attributes that are optional/don't appear on non-owner list a business page
    const name = _.get(requestBody, 'name');
-   // add defaultVal param bc city is optional 
    const city = _.get(requestBody, 'city', "");
    const type = _.get(requestBody, 'type');
    const tags = _.get(requestBody, 'tags');
    const keywords = _.get(requestBody, 'keywords');
-   const shortDesc = _.get(requestBody, 'shortDesc');
+   const shortDesc = _.get(requestBody, 'shortDesc', "");
    const businessId = _.get(requestBody, 'businessId');
-   const hours = _.get(requestBody, 'hours');
-   const links = _.get(requestBody, 'links');
+   const hours = _.get(requestBody, 'hours', {});
+   const links = _.get(requestBody, 'links', {});
    const address = _.get(requestBody, 'address');
-   const aboutOwner = _.get(requestBody, 'aboutOwner', null);
+   const aboutOwner = _.get(requestBody, 'aboutOwner');
    const owner = _.get(aboutOwner, 'owner', "");
-   const ownerName = _.get(aboutOwner, 'ownerName', ""); 
-   const ownerPhone = _.get(aboutOwner, 'ownerPhone', "");
+   const ownerName = _.get(aboutOwner, 'ownerName');  
+   const ownerPhone = _.get(aboutOwner, 'ownerPhone');
    const ownerDesc = _.get(aboutOwner, 'ownerDesc', "");
    const photo = _.get(aboutOwner, 'photo', "");
    const lister = _.get(requestBody, 'lister');
    
 
-   const queryParams = {
+   const params = {
       TableName: BUSINESS_TABLE,
       Item: {
          "name": name, 
@@ -59,25 +59,9 @@ exports.postListBusinessHandler = async (event) => {
          "lister": lister
       }
    }
-
-   // remove optional params if not present
-   if (city == "") {
-      delete queryParams.Item.city; 
-   }
-   
-   // if request is coming from non-owner list a business page, following params will not be included 
-   if (owner == "") {
-         delete queryParams.Item.aboutOwner.owner;
-         delete queryParams.Item.aboutOwner.ownerDesc; 
-         delete queryParams.Item.aboutOwner.photo;  
-         delete queryParams.Item.shortDesc; 
-         delete queryParams.Item.hours; 
-         delete queryParams.Item.links; 
-   }
-
    
    const dynamoResult = await docClient
-      .put(queryParams) 
+      .put(params) 
       .promise(); 
    
    let putResult = dynamoResult.Items; 

@@ -21,7 +21,7 @@ exports.getBusinessPageHandler = async (event) => {
       );
    }
 
-   const queryParams = {
+   const params = {
       TableName: BUSINESS_TABLE,
       Key: {
          "businessId": businessId
@@ -29,7 +29,7 @@ exports.getBusinessPageHandler = async (event) => {
    }
 
    const dynamoResult = await docClient
-      .get(queryParams) 
+      .get(params) 
       .promise(); 
    
    let getResult = dynamoResult.Items; 
