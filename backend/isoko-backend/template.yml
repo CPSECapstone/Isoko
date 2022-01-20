@@ -275,9 +275,12 @@ Resources:
             Path: /flag/review/{reviewId}
             Method: GET
 
-
-
-
+  # Setup for the S3 service. 
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: PublicRead
+      BucketName: image-bucket-isoko
  
  # This is a Lambda function config associated with the source code: get-all-items.js
   # getAllItemsFunction:
