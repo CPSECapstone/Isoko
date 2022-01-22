@@ -17,6 +17,7 @@ const StyledButton = styled.button<ButtonProps>`
    padding: 8px 16px;
    border-radius: 10px;
    border: none;
+   cursor: pointer;
 
    &:hover {
       ${(props) =>
