@@ -49,7 +49,7 @@ const RightDiv = styled.div`
 `;
 
 const RowDiv = styled.div`
-   margin-top: 30%;
+   margin-top: 20%;
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -137,13 +137,15 @@ const ErrContainer = styled.div`
    height: 20px;
 `;
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
+   const [newPassword, setNewPassword] = useState('');
+   const [verificationCode, setVerificationCode] = useState('');
    const [email, setEmail] = useState('');
    const [err, setErr] = useState('');
 
    const navigate = useNavigate();
 
-   const forgotPassword = () => {
+   const resetPassword = () => {
       const userPool = new CognitoUserPool({
          UserPoolId: environment.cognitoUserPoolId,
          ClientId: environment.cognitoAppClientId,
@@ -154,9 +156,9 @@ const ForgotPassword = () => {
          Pool: userPool,
       });
 
-      cognitoUser.forgotPassword({
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
          onSuccess: () => {
-            navigate('/resetPassword');
+            navigate('/resetSuccess');
          },
          onFailure: (err) => {
             setErr(err.message);
@@ -182,18 +184,36 @@ const ForgotPassword = () => {
                   </RowDiv>
                   <InputContainer>
                      <TextContainer>
-                        <FPTitle>Forgot Password?</FPTitle>
+                        <FPTitle>Reset Password</FPTitle>
                         <p>
-                           Please enter your email so we can send instructions
-                           on how to reset your password.
+                           Please check the email you entered for your 6 digit
+                           verification code and enter a new password.
                         </p>
                      </TextContainer>
+                     <StyledLabel> Verification Code</StyledLabel>
+                     <StyledInput
+                        placeholder="111111"
+                        onChange={(e) => {
+                           setVerificationCode(e.target.value);
+                           setErr('');
+                        }}
+                     ></StyledInput>{' '}
+                     <br></br>
                      <StyledLabel> Email</StyledLabel>
                      <StyledInput
-                        type="email"
                         placeholder="example@gmail.com"
                         onChange={(e) => {
                            setEmail(e.target.value);
+                           setErr('');
+                        }}
+                     ></StyledInput>{' '}
+                     <br></br>
+                     <StyledLabel> New Password</StyledLabel>
+                     <StyledInput
+                        type="password"
+                        placeholder="new password"
+                        onChange={(e) => {
+                           setNewPassword(e.target.value);
                            setErr('');
                         }}
                      ></StyledInput>{' '}
@@ -202,8 +222,8 @@ const ForgotPassword = () => {
                   <ErrContainer>
                      {err ? <FormError>{err}</FormError> : null}
                   </ErrContainer>
-                  <WideButton primary onClick={forgotPassword}>
-                     Get Verification Code
+                  <WideButton primary onClick={resetPassword}>
+                     Reset Password
                   </WideButton>
                   <div>
                      <SignUpHere>
@@ -217,4 +237,4 @@ const ForgotPassword = () => {
    );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

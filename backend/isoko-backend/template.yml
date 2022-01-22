@@ -124,6 +124,21 @@ Resources:
             Path: /user/{userSub}
             Method: GET
 
+  cognitoPostConfirmationTriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/triggers/cognito-post-confirmation.cognitoPostConfirmationHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Creates a new user in dynamodb after they confirm their email.
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: Users
+
+
   putUserObjectFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -260,9 +275,12 @@ Resources:
             Path: /flag/review/{reviewId}
             Method: GET
 
-
-
-
+  # Setup for the S3 service. 
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: PublicRead
+      BucketName: image-bucket-isoko
  
  # This is a Lambda function config associated with the source code: get-all-items.js
   # getAllItemsFunction:
