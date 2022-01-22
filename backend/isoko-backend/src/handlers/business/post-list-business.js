@@ -1,7 +1,7 @@
 /**
  * HTTP post method to allow a user to list a new business.
  */
- exports.postListBusinessHandler = async (event) => {
+exports.postListBusinessHandler = async (event) => {
    if (event.httpMethod !== 'POST') {
       throw new Error(
          `postListBusiness only accept POST method, you tried: ${event.httpMethod}`

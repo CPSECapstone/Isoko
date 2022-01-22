@@ -1,7 +1,7 @@
 /**
  * HTTP get method to get business page with details and reviews for specific businessId.
  */
- exports.getBusinessPageHandler = async (event) => {
+exports.getBusinessPageHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
       throw new Error(
          `getBusinessPage only accept GET method, you tried: ${event.httpMethod}`
