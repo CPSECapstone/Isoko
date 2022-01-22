@@ -70,7 +70,7 @@ const Review = ({ ...rest }: ReviewProps) => {
             <UserPhoto src={rest.reviewerImageUrl} />
             <UserText> {rest.reviewerName} </UserText>
          </UserContainer>
-         <h3>{rest.subject}</h3>
+         {rest.subject.length > 0 ? <h3>{rest.subject}</h3> : <br></br>}
          <StarContainer>
             <Rating
                allowHalfIcon={true}
@@ -81,12 +81,18 @@ const Review = ({ ...rest }: ReviewProps) => {
                ratingValue={0}
             />
          </StarContainer>
-         <ContentText>{rest.content}</ContentText>
-         <ReviewPhotoContainer>
-            {rest.imageUrls.map((photo, index) => (
-               <ReviewPhoto key={index} src={photo}></ReviewPhoto>
-            ))}
-         </ReviewPhotoContainer>
+         {rest.content.length > 0 ? (
+            <ContentText>{rest.content}</ContentText>
+         ) : (
+            <br></br>
+         )}
+         {rest.imageUrls.length > 0 ? (
+            <ReviewPhotoContainer>
+               {rest.imageUrls.map((photo, index) => (
+                  <ReviewPhoto key={index} src={photo}></ReviewPhoto>
+               ))}
+            </ReviewPhotoContainer>
+         ) : null}
       </ReviewContainer>
    );
 };
