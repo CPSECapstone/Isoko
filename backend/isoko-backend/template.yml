@@ -190,22 +190,22 @@ Resources:
             Path: /review/{reviewId}
             Method: DELETE
 
-    postReviewFunction:
-      Tyle: AWS::Serverless::Function
-      Properties:
-      Handler: src/handlers/review/post-review/postReviewHandler
+  postReviewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/review/post-review.postReviewHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: Includes a HTTP post method that creates a review for the specified business
+      Description: Includes a HTTP post method that creates a new review for the specified business.
       Events:
         Api:
           Type: Api
           Properties:
-          Path: /business/{businessId}/review
-          Method: POST
+            Path: /business/{businessId}/review
+            Method: POST
 
   postReviewFlagFunction:
     Type: AWS::Serverless::Function
