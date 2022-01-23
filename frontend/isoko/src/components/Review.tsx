@@ -58,9 +58,9 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    reviewerName: string;
    reviewerImageUrl: string;
    stars: number;
-   subject: string;
-   content: string;
-   imageUrls: string[];
+   subject?: string;
+   content?: string;
+   imageUrls?: string[];
 }
 
 const Review = ({ ...rest }: ReviewProps) => {
@@ -70,7 +70,7 @@ const Review = ({ ...rest }: ReviewProps) => {
             <UserPhoto src={rest.reviewerImageUrl} />
             <UserText> {rest.reviewerName} </UserText>
          </UserContainer>
-         {rest.subject.length > 0 ? <h3>{rest.subject}</h3> : <br></br>}
+         {rest.subject ? <h3>{rest.subject}</h3> : <br></br>}
          <StarContainer>
             <Rating
                allowHalfIcon={true}
@@ -81,12 +81,8 @@ const Review = ({ ...rest }: ReviewProps) => {
                ratingValue={0}
             />
          </StarContainer>
-         {rest.content.length > 0 ? (
-            <ContentText>{rest.content}</ContentText>
-         ) : (
-            <br></br>
-         )}
-         {rest.imageUrls.length > 0 ? (
+         {rest.content ? <ContentText>{rest.content}</ContentText> : <br></br>}
+         {rest.imageUrls ? (
             <ReviewPhotoContainer>
                {rest.imageUrls.map((photo, index) => (
                   <ReviewPhoto key={index} src={photo}></ReviewPhoto>

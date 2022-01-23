@@ -51,7 +51,6 @@ const Business = () => (
          stars={4}
          subject="Great food and service!"
          content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
-         imageUrls={[]}
       />
    </main>
 );
