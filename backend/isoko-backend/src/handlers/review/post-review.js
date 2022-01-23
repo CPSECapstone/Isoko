@@ -1,5 +1,6 @@
 const dynamodb = require('aws-sdk/clients/dynamodb')
 const docClient = new dynamodb.DocumentClient();
+const _ = require('lodash');
 const { BUSINESS_TABLE } = require('../../constants');
 
 /**
@@ -27,10 +28,10 @@ const { BUSINESS_TABLE } = require('../../constants');
     const reviewAuthor = _.get(requestBody, 'reviewAuthor');
     const authorUserName = _.get(requestBody, 'authorUserName');
     const authorProfilePicture = _.get(requestBody, 'authorProfilePicture', "");
-    const rating = _.get(requestBody, 'rating');
+    const stars = _.get(requestBody, 'stars');
     const reviewTitle = _.get(requestBody, 'reviewTitle', "");
     const description = _.get(requestBody, 'description', "");
-    const pictures = _.get(requestBody, 'pictures', "");
+    const pictures = _.get(requestBody, 'pictures', []);
     const ts = _.get(requestBody, 'ts');
     
     const params = {
@@ -41,12 +42,11 @@ const { BUSINESS_TABLE } = require('../../constants');
             reviewAuthor: reviewAuthor,
             authorUserName: authorUserName,
             authorProfilePicture: authorProfilePicture,
-            rating: rating,
+            stars: stars,
             reviewTitle: reviewTitle,
             description: description,
             pictures: pictures,
             ts: ts,
-            businessId: businessId
         }
     }
 
