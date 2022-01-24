@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Col } from 'react-bootstrap';
 
-const KeywordTagContainer = styled.div`
+const KeywordTagContainer = styled(Col)`
    margin: auto 5px auto 0px;
    display: flex;
    flex-direction: row;
@@ -10,6 +11,7 @@ const KeywordTagContainer = styled.div`
    background-color: #dcdcdc;
    border-radius: 4px;
    display: inline;
+   max-width: 130px;
 `;
 
 interface KeywordTagProps extends React.HTMLProps<HTMLDivElement> {

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Col } from 'react-bootstrap';
 
-const MinorityTagContainer = styled.div`
+const MinorityTagContainer = styled(Col)`
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -11,6 +12,7 @@ const MinorityTagContainer = styled.div`
    color: white;
    display: inline;
    margin-right: 0.75em;
+   max-width: 130px;
 `;
 
 interface MinorityTagProps extends React.HTMLProps<HTMLDivElement> {

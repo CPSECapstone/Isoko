@@ -44,6 +44,7 @@ const Home = () => (
    <main>
       <h1>Home!</h1>
       <SignOutButton />
+
       <ContentContainer>
          <SearchContainer />
          <FeaturedBusinesses>
@@ -62,7 +63,7 @@ const Home = () => (
                type="Online"
                name="Bob's Burgers"
                imageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
-               description="Bob rallies the team to cook up some business, so he sends middle child Gene to push samples in the streets, eldest daughter Tina to work the grill and youngest daughter Louise to staff the counter. Here are some more words."
+               description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"
                stars={3}
                minorityTags={['Black-Owned']}
                keywordTags={['Burgers']}
