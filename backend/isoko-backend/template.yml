@@ -308,7 +308,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: CognitoPlatformApi
-      StageName: !Ref Version
+      StageName: Prod
       Auth:
         Authorizers:
           CognitoAuthorizer:

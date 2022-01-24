@@ -17,7 +17,7 @@ exports.postReviewHandler = async (event) => {
 
    const { businessId } = event.pathParameters;
 
-   if (businessId == null) {
+   if (!businessId) {
       throw new Error(
          `Missing query parameter 'businessId'. Request URL format: POST/business/:businessId/review`
       );
@@ -38,7 +38,7 @@ exports.postReviewHandler = async (event) => {
       TableName: BUSINESS_TABLE,
       Item: {
          pk: businessId,
-         sk: 'REVIEW#' + ts + '#' + authorUserName,
+         sk: `REVIEW#${ts}#${authorUserName}`,
          reviewAuthor: reviewAuthor,
          authorUserName: authorUserName,
          authorProfilePicture: authorProfilePicture,
