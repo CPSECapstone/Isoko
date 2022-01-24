@@ -206,6 +206,9 @@ Resources:
           Properties:
             Path: /business/{businessId}/review
             Method: POST
+            RestApiId: !Ref CognitoPlatformApi
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   postReviewFlagFunction:
     Type: AWS::Serverless::Function
@@ -298,6 +301,18 @@ Resources:
     Properties:
       AccessControl: PublicRead
       BucketName: image-bucket-isoko
+
+  # Rest Api to use for Cognito authorization
+  CognitoPlatformApi:
+    DependsOn: UserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: CognitoPlatformApi
+      StageName: !Ref Version
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt "UserPool.Arn"
  
  # This is a Lambda function config associated with the source code: get-all-items.js
   # getAllItemsFunction:
