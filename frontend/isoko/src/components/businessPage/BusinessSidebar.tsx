@@ -175,7 +175,7 @@ const ClaimBusinessSection = () => {
 
 const BusinessSidebar = (props: BusinessSidebarProps) => {
    return (
-      <SidebarContainer>
+      <SidebarContainer className={props.className}>
          {/* HOURS */}
          {props.hours ? <HoursSection hours={props.hours} /> : null}
 

@@ -1,10 +1,16 @@
 import React from 'react';
 import BusinessSidebar from '../components/businessPage/BusinessSidebar';
+import styled from 'styled-components';
+
+const PositionedSidebar = styled(BusinessSidebar)`
+   position: absolute;
+   right: 100px;
+`;
 
 const Business = () => (
    <main>
       <h1>Business Listing</h1>
-      <BusinessSidebar
+      <PositionedSidebar
          claimed={false}
          hours={{
             Mon: '9:00am-5:00pm',
