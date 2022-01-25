@@ -4,16 +4,19 @@ import Business from './pages/Business';
 import BusinessDash from './pages/BusinessDash';
 import Home from './pages/Home';
 import ListBusiness from './pages/ListBusiness';
-import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
+import Login from './pages/Authentication/Login';
+import ForgotPassword from './pages/Authentication/ForgotPassword';
+import PasswordResetSuccess from './pages/Authentication/PasswordResetSuccess';
 import ModDash from './pages/ModDash';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
-import SignUp from './pages/SignUp';
+import SignUp from './pages/Authentication/SignUp';
+import EmailVerification from './pages/Authentication/EmailVerificationStep';
 import StylesExample from './pages/StyleExample';
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
+import ResetPassword from './pages/Authentication/ResetPassword';
 
 const App = () => (
    <div className="App">
@@ -26,8 +29,11 @@ const App = () => (
          <Route path="/" element={<Home />} />
          <Route path="search" element={<Search />} />
          <Route path="signup" element={<SignUp />} />
+         <Route path="emailVerification" element={<EmailVerification />} />
          <Route path="login" element={<Login />} />
          <Route path="forgotPassword" element={<ForgotPassword />} />
+         <Route path="resetPassword" element={<ResetPassword />} />
+         <Route path="resetSuccess" element={<PasswordResetSuccess />} />
          <Route path="business" element={<Business />} />
          <Route path="businessDash" element={<BusinessDash />} />
          <Route path="listBusiness" element={<ListBusiness />} />
