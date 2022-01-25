@@ -4,13 +4,10 @@ import { Col } from 'react-bootstrap';
 
 const KeywordTagContainer = styled(Col)`
    margin: auto 5px auto 0px;
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   padding: 2px 4px;
+   padding: 1px;
    background-color: #dcdcdc;
+   text-align: center;
    border-radius: 4px;
-   display: inline;
    max-width: 130px;
 `;
 

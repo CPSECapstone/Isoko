@@ -3,15 +3,12 @@ import styled from 'styled-components';
 import { Col } from 'react-bootstrap';
 
 const MinorityTagContainer = styled(Col)`
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   padding: 4px 8px;
+   margin: auto 5px auto 0px;
+   padding: 1px;
    background-color: #f97d0b;
-   border-radius: 4px;
    color: white;
-   display: inline;
-   margin-right: 0.75em;
+   text-align: center;
+   border-radius: 4px;
    max-width: 130px;
 `;
 
