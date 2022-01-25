@@ -50,14 +50,23 @@ exports.postReviewHandler = async (event) => {
       },
    };
 
-   const dynamoResult = await docClient.put(params).promise();
+   let dynamoResult;
+   let response;
 
+   try {
+      dynamoResult = await docClient.put(params).promise();
+      response = {
+         statusCode: 200,
+         body: { results: putResult },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e},
+      };
+   }
+      
    let putResult = dynamoResult.Items;
-
-   const response = {
-      statusCode: 200,
-      body: { results: putResult },
-   };
 
    console.info(
       `response from: ${event.path} statusCode: ${
