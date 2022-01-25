@@ -32,7 +32,6 @@ const ContentContainer = styled.div`
 `;
 
 const Photo = styled.img`
-   margin: 0.75rem;
    max-height: 130px;
    max-width: 130px;
    min-height: 130px;
@@ -69,10 +68,6 @@ const StarDiv = styled.div`
    flex-shrink: 1;
    padding-top: 0.25em;
    padding-bottom: 0.1em;
-`;
-
-const PhotoCol = styled(Col)`
-   align-self: left;
 `;
 
 interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
