@@ -24,6 +24,14 @@ const App = () => (
          rel="stylesheet"
          href="https://fonts.googleapis.com/css?family=Comfortaa|Heebo|Open+Sans"
       />
+      <link
+         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+         rel="stylesheet"
+      />
+      <link
+         href="https://fonts.googleapis.com/css2?family=Heebo:wght@500&family=Inter:wght@400;500&display=swap"
+         rel="stylesheet"
+      ></link>
       <GlobalStyle />
       <Routes>
          <Route path="/" element={<Home />} />

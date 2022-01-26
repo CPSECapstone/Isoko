@@ -2,7 +2,6 @@ import React from 'react';
 import SignOutButton from '../components/SignOutButton';
 import BusinessPreview from '../components/BusinessPreview';
 import styled from 'styled-components';
-import MinorityTag from '../components/MinorityTag';
 
 const ContentContainer = styled.div`
    display: flex;
@@ -57,6 +56,8 @@ const Home = () => (
                stars={4.5}
                minorityTags={['Black-Owned', 'Woman-Owned']}
                keywordTags={['Smoothies', 'Bananas']}
+               verified={true}
+               path="/business"
             />
             <Title>{'Featured Online Business'}</Title>
             <BusinessPreview
@@ -67,6 +68,8 @@ const Home = () => (
                stars={3}
                minorityTags={['Black-Owned']}
                keywordTags={['Burgers']}
+               verified={false}
+               path="/business"
             />
          </FeaturedBusinesses>
       </ContentContainer>

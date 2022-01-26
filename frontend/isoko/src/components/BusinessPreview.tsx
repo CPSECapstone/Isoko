@@ -1,73 +1,68 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Rating } from 'react-simple-star-rating';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import MinorityTag from './MinorityTag';
 import KeywordTag from './KeywordTag';
+import StarRating from './StarRating';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const BusinessContainer = styled(Container)`
+   cursor: pointer;
    display: flex;
    flex-direction: row;
    justify-content: flex-start;
    text-align: left;
    align-self: left;
    width: 100%;
-   min-width: 100%;
-   min-height: 148px;
    background-color: #fff;
    border: 1px solid #cecece;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-   border-radius: 3px;
+   border-radius: 5px;
    margin-bottom: 3%;
+   padding: 16px 14px;
 `;
 
 const ContentContainer = styled.div`
-   text-align: left;
-   align-self: left;
+   display: flex;
    flex-direction: column;
-   justify-content: flex-start;
-   position: relative;
+   justify-content: space-evenly;
    padding: 0px;
    margin: 12px;
+   min-height: 140px;
 `;
 
 const Photo = styled.img`
-   max-height: 130px;
-   max-width: 130px;
-   min-height: 130px;
-   min-width: 130px;
-   top: 0;
-   bottom: 0;
+   height: 140px;
+   width: 140px;
    margin: auto 0;
-   border-radius: 3px;
+   border-radius: 5px;
    object-fit: cover;
-   border: 1px solid #cecece;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
-const TagRow = styled(Row)`
-   justify-content: flex-start;
-   padding-left: 0.75em;
-   margin-bottom: 0px !important;
+const TagRow = styled.div`
+   display: flex;
+   align-items: row;
 `;
 
 const Text = styled.p`
    width: 100%;
    font-size: 0.75rem;
-   padding-bottom: 0.2em;
-   text-overflow: ellipsis;
+   margin-bottom: 5px;
 `;
 
 const Title = styled.h2`
-   align-self: left;
-   font-size: 1rem;
+   font-size: 1.05rem;
    margin: 0px;
+   margin-bottom: 3px;
+   font-weight: 500;
 `;
 
-const StarDiv = styled.div`
-   flex-shrink: 1;
-   padding-top: 0.25em;
-   padding-bottom: 0.1em;
+const StyledStarRating = styled(StarRating)`
+   margin-top: 5px;
+   margin-bottom: 5px;
 `;
 
 interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
@@ -78,35 +73,38 @@ interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
    stars: number;
    minorityTags: string[];
    keywordTags: string[];
+   verified: boolean;
+   path: string;
 }
 
-const BusinessPreview = ({
-   children,
-   type = 'B&M',
-   ...rest
-}: BusinessPreviewProps) => {
+const BusinessPreview = (props: BusinessPreviewProps) => {
+   const navigate = useNavigate();
+
    return (
-      <BusinessContainer className="fluid overflow-auto">
-         <Photo src={rest.imageUrl} />
+      <BusinessContainer
+         className="fluid overflow-auto"
+         onClick={() => {
+            navigate(props.path);
+         }}
+      >
+         <Photo src={props.imageUrl} />
          <ContentContainer>
-            <Title>{rest.name}</Title>
+            <Title>
+               {props.name}{' '}
+               {props.verified ? (
+                  <FontAwesomeIcon icon={faCheckSquare} color="#A5DFEC" />
+               ) : null}
+            </Title>
+
             <TagRow>
-               {rest.minorityTags.map((tag, index) => (
+               {props.minorityTags.map((tag, index) => (
                   <MinorityTag key={index} name={tag} />
                ))}
             </TagRow>
-            <StarDiv>
-               <Rating
-                  allowHalfIcon={true}
-                  readonly={true}
-                  fillColor={'#FD9E2E'}
-                  size={15}
-                  initialValue={rest.stars}
-               />
-            </StarDiv>
-            <Text>{rest.description}</Text>
+            <StyledStarRating rating={props.stars} />
+            <Text>{props.description}</Text>
             <TagRow>
-               {rest.keywordTags.map((tag, index) => (
+               {props.keywordTags.map((tag, index) => (
                   <KeywordTag key={index} name={tag} />
                ))}
             </TagRow>

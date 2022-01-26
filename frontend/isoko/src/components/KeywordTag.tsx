@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
 
-const KeywordTagContainer = styled(Col)`
-   margin: auto 5px auto 0px;
-   padding: 1px;
+const KeywordTagContainer = styled.div`
+   padding: 3px;
    background-color: #dcdcdc;
    text-align: center;
-   border-radius: 4px;
-   max-width: 130px;
+   border-radius: 5px;
+   margin-right: 5px;
+`;
+
+const StyledText = styled.p`
+   font-weight: 500;
+   margin-bottom: 0px;
+   font-family: 'Inter', sans-serif;
+   font-size: 0.8em;
 `;
 
 interface KeywordTagProps extends React.HTMLProps<HTMLDivElement> {
@@ -16,7 +21,11 @@ interface KeywordTagProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const KeywordTag = ({ ...rest }: KeywordTagProps) => {
-   return <KeywordTagContainer>{rest.name}</KeywordTagContainer>;
+   return (
+      <KeywordTagContainer>
+         <StyledText>{rest.name}</StyledText>
+      </KeywordTagContainer>
+   );
 };
 
 export default KeywordTag;

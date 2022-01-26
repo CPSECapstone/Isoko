@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
 
-const MinorityTagContainer = styled(Col)`
+const MinorityTagContainer = styled.div`
    margin: auto 5px auto 0px;
-   padding: 1px;
+   padding: 4px 5px;
    background-color: #f97d0b;
    color: white;
    text-align: center;
    border-radius: 4px;
-   max-width: 130px;
+`;
+
+const StyledText = styled.p`
+   font-weight: 500;
+   margin-bottom: 0px;
+   font-family: 'Inter', sans-serif;
+   font-size: 1em;
 `;
 
 interface MinorityTagProps extends React.HTMLProps<HTMLDivElement> {
@@ -17,7 +22,11 @@ interface MinorityTagProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const MinorityTag = ({ ...rest }: MinorityTagProps) => {
-   return <MinorityTagContainer>{rest.name}</MinorityTagContainer>;
+   return (
+      <MinorityTagContainer>
+         <StyledText>{rest.name}</StyledText>
+      </MinorityTagContainer>
+   );
 };
 
 export default MinorityTag;
