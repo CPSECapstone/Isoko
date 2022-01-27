@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SignOutButton from '../components/SignOutButton';
 import KeywordSearchBar from '../components/KeywordSearchBar';
 import MinoritySearchBar from '../components/MinoritySearchBar';
+import LocationSearchBar from '../components/LocationSearchBar';
 
 const Title = styled.h1`
    text-align: center;
@@ -29,6 +30,7 @@ const Home = () => (
       <SubTitle>find something special</SubTitle>
       <KeywordSearchBar></KeywordSearchBar>
       <MinoritySearchBar></MinoritySearchBar>
+      <LocationSearchBar></LocationSearchBar>
    </main>
 );
 
