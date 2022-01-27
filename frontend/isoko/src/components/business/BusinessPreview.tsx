@@ -100,7 +100,7 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
             <Title>
                {props.name}{' '}
                {props.verified ? (
-                  <FontAwesomeIcon icon={faCheckSquare} color="#A5DFEC" />
+                  <FontAwesomeIcon icon={faCheckSquare} color="#72D3FC" />
                ) : null}
             </Title>
 

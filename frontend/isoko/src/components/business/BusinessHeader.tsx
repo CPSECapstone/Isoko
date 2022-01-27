@@ -79,7 +79,7 @@ const BusinessHeader: React.FC<BusinessHeaderProps> = (props) => {
             <Title>
                {props.name}{' '}
                {props.verified ? (
-                  <VerifiedIcon icon={faCheckSquare} color="#A5DFEC" />
+                  <VerifiedIcon icon={faCheckSquare} color="#72D3FC" />
                ) : null}
             </Title>
             {props.minorityTags.map((tag, index) => (

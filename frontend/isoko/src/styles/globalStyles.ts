@@ -10,7 +10,7 @@ a:hover {
   cursor: pointer;
 }
 body {
-    background: #E5E5E5; 
+    background: #FBFBFB; 
     font-family: Open Sans; 
     font-size: 0.75rem;  
 }
