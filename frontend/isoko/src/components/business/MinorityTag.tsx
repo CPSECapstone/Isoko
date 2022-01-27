@@ -21,10 +21,10 @@ interface MinorityTagProps extends React.HTMLProps<HTMLDivElement> {
    name: string;
 }
 
-const MinorityTag = ({ ...rest }: MinorityTagProps) => {
+const MinorityTag: React.FC<MinorityTagProps> = (props) => {
    return (
       <MinorityTagContainer>
-         <StyledText>{rest.name}</StyledText>
+         <StyledText>{props.name}</StyledText>
       </MinorityTagContainer>
    );
 };

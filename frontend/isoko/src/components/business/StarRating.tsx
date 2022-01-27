@@ -11,9 +11,10 @@ const RatingContainer = styled.div`
 
 interface StarRatingProps extends React.HTMLProps<HTMLDivElement> {
    rating: number;
+   starSize?: string;
 }
 
-const StarRating = (props: StarRatingProps) => {
+const StarRating: React.FC<StarRatingProps> = (props) => {
    const numDisplayStars = Math.round(props.rating * 2) / 2;
    const starComponents = [];
 

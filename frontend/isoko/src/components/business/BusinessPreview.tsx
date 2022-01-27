@@ -6,7 +6,7 @@ import KeywordTag from './KeywordTag';
 import StarRating from './StarRating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BusinessContainer = styled(Container)`
    cursor: pointer;
@@ -20,8 +20,12 @@ const BusinessContainer = styled(Container)`
    border: 1px solid #cecece;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 5px;
-   margin-bottom: 3%;
    padding: 16px 14px;
+   transition: box-shadow 0.3s;
+
+   &:hover {
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
+   }
 `;
 
 const ContentContainer = styled.div`
@@ -65,8 +69,14 @@ const StyledStarRating = styled(StarRating)`
    margin-bottom: 5px;
 `;
 
+const ReviewLabel = styled.p`
+   font-weight: 600;
+   margin: 0px;
+   margin-left: 5px;
+   align-self: center;
+`;
+
 interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
-   type: 'B&M' | 'Online';
    name: string;
    imageUrl: string;
    description: string;
@@ -75,14 +85,15 @@ interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
    keywordTags: string[];
    verified: boolean;
    path: string;
+   numReviews: number;
 }
 
-const BusinessPreview = (props: BusinessPreviewProps) => {
+const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
    const navigate = useNavigate();
 
    return (
       <BusinessContainer
-         className="fluid overflow-auto"
+         className={`fluid overflow-auto ${props.className}`}
          onClick={() => {
             navigate(props.path);
          }}
@@ -101,8 +112,14 @@ const BusinessPreview = (props: BusinessPreviewProps) => {
                   <MinorityTag key={index} name={tag} />
                ))}
             </TagRow>
-            <StyledStarRating rating={props.stars} />
+
+            <TagRow>
+               <StyledStarRating rating={props.stars} />
+               <ReviewLabel>{props.numReviews} Reviews</ReviewLabel>
+            </TagRow>
+
             <Text>{props.description}</Text>
+
             <TagRow>
                {props.keywordTags.map((tag, index) => (
                   <KeywordTag key={index} name={tag} />
