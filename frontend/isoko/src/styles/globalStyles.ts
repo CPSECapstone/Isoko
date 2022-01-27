@@ -31,8 +31,6 @@ h3 {
     font-family: Open Sans;
     font-size: 0.75rem;
     font-weight: bold;
-}
-
-`;
+}`;
 
 export default GlobalStyle;
