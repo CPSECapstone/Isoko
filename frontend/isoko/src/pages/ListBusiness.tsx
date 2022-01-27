@@ -175,6 +175,9 @@ const ListBusiness: React.FC = () => {
       Fri: '',
       Sat: '',
    });
+
+   // renders the data form the constants to the page,
+   // useEffect needed to load fields before page loads
    useEffect(() => {
       const keywordDataList = document.getElementById('keyword-groups');
       keywordList.forEach((item) => {
@@ -189,7 +192,7 @@ const ListBusiness: React.FC = () => {
          option.value = item;
          tagDataList.appendChild(option);
       });
-   });
+   }, []);
 
    const listABusiness = () => {
       if (isValid()) {
@@ -311,6 +314,8 @@ const ListBusiness: React.FC = () => {
    const postBusinessInfo = (businessInfo) => {
       if (isValid()) {
          console.log('BusinessInfo: ', businessInfo);
+         // Send Post Request https://gl7yqqczha.execute-api.us-west-2.amazonaws.com/Prod
+         // add /business
       }
    };
 
