@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Review from '../components/Review';
+import BusinessHeader from '../components/business/BusinessHeader';
 
 const Title = styled.h1`
    font-size: 2.5em;
@@ -11,6 +12,15 @@ const Title = styled.h1`
 const Business = () => (
    <main>
       <h1>Business Listing</h1>
+      <BusinessHeader
+         name="Bob's Burgers"
+         description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"
+         stars={3}
+         minorityTags={['Black-Owned']}
+         keywordTags={['Burgers']}
+         verified={true}
+         numReviews={80}
+      />
       <Title>Ratings & Reviews</Title>
       <Review
          reviewerName="Sir Theodore"

@@ -39,6 +39,7 @@ const ReviewPhotoContainer = styled.div`
 const UserContainer = styled.div`
    display: flex;
    align-items: center;
+   margin-bottom: 7px;
 `;
 
 const UserText = styled.div`
