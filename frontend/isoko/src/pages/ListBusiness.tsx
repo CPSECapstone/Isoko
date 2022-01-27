@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../styles/StyledButton';
 import { Form } from 'react-bootstrap';
+import keywordList from '../constants/keywordList';
+import tagList from '../constants/tagList';
 
 /* 
   TODO: 
-    - Form Validation
     - Business Photo Upload
     - Link to POST (post-list-business)
-    - Define DataList for Categories
+    - Check DataList for Categories is good with group
     - Define DataList for Minority Groups
 
-    - Potentially, have check boxes unchecked by default?
-      - Not as trivial as would like, as this was implemented with Boolean
     - Potentially, E2E Test in Cypress
 */
 
@@ -141,8 +140,11 @@ const HourLabel = styled(Form.Label)`
    min-width: 70px;
 `;
 const ListBusiness: React.FC = () => {
-   const [isOwner, setIsOwner] = useState(true);
-   const [isBrickAndMortar, setIsBrickAndMortar] = useState(true);
+   const [err, setErr] = useState('');
+
+   const [isOwner, setIsOwner] = useState('');
+   const [isBrickAndMortar, setIsBrickAndMortar] = useState('');
+
    const [businessName, setBusinessName] = useState('');
    const [street, setStreet] = useState('');
    const [city, setCity] = useState('');
@@ -173,45 +175,143 @@ const ListBusiness: React.FC = () => {
       Fri: '',
       Sat: '',
    });
+   useEffect(() => {
+      const keywordDataList = document.getElementById('keyword-groups');
+      keywordList.forEach((item) => {
+         const option = document.createElement('option');
+         option.value = item;
+         keywordDataList.appendChild(option);
+      });
+
+      const tagDataList = document.getElementById('tag-groups');
+      tagList.forEach((item) => {
+         const option = document.createElement('option');
+         option.value = item;
+         tagDataList.appendChild(option);
+      });
+   });
+
+   const listABusiness = () => {
+      if (isValid()) {
+         const businessInfo = gatherBusinessInfo();
+         postBusinessInfo(businessInfo);
+      } // no need for an else. Errors are set in isValid
+   };
+
+   // is a lot of ifs for more accurate error reporting
+   // This function could still prob be improved
+   const isValid = () => {
+      if (businessName.length === 0) {
+         setErr('Please fill out Business Name');
+         return false;
+      }
+      if (keywords.length === 0) {
+         setErr('Please fill out Business Category');
+         return false;
+      }
+      if (tags.length === 0) {
+         setErr('Please add a Minority Group');
+         return false;
+      }
+      if (ownerName.length === 0) {
+         setErr('Please fill out Business Owner Name');
+         return false;
+      }
+      if (ownerPhone.length === 0) {
+         setErr('Please fill out Business Owner Phone');
+         return false;
+      }
+      if (isOwner === '') {
+         setErr('Please select if you are the Business Owner');
+         return false;
+      }
+      if (isBrickAndMortar === '') {
+         setErr('Please select Business Type');
+         return false;
+      }
+      if (isBrickAndMortar === 'true') {
+         if (
+            street.length === 0 ||
+            city.length === 0 ||
+            state.length === 0 ||
+            zip.length === 0
+         ) {
+            setErr(
+               'Please make sure your address fields are filled out correctly'
+            );
+            return false;
+         }
+      }
+      if (isBrickAndMortar === 'false') {
+         if (businessURL.length === 0) {
+            setErr('Please add your websites URL');
+            return false;
+         }
+      }
+      return true;
+   };
 
    const gatherBusinessInfo = () => {
       const businessInfo = {
          name: businessName,
          city: city,
-         type: isBrickAndMortar ? 'B&M' : 'Online',
+         type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
          keywords: keywords,
-         address: isBrickAndMortar
-            ? street + ' ' + city + ' ' + state + ', ' + zip
-            : '',
-         links: isBrickAndMortar ? '' : businessURL,
-         hours: isBrickAndMortar
-            ? {
-                 Sun:
-                    openHours.Sun + (openHours.Sun ? '-' : '') + closeHours.Sun,
-                 Mon:
-                    openHours.Mon + (openHours.Mon ? '-' : '') + closeHours.Mon,
-                 Tue:
-                    openHours.Tue + (openHours.Tue ? '-' : '') + closeHours.Tue,
-                 Wed:
-                    openHours.Wed + (openHours.Wed ? '-' : '') + closeHours.Wed,
-                 Thu:
-                    openHours.Thu + (openHours.Thu ? '-' : '') + closeHours.Thu,
-                 Fri:
-                    openHours.Fri + (openHours.Fri ? '-' : '') + closeHours.Fri,
-                 Sat:
-                    openHours.Sat + (openHours.Sat ? '-' : '') + closeHours.Sat,
-              }
-            : {},
-         aboutOwner: isOwner
-            ? {
-                 ownerName,
-                 ownerPhone,
-                 ownerDesc,
-              }
-            : {},
+         address:
+            isBrickAndMortar === 'true'
+               ? street + ' ' + city + ' ' + state + ', ' + zip
+               : '',
+         links: isBrickAndMortar === 'true' ? '' : businessURL,
+         hours:
+            isBrickAndMortar === 'true'
+               ? {
+                    Sun:
+                       openHours.Sun +
+                       (openHours.Sun ? '-' : '') +
+                       closeHours.Sun,
+                    Mon:
+                       openHours.Mon +
+                       (openHours.Mon ? '-' : '') +
+                       closeHours.Mon,
+                    Tue:
+                       openHours.Tue +
+                       (openHours.Tue ? '-' : '') +
+                       closeHours.Tue,
+                    Wed:
+                       openHours.Wed +
+                       (openHours.Wed ? '-' : '') +
+                       closeHours.Wed,
+                    Thu:
+                       openHours.Thu +
+                       (openHours.Thu ? '-' : '') +
+                       closeHours.Thu,
+                    Fri:
+                       openHours.Fri +
+                       (openHours.Fri ? '-' : '') +
+                       closeHours.Fri,
+                    Sat:
+                       openHours.Sat +
+                       (openHours.Sat ? '-' : '') +
+                       closeHours.Sat,
+                 }
+               : {},
+         aboutOwner:
+            isOwner == 'true'
+               ? {
+                    ownerName,
+                    ownerPhone,
+                    ownerDesc,
+                 }
+               : {},
       };
-      console.log('BusinessInfo: ', businessInfo);
+      return businessInfo;
+   };
+   // TODO: POST Request will go here
+   const postBusinessInfo = (businessInfo) => {
+      if (isValid()) {
+         console.log('BusinessInfo: ', businessInfo);
+      }
    };
 
    return (
@@ -229,7 +329,10 @@ const ListBusiness: React.FC = () => {
                      type="email"
                      placeholder="Fred's Barbershop"
                      value={businessName}
-                     onChange={(e) => setBusinessName(e.target.value)}
+                     onChange={(e) => {
+                        setBusinessName(e.target.value);
+                        setErr('');
+                     }}
                   />
                </Form.Group>
 
@@ -246,18 +349,12 @@ const ListBusiness: React.FC = () => {
                         placeholder="Restaraunt"
                         list="keyword-groups"
                         value={keywords}
-                        onChange={(e) => setKeywords(e.target.value)}
+                        onChange={(e) => {
+                           setKeywords(e.target.value);
+                           setErr('');
+                        }}
                      />
-                     <datalist id="keyword-groups">
-                        <option>Restaraunt</option>
-                        <option>Service</option>
-                        <option>Online Retailer</option>
-                        <option>Nails</option>
-                        <option>Restaraunt</option>
-                        <option>Service</option>
-                        <option>Online Retailer</option>
-                        <option>Nails</option>
-                     </datalist>
+                     <datalist id="keyword-groups"></datalist>
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
                      <Form.Label>
@@ -266,19 +363,14 @@ const ListBusiness: React.FC = () => {
                      <StyledControl
                         type="text"
                         placeholder="Viet-Owned"
-                        list="minority-groups"
+                        list="tag-groups"
                         value={tags}
-                        onChange={(e) => setTags(e.target.value)}
+                        onChange={(e) => {
+                           setTags(e.target.value);
+                           setErr('');
+                        }}
                      />
-                     <datalist id="minority-groups">
-                        <option>Hispanic</option>
-                        <option>Black</option>
-                        <option>Asian</option>
-                        <option>Native American</option>
-                        <option>LGBTQ+</option>
-                        <option>Middle Eastern</option>
-                        <option>Women</option>
-                     </datalist>
+                     <datalist id="tag-groups"></datalist>
                   </SplitFormGroup>
                </SplitContainer>
 
@@ -288,21 +380,31 @@ const ListBusiness: React.FC = () => {
                      className="mb-3"
                      style={{ marginRight: '12px' }}
                   >
-                     <Form.Label>Business Owner Name</Form.Label>
+                     <Form.Label>
+                        Business Owner Name<Required> *</Required>
+                     </Form.Label>
                      <StyledControl
                         type="text"
                         placeholder="Juan Pérez "
                         value={ownerName}
-                        onChange={(e) => setOwnerName(e.target.value)}
+                        onChange={(e) => {
+                           setOwnerName(e.target.value);
+                           setErr('');
+                        }}
                      />
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
-                     <Form.Label>Phone Number</Form.Label>
+                     <Form.Label>
+                        Business Owner Phone Number<Required> *</Required>
+                     </Form.Label>
                      <StyledControl
                         type="text"
                         placeholder="805-123-7654"
                         value={ownerPhone}
-                        onChange={(e) => setOwnerPhone(e.target.value)}
+                        onChange={(e) => {
+                           setOwnerPhone(e.target.value);
+                           setErr('');
+                        }}
                      />
                   </SplitFormGroup>
                </SplitContainer>
@@ -316,19 +418,22 @@ const ListBusiness: React.FC = () => {
                         style={{ marginRight: '12px' }}
                         type="checkbox"
                         label="Yes"
-                        checked={isOwner}
-                        onChange={() => setIsOwner(true)}
+                        checked={isOwner === 'true'}
+                        onChange={() => {
+                           setIsOwner('true');
+                           setErr('');
+                        }}
                      />
                      <StyledCheck
                         type="checkbox"
                         label="No"
-                        checked={!isOwner}
-                        onChange={() => setIsOwner(false)}
+                        checked={isOwner === 'false'}
+                        onChange={() => setIsOwner('false')}
                      />
                   </CheckGroup>
                </Form.Group>
 
-               {isOwner ? (
+               {isOwner === 'true' ? (
                   <div>
                      <Form.Group className="mb-3">
                         <Form.Label> Business Description </Form.Label>
@@ -367,19 +472,25 @@ const ListBusiness: React.FC = () => {
                         style={{ marginRight: '12px' }}
                         type="checkbox"
                         label="Brick & Mortar"
-                        checked={isBrickAndMortar}
-                        onChange={() => setIsBrickAndMortar(true)}
+                        checked={isBrickAndMortar === 'true'}
+                        onChange={() => {
+                           setIsBrickAndMortar('true');
+                           setErr('');
+                        }}
                      />
                      <StyledCheck
                         type="checkbox"
                         label="Online"
-                        checked={!isBrickAndMortar}
-                        onChange={() => setIsBrickAndMortar(false)}
+                        checked={isBrickAndMortar === 'false'}
+                        onChange={() => {
+                           setIsBrickAndMortar('false');
+                           setErr('');
+                        }}
                      />
                   </CheckGroup>
                </Form.Group>
 
-               {isBrickAndMortar ? (
+               {isBrickAndMortar === 'true' ? (
                   <>
                      <SectionLabel>
                         Address <Required>*</Required>
@@ -391,7 +502,10 @@ const ListBusiness: React.FC = () => {
                               type="address"
                               placeholder="123 Cherry St."
                               value={street}
-                              onChange={(e) => setStreet(e.target.value)}
+                              onChange={(e) => {
+                                 setStreet(e.target.value);
+                                 setErr('');
+                              }}
                            />
                         </MediumGroup>
                         <MediumGroup className="mb-3 mx-2">
@@ -400,7 +514,10 @@ const ListBusiness: React.FC = () => {
                               type="city"
                               placeholder="San Luis Obispo"
                               value={city}
-                              onChange={(e) => setCity(e.target.value)}
+                              onChange={(e) => {
+                                 setCity(e.target.value);
+                                 setErr('');
+                              }}
                            />
                         </MediumGroup>
                         <SmallGroup className="">
@@ -409,7 +526,10 @@ const ListBusiness: React.FC = () => {
                               type="text"
                               placeholder="CA"
                               value={state}
-                              onChange={(e) => setState(e.target.value)}
+                              onChange={(e) => {
+                                 setState(e.target.value);
+                                 setErr('');
+                              }}
                            />
                         </SmallGroup>
                         <SmallGroup className="mb-3 mx-2">
@@ -419,7 +539,10 @@ const ListBusiness: React.FC = () => {
                               pattern="[0-9]{5}"
                               placeholder="93405"
                               value={zip}
-                              onChange={(e) => setZip(e.target.value)}
+                              onChange={(e) => {
+                                 setZip(e.target.value);
+                                 setErr('');
+                              }}
                            />
                         </SmallGroup>
                      </SplitContainer>
@@ -662,7 +785,7 @@ const ListBusiness: React.FC = () => {
                         </HourContainer>
                      </Form.Group>
                   </>
-               ) : (
+               ) : isBrickAndMortar === 'false' ? (
                   <>
                      <SectionLabel>
                         Website Information <Required>*</Required>
@@ -677,18 +800,23 @@ const ListBusiness: React.FC = () => {
                               type="text"
                               placeholder="https://www.amazon.com/"
                               value={businessURL}
-                              onChange={(e) => setBusinessURL(e.target.value)}
+                              onChange={(e) => {
+                                 setBusinessURL(e.target.value);
+                                 setErr('');
+                              }}
                            />
                         </SplitFormGroup>
                      </SplitContainer>
                   </>
-               )}
+               ) : null}
+               {err === '' ? null : <Required>{err}</Required>}
+
                <ButtonDiv>
                   <WideButton
                      primary
                      onClick={(e) => {
                         e.preventDefault();
-                        gatherBusinessInfo();
+                        listABusiness();
                      }}
                   >
                      Submit
