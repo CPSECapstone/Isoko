@@ -12,12 +12,9 @@ const BusinessContainer = styled(Container)`
    cursor: pointer;
    display: flex;
    flex-direction: row;
-   justify-content: flex-start;
    text-align: left;
-   align-self: left;
    width: 100%;
    background-color: #fff;
-   border: 1px solid #cecece;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 5px;
    padding: 16px 14px;
