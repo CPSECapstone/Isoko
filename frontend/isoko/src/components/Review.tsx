@@ -9,7 +9,7 @@ const ReviewContainer = styled.div`
    width: 40%;
    padding: 0.5em;
    margin: 0em 0em 1em 1em;
-   border: 1px solid darkgrey;
+   border: 2px solid darkgrey;
    border-radius: 10px;
 `;
 
