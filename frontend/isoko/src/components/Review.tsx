@@ -9,9 +9,8 @@ const ReviewContainer = styled.div`
    width: 40%;
    padding: 0.5em;
    margin: 0em 0em 1em 1em;
-   border-style: solid;
-   border-width: 2px;
-   border-radius: 5%;
+   border: 1px solid darkgrey;
+   border-radius: 10px;
 `;
 
 const UserPhoto = styled.img`
