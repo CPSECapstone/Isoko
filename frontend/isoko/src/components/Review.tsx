@@ -63,28 +63,32 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    imageUrls?: string[];
 }
 
-const Review = ({ ...rest }: ReviewProps) => {
+const Review = (props: ReviewProps) => {
    return (
-      <ReviewContainer>
+      <ReviewContainer className={props.className}>
          <UserContainer>
-            <UserPhoto src={rest.reviewerImageUrl} />
-            <UserText> {rest.reviewerName} </UserText>
+            <UserPhoto src={props.reviewerImageUrl} />
+            <UserText> {props.reviewerName} </UserText>
          </UserContainer>
-         {rest.subject ? <h3>{rest.subject}</h3> : <br></br>}
+         {props.subject ? <h3>{props.subject}</h3> : <br></br>}
          <StarContainer>
             <Rating
                allowHalfIcon={true}
                readonly={true}
                fillColor={'#FD9E2E'}
                size={15}
-               initialValue={rest.stars}
+               initialValue={props.stars}
                ratingValue={0}
             />
          </StarContainer>
-         {rest.content ? <ContentText>{rest.content}</ContentText> : <br></br>}
-         {rest.imageUrls ? (
+         {props.content ? (
+            <ContentText>{props.content}</ContentText>
+         ) : (
+            <br></br>
+         )}
+         {props.imageUrls ? (
             <ReviewPhotoContainer>
-               {rest.imageUrls.map((photo, index) => (
+               {props.imageUrls.map((photo, index) => (
                   <ReviewPhoto key={index} src={photo}></ReviewPhoto>
                ))}
             </ReviewPhotoContainer>
