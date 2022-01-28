@@ -17,13 +17,17 @@ const {
        getSpy.mockRestore();
     });
 
+    afterEach(() => {
+        getSpy.mockReset();
+     });
+
     describe('Invalid query param tests', () => {
         it('Should throw an error when wrong HTTP method is used', async () => {
             // arrange
             const event = {
                 httpMethod: 'POST',
                 pathParameters: {
-                    'businessId': 'BUS1'
+                    'businessId': '-664125567'
                 }
             };
 
@@ -55,13 +59,18 @@ const {
             // arrange
             mockGetResults = 
             {
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -74,14 +83,13 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
                     photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
-                }, 
+                },
                 reviews: [
                     {
                         reviewAuthor: '594830c0-45b1-4b79-aad4-4bea4428d783',
@@ -102,17 +110,20 @@ const {
             const event = {
                 httpMethod: 'GET',
                 pathParameters: {
-                    'businessId': 'BUSID1'
+                    'businessId': '-664125567'
                 }
             };
             const expectedItems = {
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -125,14 +136,13 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
                     photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
-                }, 
+                },
                 reviews: [
                     {
                         reviewAuthor: '594830c0-45b1-4b79-aad4-4bea4428d783',
@@ -156,7 +166,7 @@ const {
             expect(getSpy).toHaveBeenCalledWith({
                TableName: BUSINESS_TABLE,
                Key: {
-                "businessId": 'BUSID1'
+                "businessId": '-664125567'
              }
             });
         }); 

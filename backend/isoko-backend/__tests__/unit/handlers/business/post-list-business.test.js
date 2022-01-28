@@ -17,6 +17,10 @@ const {
        putSpy.mockRestore();
     });
 
+    afterEach(() => {
+        putSpy.mockReset();
+     });
+
     describe('Invalid query param tests', () => {
         it('Should throw an error when wrong HTTP method is used', async () => {
             // arrange
@@ -38,16 +42,18 @@ const {
             // arrange
             mockPutResults = 
             {
-                // should this include pk/sk? 
-                //pk: 'BUSID1',
-                //sk: "There's always money in the banana stand.",
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -60,7 +66,6 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
@@ -78,11 +83,14 @@ const {
                body: JSON.stringify({
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -95,7 +103,6 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
@@ -110,11 +117,14 @@ const {
             const expectedItems = {
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -127,7 +137,6 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
@@ -146,13 +155,18 @@ const {
             expect(putSpy).toHaveBeenCalledWith({
                TableName: BUSINESS_TABLE,
                Item: {
+                pk: '-664125567', 
+                sk: 'INFO', 
                 name: "Bluth's Original Frozen Banana",
                 city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: "There's always money in the banana stand.",
-                businessId: 'BUSID1',
+                businessId: '-664125567',
                 hours: {
                     mon: '11:00am - 11:00pm',
                     tues: '11:00am - 11:00pm',
@@ -165,7 +179,6 @@ const {
                 links: {
                     'Menu': 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
                 },
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
                     ownerName: 'Maeby Funke', 
@@ -182,22 +195,25 @@ const {
             // arrange
             mockPutResults = 
             {
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
-                city: '', 
+                city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '', 
-                businessId: 'BUSID1',
-                hours: {}, 
-                links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
+                shortDesc: "",
+                businessId: '-664125567',
+                hours: {
+                },
+                links: {
+                },
                 aboutOwner: {
-                    owner: '', 
                     ownerName: 'Maeby Funke', 
-                    ownerPhone: '123-456-7890', 
-                    ownerDesc: '', 
-                    photo: ''
+                    ownerPhone: '123-456-7890'
                 },
                 lister: 'George Michael Bluth'
             }; 
@@ -208,21 +224,17 @@ const {
                httpMethod: 'POST',
                body: JSON.stringify({
                 name: "Bluth's Original Frozen Banana",
-                city: '', 
+                city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '', 
-                businessId: 'BUSID1',
-                hours: {}, 
-                links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
+                businessId: '-664125567',
                 aboutOwner: {
-                    owner: '',
                     ownerName: 'Maeby Funke', 
-                    ownerPhone: '123-456-7890',
-                    ownerDesc: '', 
-                    photo: '', 
+                    ownerPhone: '123-456-7890'
                 },
                 lister: 'George Michael Bluth'
                })
@@ -230,21 +242,22 @@ const {
    
             const expectedItems = {
                 name: "Bluth's Original Frozen Banana",
-                city: '', 
+                city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '',
-                businessId: 'BUSID1',
-                hours: {}, 
-                links: {},
-                address: '70 Newport Pier, Newport Beach, CA 92663',
+                shortDesc: "",
+                businessId: '-664125567',
+                hours: {
+                },
+                links: {
+                },
                 aboutOwner: {
-                    owner: '',
                     ownerName: 'Maeby Funke', 
-                    ownerPhone: '123-456-7890',
-                    ownerDesc: '', 
-                    photo: ''
+                    ownerPhone: '123-456-7890'
                 },
                 lister: 'George Michael Bluth'
             }; 
@@ -257,21 +270,27 @@ const {
             expect(putSpy).toHaveBeenCalledWith({
                TableName: BUSINESS_TABLE,
                Item: {
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
-                city: '', 
+                city: 'Newport Beach',
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '',
-                businessId: 'BUSID1',
-                hours: {}, 
-                links: {},
-                address: '70 Newport Pier, Newport Beach, CA 92663',
+                shortDesc: "",
+                businessId: '-664125567',
+                hours: {
+                },
+                links: {
+                },
                 aboutOwner: {
-                    owner: '',
+                    owner: '', 
+                    ownerDesc: '', 
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890',
-                    ownerDesc: '', 
                     photo: ''
                 },
                 lister: 'George Michael Bluth'

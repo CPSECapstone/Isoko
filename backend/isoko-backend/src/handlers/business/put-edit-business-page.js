@@ -106,6 +106,10 @@ exports.putEditBusinessPageHandler = async (event) => {
    
    const updateResult = dynamoResult.Items; 
 
+   // delete DynamoDB specific items 
+   delete updateResult.pk; 
+   delete updateResult.sk; 
+
    const response = {
       statusCode: 200,
       body: {

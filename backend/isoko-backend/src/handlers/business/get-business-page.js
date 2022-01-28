@@ -33,6 +33,9 @@ exports.getBusinessPageHandler = async (event) => {
       .promise(); 
    
    let getResult = dynamoResult.Items; 
+   // delete DynamoDB specific items 
+   delete getResult.pk; 
+   delete getResult.sk; 
 
    const response = {
       statusCode: 200,

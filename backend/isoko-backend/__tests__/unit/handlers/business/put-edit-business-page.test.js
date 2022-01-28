@@ -17,13 +17,17 @@ const {
        updateSpy.mockRestore();
     });
 
+    afterEach(() => {
+        updateSpy.mockReset();
+     });
+
     describe('Invalid query param tests', () => {
         it('Should throw an error when wrong HTTP method is used', async () => {
             // arrange
             const event = {
                 httpMethod: 'GET',
                 pathParameters: {
-                    'businessId': 'BUS6'
+                    'businessId': '-664125567'
                 }
             };
 
@@ -54,10 +58,10 @@ const {
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
-                    'businessId': 'BUSID4'
+                    'businessId': '-664125567'
                 }, 
                 body: JSON.stringify({
-                    'pk': 'BUSID2'
+                    'pk': '-7786665654'
                 })
             };
 
@@ -74,7 +78,7 @@ const {
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
-                    'businessId': 'BUSID3'
+                    'businessId': '-664125567'
                 }, 
                 body: JSON.stringify({
                     'city': 'Venice Beach', 
@@ -95,16 +99,20 @@ const {
             // arrange
             mockUpdateResults = 
             {
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
                 city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: '', 
-                businessId: 'BUSID7',
+                businessId: '-664125567',
                 hours: {},
                 links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '', 
                     ownerName: 'Maeby Funke', 
@@ -122,7 +130,7 @@ const {
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
-                    'businessId': 'BUSID7'
+                    'businessId': '-664125567'
                 }, 
                 body: JSON.stringify({
                     'city': 'Venice Beach'
@@ -132,14 +140,16 @@ const {
             const expectedItems = {
                 name: "Bluth's Original Frozen Banana",
                 city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: '', 
-                businessId: 'BUSID7',
+                businessId: '-664125567',
                 hours: {}, 
                 links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '', 
                     ownerName: 'Maeby Funke', 
@@ -158,7 +168,7 @@ const {
             expect(updateSpy).toHaveBeenCalledWith({
                TableName: BUSINESS_TABLE,
                Key: {
-                "businessId": 'BUSID7'
+                "businessId": '-664125567'
                 }, 
                UpdateExpression: `set city = :a`,
                ExpressionAttributeValues: { 
@@ -172,16 +182,20 @@ const {
             // arrange
             mockUpdateResults = 
             {
+                pk: '-664125567',
+                sk: 'INFO',
                 name: "Bluth's Original Frozen Banana",
                 city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: '', 
-                businessId: 'BUSID8',
+                businessId: '-664125567',
                 hours: {}, 
                 links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '', 
                     ownerName: 'Lindsay Bluth', 
@@ -199,7 +213,7 @@ const {
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
-                    'businessId': 'BUSID8'
+                    'businessId': '-664125567'
                 }, 
                 body: JSON.stringify({
                     'aboutOwner' : {
@@ -211,14 +225,16 @@ const {
             const expectedItems = {
                 name: "Bluth's Original Frozen Banana",
                 city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
                 shortDesc: '', 
-                businessId: 'BUSID8',
+                businessId: '-664125567',
                 hours: {}, 
                 links: {}, 
-                address: '70 Newport Pier, Newport Beach, CA 92663',
                 aboutOwner: {
                     owner: '',
                     ownerName: 'Lindsay Bluth', 
@@ -237,7 +253,7 @@ const {
             expect(updateSpy).toHaveBeenCalledWith({
                TableName: BUSINESS_TABLE,
                Key: {
-                "businessId": 'BUSID8'
+                "businessId": '-664125567'
                 }, 
                UpdateExpression: `set aboutOwner.ownerName = :a`,
                ExpressionAttributeValues: { 
@@ -247,164 +263,176 @@ const {
             });
         }); 
 
-        // it('Should update value of multiple target fields', async () => {
-        //     // arrange
-        //     mockUpdateResults = 
-        //     {
-        //         name: "Lindsay Bluth's Original Frozen Banana",
-        //         city: 'Venice Beach', 
-        //         type: 'B&M',
-        //         tags: ['Women-Owned'],
-        //         keywords:['Desserts'],
-        //         shortDesc: '', 
-        //         businessId: 'BUSID9',
-        //         hours: {}, 
-        //         links: {}, 
-        //         address: '70 Newport Pier, Newport Beach, CA 92663',
-        //         aboutOwner: {
-        //             owner: '', 
-        //             ownerName: 'Lindsay Bluth', 
-        //             ownerPhone: '123-456-7890', 
-        //             ownerDesc: '', 
-        //             photo: ''
-        //         },
-        //         lister: 'George Michael Bluth'
-        //     }; 
+        it('Should update value of multiple target fields', async () => {
+            // arrange
+            mockUpdateResults = 
+            {
+                pk: '-664125567',
+                sk: 'INFO',
+                name: "Lindsay Bluth's Original Frozen Banana",
+                city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
+                type: 'B&M',
+                tags: ['Women-Owned'],
+                keywords:['Desserts'],
+                shortDesc: '', 
+                businessId: '-664125567',
+                hours: {}, 
+                links: {}, 
+                aboutOwner: {
+                    owner: '', 
+                    ownerName: 'Lindsay Bluth', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: '', 
+                    photo: ''
+                },
+                lister: 'George Michael Bluth'
+            }; 
 
-        //     updateSpy.mockReturnValue({
-        //         promise: () => Promise.resolve({ Items: mockUpdateResults }),
-        //      });
+            updateSpy.mockReturnValue({
+                promise: () => Promise.resolve({ Items: mockUpdateResults }),
+             });
 
-        //     const event = {
-        //         httpMethod: 'PUT',
-        //         pathParameters: {
-        //             'businessId': 'BUSID9'
-        //         }, 
-        //         body: JSON.stringify({
-        //             'name' : "Lindsay Bluth's Original Frozen Banana", 
-        //             'aboutOwner' : {
-        //                 'ownerName': 'Lindsay Bluth'
-        //             }
-        //         })
-        //     };
+            const event = {
+                httpMethod: 'PUT',
+                pathParameters: {
+                    'businessId': '-664125567'
+                }, 
+                body: JSON.stringify({
+                    'name' : "Lindsay Bluth's Original Frozen Banana", 
+                    'aboutOwner' : {
+                        'ownerName': 'Lindsay Bluth'
+                    }
+                })
+            };
 
-        //     const expectedItems = {
-        //         name: "Lindsay Bluth's Original Frozen Banana",
-        //         city: 'Venice Beach', 
-        //         type: 'B&M',
-        //         tags: ['Women-Owned'],
-        //         keywords:['Desserts'],
-        //         shortDesc: '', 
-        //         businessId: 'BUSID9',
-        //         hours: {}, 
-        //         links: {}, 
-        //         address: '70 Newport Pier, Newport Beach, CA 92663',
-        //         aboutOwner: {
-        //             owner: '',
-        //             ownerName: 'Lindsay Bluth', 
-        //             ownerPhone: '123-456-7890',
-        //             ownerDesc: '',
-        //             photo: ''
-        //         },
-        //         lister: 'George Michael Bluth'
-        //     }; 
+            const expectedItems = {
+                name: "Lindsay Bluth's Original Frozen Banana",
+                city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
+                type: 'B&M',
+                tags: ['Women-Owned'],
+                keywords:['Desserts'],
+                shortDesc: '', 
+                businessId: '-664125567',
+                hours: {}, 
+                links: {}, 
+                aboutOwner: {
+                    owner: '',
+                    ownerName: 'Lindsay Bluth', 
+                    ownerPhone: '123-456-7890',
+                    ownerDesc: '',
+                    photo: ''
+                },
+                lister: 'George Michael Bluth'
+            }; 
 
-        //     // act
-        //     const result = await putEditBusinessPageHandler(event);
+            // act
+            const result = await putEditBusinessPageHandler(event);
 
-        //     // assert
-        //     expect(result.body.results).toEqual(expectedItems);
-        //     expect(updateSpy).toHaveBeenCalledWith({
-        //        TableName: BUSINESS_TABLE,
-        //        Key: {
-        //         "businessId": 'BUSID9'
-        //         }, 
-        //        UpdateExpression: `set name =:a, aboutOwner.ownerName = :b`,
-        //        ExpressionAttributeValues: { 
-        //         ":a": "Lindsay Bluth's Original Frozen Banana", 
-        //         ":b": "Lindsay Bluth"
-        //        },
-        //        ReturnValues: "UPDATED_NEW"
-        //     });
-        // }); 
+            // assert
+            expect(result.body.results).toEqual(expectedItems);
+            expect(updateSpy).toHaveBeenCalledWith({
+               TableName: BUSINESS_TABLE,
+               Key: {
+                "businessId": '-664125567'
+                }, 
+               UpdateExpression: `set name = :a, aboutOwner.ownerName = :b`,
+               ExpressionAttributeValues: { 
+                ":a": "Lindsay Bluth's Original Frozen Banana", 
+                ":b": "Lindsay Bluth"
+               },
+               ReturnValues: "UPDATED_NEW"
+            });
+        }); 
 
-        // it('Should update value of multiple simple target fields', async () => {
-        //     // arrange
-        //     mockUpdateResults = 
-        //     {
-        //         name: "Lindsay Bluth's Original Frozen Banana",
-        //         city: 'Venice Beach', 
-        //         type: 'Online',
-        //         tags: ['Women-Owned'],
-        //         keywords:['Desserts'],
-        //         shortDesc: '', 
-        //         businessId: 'BUSID11',
-        //         hours: {}, 
-        //         links: {}, 
-        //         address: '70 Newport Pier, Newport Beach, CA 92663',
-        //         aboutOwner: {
-        //             owner: '', 
-        //             ownerName: 'Lindsay Bluth', 
-        //             ownerPhone: '123-456-7890', 
-        //             ownerDesc: '', 
-        //             photo: ''
-        //         },
-        //         lister: 'George Michael Bluth'
-        //     }; 
+        it('Should update value of multiple simple target fields', async () => {
+            // arrange
+            mockUpdateResults = 
+            {
+                pk: '-664125567',
+                sk: 'INFO',
+                name: "Lindsay Bluth's Original Frozen Banana",
+                city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
+                type: 'Online',
+                tags: ['Women-Owned'],
+                keywords:['Desserts'],
+                shortDesc: '', 
+                businessId: '-664125567',
+                hours: {}, 
+                links: {}, 
+                aboutOwner: {
+                    owner: '', 
+                    ownerName: 'Lindsay Bluth', 
+                    ownerPhone: '123-456-7890', 
+                    ownerDesc: '', 
+                    photo: ''
+                },
+                lister: 'George Michael Bluth'
+            }; 
 
-        //     updateSpy.mockReturnValue({
-        //         promise: () => Promise.resolve({ Items: mockUpdateResults }),
-        //      });
+            updateSpy.mockReturnValue({
+                promise: () => Promise.resolve({ Items: mockUpdateResults }),
+             });
 
-        //     const event = {
-        //         httpMethod: 'PUT',
-        //         pathParameters: {
-        //             'businessId': 'BUSID11'
-        //         }, 
-        //         body: JSON.stringify({
-        //             'name' : "Lindsay Bluth's Original Frozen Banana", 
-        //             'type': "Online"
-        //         })
-        //     };
+            const event = {
+                httpMethod: 'PUT',
+                pathParameters: {
+                    'businessId': '-664125567'
+                }, 
+                body: JSON.stringify({
+                    'name' : "Lindsay Bluth's Original Frozen Banana", 
+                    'type': "Online"
+                })
+            };
 
-        //     const expectedItems = {
-        //         name: "Lindsay Bluth's Original Frozen Banana",
-        //         city: 'Venice Beach', 
-        //         type: 'Online',
-        //         tags: ['Women-Owned'],
-        //         keywords:['Desserts'],
-        //         shortDesc: '', 
-        //         businessId: 'BUSID11',
-        //         hours: {}, 
-        //         links: {}, 
-        //         address: '70 Newport Pier, Newport Beach, CA 92663',
-        //         aboutOwner: {
-        //             owner: '',
-        //             ownerName: 'Lindsay Bluth', 
-        //             ownerPhone: '123-456-7890',
-        //             ownerDesc: '',
-        //             photo: ''
-        //         },
-        //         lister: 'George Michael Bluth'
-        //     }; 
+            const expectedItems = {
+                name: "Lindsay Bluth's Original Frozen Banana",
+                city: 'Venice Beach', 
+                state: 'CA',
+                street: '70 Newport Pier', 
+                zip: '92663',
+                type: 'Online',
+                tags: ['Women-Owned'],
+                keywords:['Desserts'],
+                shortDesc: '', 
+                businessId: '-664125567',
+                hours: {}, 
+                links: {}, 
+                aboutOwner: {
+                    owner: '',
+                    ownerName: 'Lindsay Bluth', 
+                    ownerPhone: '123-456-7890',
+                    ownerDesc: '',
+                    photo: ''
+                },
+                lister: 'George Michael Bluth'
+            }; 
 
-        //     // act
-        //     const result = await putEditBusinessPageHandler(event);
+            // act
+            const result = await putEditBusinessPageHandler(event);
 
-        //     // assert
-        //     expect(result.body.results).toEqual(expectedItems);
-        //     expect(updateSpy).toHaveBeenCalledWith({
-        //        TableName: BUSINESS_TABLE,
-        //        Key: {
-        //         "businessId": 'BUSID11'
-        //         }, 
-        //        UpdateExpression: `set name =:a, type = :b`,
-        //        ExpressionAttributeValues: { 
-        //         ":a": "Lindsay Bluth's Original Frozen Banana", 
-        //         ":b": "Online"
-        //        },
-        //        ReturnValues: "UPDATED_NEW"
-        //     });
-        // }); 
+            // assert
+            expect(result.body.results).toEqual(expectedItems);
+            expect(updateSpy).toHaveBeenCalledWith({
+               TableName: BUSINESS_TABLE,
+               Key: {
+                "businessId": '-664125567'
+                }, 
+               UpdateExpression: `set name = :a, type = :b`,
+               ExpressionAttributeValues: { 
+                ":a": "Lindsay Bluth's Original Frozen Banana", 
+                ":b": "Online"
+               },
+               ReturnValues: "UPDATED_NEW"
+            });
+        }); 
     }); 
  }); 
