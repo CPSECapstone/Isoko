@@ -55,9 +55,14 @@ exports.postReviewHandler = async (event) => {
 
    try {
       dynamoResult = await docClient.put(params).promise();
+
+      let putResults = dynamoResult.Items;
+      delete putResults.pk;
+      delete putResults.sk;
+
       response = {
          statusCode: 200,
-         body: { results: dynamoResult.Items },
+         body: { results: putResults },
       };
    } catch (e) {
       response = {

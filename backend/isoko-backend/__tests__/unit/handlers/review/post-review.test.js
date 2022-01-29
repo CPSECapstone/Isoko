@@ -53,23 +53,22 @@ describe('PostReviewHandler tests', () => {
          }).rejects.toThrowError();
       });
    });
-   
-   describe('Failed put test', () => {
 
+   describe('Failed put test', () => {
       it('Should return a 400 response when put throws an error', async () => {
          // arrange
          expectedItem = {
             statusCode: 400,
-            body: { error: Error('Put failed') }
-         }
+            body: { error: Error('Put failed') },
+         };
          putSpy.mockImplementation(() => {
-            throw new Error('Put failed')
+            throw new Error('Put failed');
          });
 
          const event = {
             httpMethod: 'POST',
             body: JSON.stringify({
-               reviewAuthor: 'Tester', 
+               reviewAuthor: 'Tester',
             }),
             pathParameters: {
                businessId: 'testBusiness',
@@ -81,8 +80,8 @@ describe('PostReviewHandler tests', () => {
 
          // assert
          expect(result).toEqual(expectedItem);
-      })
-   })
+      });
+   });
 
    describe('Valid input tests', () => {
       it('Should post review with all parameters and return review details', async () => {
@@ -121,8 +120,6 @@ describe('PostReviewHandler tests', () => {
          };
 
          const expectedItem = {
-            pk: 'testBusiness',
-            sk: 'REVIEW#1637019432#testUser',
             reviewAuthor: 'Tester',
             authorUserName: 'testUser',
             authorProfilePicture: 's3bucket.com',
@@ -187,8 +184,6 @@ describe('PostReviewHandler tests', () => {
          };
 
          const expectedItem = {
-            pk: 'testBusiness',
-            sk: 'REVIEW#1637019432#testUser',
             reviewAuthor: 'Tester',
             authorUserName: 'testUser',
             authorProfilePicture: '',
