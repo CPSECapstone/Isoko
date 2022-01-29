@@ -17,6 +17,10 @@ describe('PostReviewHandler tests', () => {
       putSpy.mockRestore();
    });
 
+   afterEach(() => {
+      putSpy.mockReset();
+   });
+
    describe('Invalid query param tests', () => {
       it('Should throw an error when wrong HTTP method is used', async () => {
          // arrange
@@ -49,6 +53,36 @@ describe('PostReviewHandler tests', () => {
          }).rejects.toThrowError();
       });
    });
+   
+   describe('Failed put test', () => {
+
+      it('Should return a 400 response when put throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Put failed') }
+         }
+         putSpy.mockImplementation(() => {
+            throw new Error('Put failed')
+         });
+
+         const event = {
+            httpMethod: 'POST',
+            body: JSON.stringify({
+               reviewAuthor: 'Tester', 
+            }),
+            pathParameters: {
+               businessId: 'testBusiness',
+            },
+         };
+
+         // act
+         const result = await postReviewHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      })
+   })
 
    describe('Valid input tests', () => {
       it('Should post review with all parameters and return review details', async () => {
