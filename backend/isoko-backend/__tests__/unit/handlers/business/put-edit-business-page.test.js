@@ -53,8 +53,19 @@ const {
             }).rejects.toThrowError();
         });
 
-        it('Should throw an error when target field is restricted', async () => {
+        it('Should return a 400 response when target field is restricted', async () => {
             // arrange
+            expectedItem = {
+                statusCode: 400, 
+                body: {
+                    results: {
+                        error: Error('Cannot update restricted field: pk')} }
+            }
+
+            updateSpy.mockImplementation(() => {
+                throw new Error('Cannot update restricted field: pk')
+            }); 
+
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
@@ -66,15 +77,28 @@ const {
             };
 
             // act
+            const result = await putEditBusinessPageHandler(event);
 
             // assert
-            await expect(async () => {
-            await putEditBusinessPageHandler(event);
-            }).rejects.toThrowError();
+            expect(result).toEqual(expectedItem); 
+            
+
         });
 
-        it('Should throw an error when one of target fields is restricted', async () => {
+        it('Should return a 400 response when one of target fields is restricted', async () => {
             // arrange
+            expectedItem = {
+                statusCode: 400, 
+                body: {
+                    results: {
+                        error: Error('Cannot update restricted field: rating')}
+                    }
+            }
+
+            updateSpy.mockImplementation(() => {
+                throw new Error('Cannot update restricted field: rating')
+            });
+
             const event = {
                 httpMethod: 'PUT',
                 pathParameters: {
@@ -87,11 +111,42 @@ const {
             };
 
             // act
+            const result = await putEditBusinessPageHandler(event);
 
             // assert
-            await expect(async () => {
-            await putEditBusinessPageHandler(event);
-            }).rejects.toThrowError();
+            expect(result).toEqual(expectedItem); 
+        });
+
+        it('Should return a 400 response when all target fields are restricted', async () => {
+            // arrange
+            expectedItem = {
+                statusCode: 400, 
+                body: {
+                    results: {
+                        error: Error('Cannot update restricted field: rating,numReviews')}
+                    }
+            }
+
+            updateSpy.mockImplementation(() => {
+                throw new Error('Cannot update restricted field: rating,numReviews')
+            });
+
+            const event = {
+                httpMethod: 'PUT',
+                pathParameters: {
+                    'businessId': '-664125567'
+                }, 
+                body: JSON.stringify({
+                    'rating': 5, 
+                    'numReviews': 3890
+                })
+            };
+
+            // act
+            const result = await putEditBusinessPageHandler(event);
+
+            // assert
+            expect(result).toEqual(expectedItem); 
         });
     });
     describe('Valid input tests', () => {

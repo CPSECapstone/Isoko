@@ -75,13 +75,6 @@ exports.putEditBusinessPageHandler = async (event) => {
    // following fields should not be modified 
    const restrictedFields = ['pk', 'sk', 'businessId', 'reviews', 'rating', 'numReviews', 'claimed']; 
    
-   // if any keys are restricted fields, entire request fails 
-   if (restrictedFields.some(i => fieldNames.includes(i))) {
-      console.log("this is restricted"); 
-      throw new Error(
-         `Cannot update restricted field: ${fieldNames}`
-      );
-   }
 
    let exprAttrVals = {}; 
    const updateExpr = buildUpdateExpression(fieldNames, requestBody, exprAttrVals); 
@@ -99,23 +92,44 @@ exports.putEditBusinessPageHandler = async (event) => {
    }
 
    console.log(params); 
+   let dynamoResult; 
+   let response; 
 
-   const dynamoResult = await docClient
-      .update(params) 
-      .promise(); 
+   try {
+      // if any keys are restricted fields, entire request fails 
+      if (restrictedFields.some(i => fieldNames.includes(i))) {
+         const fields = fieldNames.filter(i => restrictedFields.includes(i)); 
+         console.log("this is restricted"); 
+         throw new Error(
+            `Cannot update restricted field: ${fields}`
+         );
+      }
+
+      dynamoResult = await docClient
+         .update(params) 
+         .promise(); 
    
-   const updateResult = dynamoResult.Items; 
+      const updateResult = dynamoResult.Items; 
 
-   // delete DynamoDB specific items 
-   delete updateResult.pk; 
-   delete updateResult.sk; 
+      // delete DynamoDB specific items 
+      delete updateResult.pk; 
+      delete updateResult.sk; 
 
-   const response = {
-      statusCode: 200,
-      body: {
-         results: updateResult
-      },
-   };
+      response = {
+         statusCode: 200,
+         body: {
+            results: updateResult
+         },
+      };
+   } catch(e) {
+      response = {
+         statusCode: 400,
+         body: {
+            results: { error : e }
+            }
+      };
+
+   }
 
    console.info(
       `response from: ${event.path} statusCode: ${
