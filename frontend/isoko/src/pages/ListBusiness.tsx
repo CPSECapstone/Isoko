@@ -7,12 +7,14 @@ import tagList from '../constants/tagList';
 
 /* 
   TODO: 
-    - Business Photo Upload
     - Link to POST (post-list-business)
-    - Check DataList for Categories is good with group
-    - Define DataList for Minority Groups
-
     - Potentially, E2E Test in Cypress
+    // Tags should be a List<String>
+    // Keywords should be List<String>
+    // Short Desc
+    // BusinessId
+    // Lister - NO
+    // ownerPhoto - NO
 */
 
 const FormContainer = styled.div`
@@ -257,14 +259,13 @@ const ListBusiness: React.FC = () => {
    const gatherBusinessInfo = () => {
       const businessInfo = {
          name: businessName,
-         city: city,
+         city,
+         state,
+         street,
+         zip,
          type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
          keywords: keywords,
-         address:
-            isBrickAndMortar === 'true'
-               ? street + ' ' + city + ' ' + state + ', ' + zip
-               : '',
          links: isBrickAndMortar === 'true' ? '' : businessURL,
          hours:
             isBrickAndMortar === 'true'
