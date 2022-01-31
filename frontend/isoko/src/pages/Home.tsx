@@ -1,8 +1,7 @@
 import React from 'react';
 import SignOutButton from '../components/SignOutButton';
-import BusinessPreview from '../components/BusinessPreview';
+import BusinessPreview from '../components/business/BusinessPreview';
 import styled from 'styled-components';
-import MinorityTag from '../components/MinorityTag';
 
 const ContentContainer = styled.div`
    display: flex;
@@ -40,6 +39,10 @@ const Title = styled.h2`
    align-self: left;
 `;
 
+const StyledBusinessPreview = styled(BusinessPreview)`
+   margin-bottom: 15px;
+`;
+
 const Home = () => (
    <main>
       <h1>Home!</h1>
@@ -49,24 +52,28 @@ const Home = () => (
          <SearchContainer />
          <FeaturedBusinesses>
             <Title>{'Featured Brick & Mortar Business'}</Title>
-            <BusinessPreview
-               type="B&M"
+            <StyledBusinessPreview
                name="Bluth's Original Frozen Banana"
                imageUrl="https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg"
                description="There's always money in the banana stand"
                stars={4.5}
                minorityTags={['Black-Owned', 'Woman-Owned']}
                keywordTags={['Smoothies', 'Bananas']}
+               verified={true}
+               path="/business"
+               numReviews={150}
             />
             <Title>{'Featured Online Business'}</Title>
-            <BusinessPreview
-               type="Online"
+            <StyledBusinessPreview
                name="Bob's Burgers"
                imageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
                description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"
                stars={3}
                minorityTags={['Black-Owned']}
                keywordTags={['Burgers']}
+               verified={false}
+               path="/business"
+               numReviews={80}
             />
          </FeaturedBusinesses>
       </ContentContainer>

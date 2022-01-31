@@ -35,6 +35,7 @@ Resources:
           Properties:
             Path: /business
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
             RequestParameters: 
               - method.request.querystring.location:
                   Required: true
@@ -55,6 +56,7 @@ Resources:
           Properties:
             Path: /business
             Method: POST
+            RestApiId: !Ref IsokoBackendApi
   
   getBusinessPageFunction:
     Type: AWS::Serverless::Function
@@ -72,6 +74,7 @@ Resources:
           Properties:
             Path: /business/{businessId}
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   putEditBusinessPageFunction:
     Type: AWS::Serverless::Function
@@ -89,6 +92,7 @@ Resources:
           Properties:
             Path: /business/{businessId}
             Method: PUT
+            RestApiId: !Ref IsokoBackendApi
 
   delBusinessPageFunction:
     Type: AWS::Serverless::Function
@@ -106,6 +110,7 @@ Resources:
           Properties:
             Path: /business/{businessId}
             Method: DELETE
+            RestApiId: !Ref IsokoBackendApi
 
   getUserObjectFunction:
     Type: AWS::Serverless::Function
@@ -123,6 +128,7 @@ Resources:
           Properties:
             Path: /user/{userSub}
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   cognitoPostConfirmationTriggerFunction:
     Type: AWS::Serverless::Function
@@ -155,6 +161,7 @@ Resources:
           Properties:
             Path: /user/{userSub}
             Method: PUT
+            RestApiId: !Ref IsokoBackendApi
 
   getUserReviewsFunction:
     Type: AWS::Serverless::Function
@@ -172,6 +179,7 @@ Resources:
           Properties:
             Path: /user/{userSub}/reviews
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   delUserReviewFunction:
     Type: AWS::Serverless::Function
@@ -189,6 +197,27 @@ Resources:
           Properties:
             Path: /review/{reviewId}
             Method: DELETE
+            RestApiId: !Ref IsokoBackendApi
+
+  postReviewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/review/post-review.postReviewHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP post method that creates a new review for the specified business.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /business/{businessId}/review
+            Method: POST
+            RestApiId: !Ref IsokoBackendApi
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   postReviewFlagFunction:
     Type: AWS::Serverless::Function
@@ -206,6 +235,8 @@ Resources:
           Properties:
             Path: /review/{reviewId}/flag
             Method: POST
+            RestApiId: !Ref IsokoBackendApi
+
     
   postBusinessFlagFunction:
     Type: AWS::Serverless::Function
@@ -223,6 +254,7 @@ Resources:
           Properties:
             Path: /business/{businessId}/flag
             Method: POST
+            RestApiId: !Ref IsokoBackendApi
 
   getFlagFunction:
     Type: AWS::Serverless::Function
@@ -240,6 +272,7 @@ Resources:
           Properties:
             Path: /flag
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   getBusinessFlagsFunction:
     Type: AWS::Serverless::Function
@@ -257,6 +290,7 @@ Resources:
           Properties:
             Path: /flag/business/{businessId}
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   getReviewFlagsFunction:
     Type: AWS::Serverless::Function
@@ -274,6 +308,7 @@ Resources:
           Properties:
             Path: /flag/review/{reviewId}
             Method: GET
+            RestApiId: !Ref IsokoBackendApi
 
   # Setup for the S3 service. 
   S3Bucket:
@@ -281,93 +316,18 @@ Resources:
     Properties:
       AccessControl: PublicRead
       BucketName: image-bucket-isoko
- 
- # This is a Lambda function config associated with the source code: get-all-items.js
-  # getAllItemsFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: src/handlers/get-all-items.getAllItemsHandler
-  #     Runtime: nodejs14.x
-  #     Architectures:
-  #       - x86_64
-  #     MemorySize: 128
-  #     Timeout: 100
-  #     Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
-  #     Policies:
-  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
-  #       - DynamoDBCrudPolicy:
-  #           TableName: !Ref SampleTable
-  #     Environment:
-  #       Variables:
-  #         # Make table name accessible as environment variable from function code during execution
-  #         SAMPLE_TABLE: !Ref SampleTable
-  #     Events:
-  #       Api:
-  #         Type: Api
-  #         Properties:
-  #           Path: /
-  #           Method: GET
 
-
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: get-by-id.js
-  # getByIdFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: src/handlers/get-by-id.getByIdHandler
-  #     Runtime: nodejs14.x
-  #     Architectures:
-  #       - x86_64
-  #     MemorySize: 128
-  #     Timeout: 100
-  #     Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
-  #     Policies:
-  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
-  #       - DynamoDBCrudPolicy:
-  #           TableName: !Ref SampleTable
-  #     Environment:
-  #       Variables:
-  #         # Make table name accessible as environment variable from function code during execution
-  #         SAMPLE_TABLE: !Ref SampleTable
-  #     Events:
-  #       Api:
-  #         Type: Api
-  #         Properties:
-  #           Path: /{id}
-  #           Method: GET
-
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: put-item.js
-  # putItemFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: src/handlers/put-item.putItemHandler
-  #     Runtime: nodejs14.x
-  #     Architectures:
-  #       - x86_64
-  #     MemorySize: 128
-  #     Timeout: 100
-  #     Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
-  #     Policies:
-  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
-  #       - DynamoDBCrudPolicy:
-  #           TableName: !Ref SampleTable
-  #     Environment:
-  #       Variables:
-  #         # Make table name accessible as environment variable from function code during execution
-  #         SAMPLE_TABLE: !Ref SampleTable
-  #     Events:
-  #       Api:
-  #         Type: Api
-  #         Properties:
-  #           Path: /
-  #           Method: POST
-  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+  # Rest Api to use for Cognito authorization
+  IsokoBackendApi:
+    DependsOn: UserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: isoko-backend-api
+      StageName: Prod
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt "UserPool.Arn"
 
   # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
   SampleTable:

@@ -10,7 +10,7 @@ a:hover {
   cursor: pointer;
 }
 body {
-    background: #E5E5E5; 
+    background: #FBFBFB; 
     font-family: Open Sans; 
     font-size: 0.75rem;  
 }
@@ -26,6 +26,11 @@ h2 {
     font-family: Heebo, sans-serif; 
     font-weight: 500; 
     font-size: 1rem; 
+}
+h3 {
+    font-family: Open Sans;
+    font-size: 0.75rem;
+    font-weight: bold;
 }`;
 
 export default GlobalStyle;
