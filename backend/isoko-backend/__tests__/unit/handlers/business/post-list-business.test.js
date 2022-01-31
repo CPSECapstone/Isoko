@@ -71,8 +71,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
             }; 
             putSpy.mockReturnValue({
@@ -108,8 +110,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
                })
             };
@@ -142,8 +146,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
             }; 
    
@@ -184,8 +190,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
                }
             });
@@ -215,6 +223,8 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890'
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
             }; 
             putSpy.mockReturnValue({
@@ -236,6 +246,8 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890'
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
                })
             };
@@ -259,6 +271,8 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890'
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
             }; 
    
@@ -291,8 +305,10 @@ const {
                     ownerDesc: '', 
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890',
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                photos: [], 
+                reviews: [], 
                 lister: 'George Michael Bluth'
                }
             });

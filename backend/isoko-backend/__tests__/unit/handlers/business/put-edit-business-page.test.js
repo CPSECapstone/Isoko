@@ -173,8 +173,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: '', 
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [], 
                 lister: 'George Michael Bluth'
             }; 
 
@@ -210,8 +212,10 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890',
                     ownerDesc: '', 
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -256,8 +260,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: '', 
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -295,8 +301,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890',
                     ownerDesc: '',
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -341,8 +349,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: '', 
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -381,8 +391,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890',
                     ownerDesc: '',
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -428,8 +440,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: '', 
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 
@@ -466,8 +480,10 @@ const {
                     ownerName: 'Lindsay Bluth', 
                     ownerPhone: '123-456-7890',
                     ownerDesc: '',
-                    photo: ''
+                    ownerPhoto: ''
                 },
+                reviews: [], 
+                photos: [],
                 lister: 'George Michael Bluth'
             }; 
 

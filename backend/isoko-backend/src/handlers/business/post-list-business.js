@@ -44,7 +44,9 @@ exports.postListBusinessHandler = async (event) => {
    const ownerName = _.get(aboutOwner, 'ownerName');  
    const ownerPhone = _.get(aboutOwner, 'ownerPhone');
    const ownerDesc = _.get(aboutOwner, 'ownerDesc', "");
-   const photo = _.get(aboutOwner, 'photo', "");
+   const ownerPhoto = _.get(aboutOwner, 'ownerPhoto', "");
+   const photos = _.get(requestBody, 'photos', []);
+   const reviews = _.get(requestBody, 'reviews', []);
    const lister = _.get(requestBody, 'lister');
    
 
@@ -70,8 +72,10 @@ exports.postListBusinessHandler = async (event) => {
             "ownerName": ownerName, 
             "ownerPhone": ownerPhone, 
             "ownerDesc": ownerDesc,
-            "photo": photo, 
+            "ownerPhoto": ownerPhoto, 
          }, 
+         "photos": photos, 
+         "reviews": reviews,
          "lister": lister
       }
    }

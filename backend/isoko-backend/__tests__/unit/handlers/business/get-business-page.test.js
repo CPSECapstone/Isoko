@@ -88,7 +88,7 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
                 reviews: [
                     {
@@ -102,7 +102,8 @@ const {
                         ts: 1642649369,
                      
                     }
-                ] 
+                ], 
+                photos: ['https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807'] 
             }; 
             getSpy.mockReturnValue({
                promise: () => Promise.resolve({ Items: mockGetResults }),
@@ -141,7 +142,7 @@ const {
                     ownerName: 'Maeby Funke', 
                     ownerPhone: '123-456-7890', 
                     ownerDesc: 'Marry me!', 
-                    photo: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
+                    ownerPhoto: 'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
                 },
                 reviews: [
                     {
@@ -155,7 +156,8 @@ const {
                         ts: 1642649369,
                      
                     }
-                ]
+                ], 
+                photos: ['https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807'] 
             }; 
    
             // act
