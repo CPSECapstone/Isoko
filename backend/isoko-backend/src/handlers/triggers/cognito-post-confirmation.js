@@ -24,23 +24,7 @@ exports.cognitoPostConfirmationHandler = async (event, context, callback) => {
       TableName: USER_TABLE,
    };
    
-   let userResult; 
-   try {
-      const dynamoResult = await docClient
-         .put(params)
-         .promise();
-      userResult = dynamoResult.Items; 
-   } catch(e) {
-      console.log(`PUT error: ${e}`); 
-   }
-   
-   const response = {
-      statusCode: 200, 
-      body: {
-         results: userResult,
-      },
-   }
-   
-   // callback(null, event);
-   return response; 
+   await docClient.put(params).promise();
+
+   callback(null, event);
 };

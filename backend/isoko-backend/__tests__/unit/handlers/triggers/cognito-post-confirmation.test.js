@@ -13,6 +13,10 @@ describe('CognitoPostConfirmationHandler tests', () => {
       putSpy = jest.spyOn(dynamodb.DocumentClient.prototype, 'put');
    });
 
+   afterEach(() => {
+      putSpy.mockReset();
+   });
+
    afterAll(() => {
       putSpy.mockRestore();
    });
@@ -32,9 +36,12 @@ describe('CognitoPostConfirmationHandler tests', () => {
             },
          },
       };
+      putSpy.mockReturnValue({
+         promise: () => Promise.resolve({ Items: [] }),
+      });
 
       // act
-      cognitoPostConfirmationHandler(event);
+      cognitoPostConfirmationHandler(event, null, () => {});
 
       // assert
       expect(putSpy).toHaveBeenCalledWith({
