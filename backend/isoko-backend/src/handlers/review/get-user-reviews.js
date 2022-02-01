@@ -3,7 +3,6 @@ const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
 
-
 /**
  * HTTP get method that lists all of the reviews a user has authored.
  */
@@ -15,7 +14,7 @@ exports.getUserReviewsHandler = async (event) => {
    }
 
    console.info('received:', event);
-   const { userSub } = event.pathParameters
+   const { userSub } = event.pathParameters;
 
    if (userSub == null) {
       throw new Error(
@@ -24,24 +23,22 @@ exports.getUserReviewsHandler = async (event) => {
    }
 
    const params = {
-      TableName: BUSINESS_TABLE, 
-      IndexName: 'reviews-index', 
-      KeyConditionExpression: '#r = :user', 
+      TableName: BUSINESS_TABLE,
+      IndexName: 'reviews-index',
+      KeyConditionExpression: '#r = :user',
       ExpressionAttributeNames: {
-         '#r': 'reviewAuthor'
-      }, 
+         '#r': 'reviewAuthor',
+      },
       ExpressionAttributeValues: {
-         ':user': userSub
-      }
-   }
+         ':user': userSub,
+      },
+   };
 
-   const dynamoResult = await docClient
-      .query(params)
-      .promise();
+   const dynamoResult = await docClient.query(params).promise();
 
    let queryResults = dynamoResult.Items;
-   console.log(queryResults)
-   
+   console.log(queryResults);
+
    // Remove DB specific fields from results
    let reviewResults = [];
    if (queryResults.reviews.length != 0) {

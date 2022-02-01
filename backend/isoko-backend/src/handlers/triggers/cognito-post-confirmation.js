@@ -23,7 +23,7 @@ exports.cognitoPostConfirmationHandler = async (event, context, callback) => {
       ReturnConsumedCapacity: 'TOTAL',
       TableName: USER_TABLE,
    };
-   
+
    await docClient.put(params).promise();
 
    callback(null, event);
