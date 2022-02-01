@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../styles/StyledButton';
 import { Form } from 'react-bootstrap';
-import keywordList from '../constants/keywordList';
+import categoryList from '../constants/categoryList';
 import minorityGroups from '../constants/minorityGroups';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-
-/* 
-    - Link to POST (post-list-business)
-*/
+import axios from 'axios';
+import { environment } from '../environment/environment';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -192,7 +190,8 @@ const ListBusiness: React.FC = () => {
    const [state, setState] = useState('');
    const [zip, setZip] = useState('');
    const [tags, setTags] = useState([]);
-   const [keywords, setKeywords] = useState('');
+   const [keywords] = useState([]);
+   const [category, setCategory] = useState('');
    const [businessURL, setBusinessURL] = useState('');
    const [shortDesc, setShortDesc] = useState('');
    const [ownerName, setOwnerName] = useState('');
@@ -220,11 +219,11 @@ const ListBusiness: React.FC = () => {
    // renders the data form the constants to the page,
    // useEffect needed to load fields before page loads
    useEffect(() => {
-      const keywordDataList = document.getElementById('keyword-groups');
-      keywordList.forEach((item) => {
+      const categoryDataList = document.getElementById('category-groups');
+      categoryList.forEach((item) => {
          const option = document.createElement('option');
          option.value = item;
-         keywordDataList.appendChild(option);
+         categoryDataList.appendChild(option);
       });
    }, []);
 
@@ -242,7 +241,7 @@ const ListBusiness: React.FC = () => {
          setErr('Please fill out Business Name');
          return false;
       }
-      if (keywords.length === 0) {
+      if (category.length === 0) {
          setErr('Please fill out Business Category');
          return false;
       }
@@ -297,7 +296,8 @@ const ListBusiness: React.FC = () => {
          zip,
          type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
-         keywords: [keywords],
+         category,
+         keywords,
          shortDesc,
          links: isBrickAndMortar === 'true' ? '' : businessURL,
          hours:
@@ -344,11 +344,10 @@ const ListBusiness: React.FC = () => {
       };
       return businessInfo;
    };
-   // TODO: POST Request will go here
-   const postBusinessInfo = (businessInfo) => {
+   const postBusinessInfo = async (businessInfo) => {
       if (isValid()) {
          console.log('BusinessInfo: ', businessInfo);
-         // Send Post Request https://gl7yqqczha.execute-api.us-west-2.amazonaws.com/Prod/business
+         await axios.post(`${environment.prodURL}/business`, businessInfo);
       }
    };
 
@@ -356,7 +355,6 @@ const ListBusiness: React.FC = () => {
       <main>
          <FormContainer>
             <HeaderLabel>List a Business</HeaderLabel>
-
             <SectionLabel>Business Details</SectionLabel>
             <Form>
                <Form.Group className="mb-3">
@@ -385,14 +383,14 @@ const ListBusiness: React.FC = () => {
                      <StyledControl
                         type="text"
                         placeholder="Restaraunt"
-                        list="keyword-groups"
-                        value={keywords}
+                        list="category-groups"
+                        value={category}
                         onChange={(e) => {
-                           setKeywords(e.target.value);
+                           setCategory(e.target.value);
                            setErr('');
                         }}
                      />
-                     <StyledDataList id="keyword-groups"></StyledDataList>
+                     <StyledDataList id="category-groups"></StyledDataList>
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
                      <Form.Label>
@@ -480,7 +478,7 @@ const ListBusiness: React.FC = () => {
                {isOwner === 'true' ? (
                   <div>
                      <Form.Group className="mb-3">
-                        <Form.Label> Business Description </Form.Label>
+                        <Form.Label> Short Business Description </Form.Label>
                         <StyledTextArea
                            as="textarea"
                            rows={3}
@@ -495,7 +493,7 @@ const ListBusiness: React.FC = () => {
                            as="textarea"
                            maxLength={SHORTDESCMAXLENGTH}
                            rows={3}
-                           value={shortDesc}
+                           value={ownerDesc}
                            onChange={(e) => setOwnerDesc(e.target.value)}
                         ></StyledTextArea>
                      </Form.Group>
@@ -564,6 +562,7 @@ const ListBusiness: React.FC = () => {
                            <StyledControl
                               type="text"
                               placeholder="CA"
+                              maxLength={2}
                               value={state}
                               onChange={(e) => {
                                  setState(e.target.value);

@@ -1,7 +1,7 @@
 // These are the category groups found from the yelp category list found here
 // https://blog.yelp.com/businesses/yelp_category_list/
 
-const keywordList = [
+const categoryList = [
    'Active Life',
    'Arts & Entertainment',
    'Automotive',
@@ -25,4 +25,4 @@ const keywordList = [
    'Shopping',
 ];
 
-export default keywordList;
+export default categoryList;
