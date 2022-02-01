@@ -3,19 +3,58 @@ import styled from 'styled-components';
 import StyledButton from '../styles/StyledButton';
 import { Form } from 'react-bootstrap';
 import keywordList from '../constants/keywordList';
-import tagList from '../constants/tagList';
+import minorityGroups from '../constants/minorityGroups';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 /* 
-  TODO: 
     - Link to POST (post-list-business)
-    - Potentially, E2E Test in Cypress
-    // Tags should be a List<String>
-    // Keywords should be List<String>
-    // Short Desc
-    // BusinessId
-    // Lister - NO
-    // ownerPhoto - NO
 */
+
+const SHORTDESCMAXLENGTH = 100;
+
+const StyledDataList = styled.datalist`
+   background-color: red;
+   color: blue;
+`;
+
+const StyledSearchBar = styled(Autocomplete)`
+   max-height: 32px;
+   font-size: 16px;
+
+   .MuiOutlinedInput-notchedOutline {
+      padding: 0px;
+      margin: 0px;
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      font-size: 1.0625em;
+      text-indent: 10px;
+   }
+   .MuiOutlinedInput-root {
+      padding: 0px !important;
+      font-size: 1.0625em;
+   }
+
+   .MuiButtonBase-root {
+     height: 26px;
+   }
+
+   .MuiAutocomplete-popupIndicatorOpen {
+     background-folor: red;
+   }
+
+   .Mui-focused .MuiOutlinedInput-notchedOutline {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: 0px;
+      outline: 1px solid rgb(249, 125, 11);
+  }
+ }
+`;
+
+const StyledTextField = styled(TextField)`
+   background: #ffffff;
+`;
 
 const FormContainer = styled.div`
    width: 90%;
@@ -152,10 +191,10 @@ const ListBusiness: React.FC = () => {
    const [city, setCity] = useState('');
    const [state, setState] = useState('');
    const [zip, setZip] = useState('');
-   const [tags, setTags] = useState('');
+   const [tags, setTags] = useState([]);
    const [keywords, setKeywords] = useState('');
    const [businessURL, setBusinessURL] = useState('');
-   const [businessDesc, setBusinessDesc] = useState('');
+   const [shortDesc, setShortDesc] = useState('');
    const [ownerName, setOwnerName] = useState('');
    const [ownerPhone, setOwnerPhone] = useState('');
    const [ownerDesc, setOwnerDesc] = useState('');
@@ -187,13 +226,6 @@ const ListBusiness: React.FC = () => {
          option.value = item;
          keywordDataList.appendChild(option);
       });
-
-      const tagDataList = document.getElementById('tag-groups');
-      tagList.forEach((item) => {
-         const option = document.createElement('option');
-         option.value = item;
-         tagDataList.appendChild(option);
-      });
    }, []);
 
    const listABusiness = () => {
@@ -203,7 +235,7 @@ const ListBusiness: React.FC = () => {
       } // no need for an else. Errors are set in isValid
    };
 
-   // is a lot of ifs for more accurate error reporting
+   // this function contains a lot of ifs for more accurate error reporting
    // This function could still prob be improved
    const isValid = () => {
       if (businessName.length === 0) {
@@ -265,7 +297,8 @@ const ListBusiness: React.FC = () => {
          zip,
          type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
-         keywords: keywords,
+         keywords: [keywords],
+         shortDesc,
          links: isBrickAndMortar === 'true' ? '' : businessURL,
          hours:
             isBrickAndMortar === 'true'
@@ -315,8 +348,7 @@ const ListBusiness: React.FC = () => {
    const postBusinessInfo = (businessInfo) => {
       if (isValid()) {
          console.log('BusinessInfo: ', businessInfo);
-         // Send Post Request https://gl7yqqczha.execute-api.us-west-2.amazonaws.com/Prod
-         // add /business
+         // Send Post Request https://gl7yqqczha.execute-api.us-west-2.amazonaws.com/Prod/business
       }
    };
 
@@ -360,23 +392,29 @@ const ListBusiness: React.FC = () => {
                            setErr('');
                         }}
                      />
-                     <datalist id="keyword-groups"></datalist>
+                     <StyledDataList id="keyword-groups"></StyledDataList>
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
                      <Form.Label>
                         Minority Group <Required>*</Required>
                      </Form.Label>
-                     <StyledControl
-                        type="text"
-                        placeholder="Viet-Owned"
-                        list="tag-groups"
+                     <StyledSearchBar
+                        multiple
+                        id="tags-outlined"
+                        options={minorityGroups}
+                        getOptionLabel={(option: any) => option}
                         value={tags}
-                        onChange={(e) => {
-                           setTags(e.target.value);
-                           setErr('');
+                        onChange={(e, value) => {
+                           setTags(value);
                         }}
+                        filterSelectedOptions
+                        renderInput={(params) => (
+                           <StyledTextField
+                              {...params}
+                              placeholder="Viet-Owned"
+                           />
+                        )}
                      />
-                     <datalist id="tag-groups"></datalist>
                   </SplitFormGroup>
                </SplitContainer>
 
@@ -446,26 +484,21 @@ const ListBusiness: React.FC = () => {
                         <StyledTextArea
                            as="textarea"
                            rows={3}
-                           value={businessDesc}
-                           onChange={(e) => setBusinessDesc(e.target.value)}
+                           maxLength={SHORTDESCMAXLENGTH}
+                           value={shortDesc}
+                           onChange={(e) => setShortDesc(e.target.value)}
                         ></StyledTextArea>
                      </Form.Group>
                      <Form.Group className="mb-3">
                         <Form.Label> About the Owner </Form.Label>
                         <StyledTextArea
                            as="textarea"
+                           maxLength={SHORTDESCMAXLENGTH}
                            rows={3}
-                           value={ownerDesc}
+                           value={shortDesc}
                            onChange={(e) => setOwnerDesc(e.target.value)}
                         ></StyledTextArea>
                      </Form.Group>
-                     {/*
-                     <Form.Label> Business Photo Upload </Form.Label>
-                     <br />
-                     <StyledButton className="mb-3">
-                        Select Files to Upload
-                     </StyledButton>
-                     */}
                   </div>
                ) : null}
 
