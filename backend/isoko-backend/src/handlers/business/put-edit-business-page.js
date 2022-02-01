@@ -12,6 +12,7 @@ const { BUSINESS_TABLE } = require('../../constants');
  * @param {*} count int that keeps track of current mapping 
  */
 const buildComplexObjectExpression = (objName, obj, exprs, attrValues, count) => {
+   let deltaCount = 0; 
    const objKeys = _.keys(obj)
    objKeys.forEach((k) => {
       const mapping = `:${String.fromCharCode(count)}`; 
@@ -19,7 +20,10 @@ const buildComplexObjectExpression = (objName, obj, exprs, attrValues, count) =>
       exprs.push(`${updateName} = ${mapping}`); 
       attrValues[mapping] = _.get(obj, k); 
       count += 1; 
+      deltaCount += 1; 
    }); 
+
+   return deltaCount; 
 };
 
 /**
@@ -35,7 +39,7 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
    names.forEach((n) => {
       const val = _.get(requestBody, n); 
       if (typeof val == 'object') {
-         buildComplexObjectExpression(n, val, expArr, attrValues, count); 
+         count += buildComplexObjectExpression(n, val, expArr, attrValues, count); 
       }
       else {
          const mapping = `:${String.fromCharCode(count)}`; 
@@ -71,16 +75,14 @@ exports.putEditBusinessPageHandler = async (event) => {
 
    const requestBody = event.body && JSON.parse(event.body);
    const fieldNames = _.keys(requestBody); 
-   console.log(fieldNames); 
+   
    // following fields should not be modified 
    const restrictedFields = ['pk', 'sk', 'businessId', 'reviews', 'rating', 'numReviews', 'claimed']; 
    
 
    let exprAttrVals = {}; 
    const updateExpr = buildUpdateExpression(fieldNames, requestBody, exprAttrVals); 
-   console.log(updateExpr); 
-   console.log(exprAttrVals); 
-
+   
    const params = {
       TableName: BUSINESS_TABLE,
       Key: {
@@ -91,7 +93,6 @@ exports.putEditBusinessPageHandler = async (event) => {
      ReturnValues: "UPDATED_NEW"
    }
 
-   console.log(params); 
    let dynamoResult; 
    let response; 
 

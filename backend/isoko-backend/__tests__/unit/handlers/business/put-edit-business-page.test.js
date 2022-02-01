@@ -340,7 +340,7 @@ const {
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '', 
+                shortDesc: "There's always money in the banana stand.", 
                 businessId: '-664125567',
                 hours: {}, 
                 links: {}, 
@@ -369,7 +369,8 @@ const {
                     'name' : "Lindsay Bluth's Original Frozen Banana", 
                     'aboutOwner' : {
                         'ownerName': 'Lindsay Bluth'
-                    }
+                    }, 
+                    'shortDesc' : "There's always money in the banana stand."
                 })
             };
 
@@ -382,7 +383,7 @@ const {
                 type: 'B&M',
                 tags: ['Women-Owned'],
                 keywords:['Desserts'],
-                shortDesc: '', 
+                shortDesc: "There's always money in the banana stand.", 
                 businessId: '-664125567',
                 hours: {}, 
                 links: {}, 
@@ -408,10 +409,11 @@ const {
                Key: {
                 "businessId": '-664125567'
                 }, 
-               UpdateExpression: `set name = :a, aboutOwner.ownerName = :b`,
+               UpdateExpression: `set name = :a, aboutOwner.ownerName = :b, shortDesc = :c`,
                ExpressionAttributeValues: { 
                 ":a": "Lindsay Bluth's Original Frozen Banana", 
-                ":b": "Lindsay Bluth"
+                ":b": "Lindsay Bluth", 
+                ":c": "There's always money in the banana stand."
                },
                ReturnValues: "UPDATED_NEW"
             });
