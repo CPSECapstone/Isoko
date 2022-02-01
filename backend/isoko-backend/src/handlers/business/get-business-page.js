@@ -13,7 +13,7 @@ exports.getBusinessPageHandler = async (event) => {
    }
 
    console.info('received:', event);
-   const { businessId } = event.pathParameters; 
+   const { businessId } = event.pathParameters;
 
    if (businessId == null) {
       throw new Error(
@@ -24,23 +24,21 @@ exports.getBusinessPageHandler = async (event) => {
    const params = {
       TableName: BUSINESS_TABLE,
       Key: {
-         "businessId": businessId
-      }
-   }
+         businessId: businessId,
+      },
+   };
 
-   const dynamoResult = await docClient
-      .get(params) 
-      .promise(); 
-   
-   let getResult = dynamoResult.Items; 
-   // delete DynamoDB specific items 
-   delete getResult.pk; 
-   delete getResult.sk; 
+   const dynamoResult = await docClient.get(params).promise();
+
+   let getResult = dynamoResult.Items;
+   // delete DynamoDB specific items
+   delete getResult.pk;
+   delete getResult.sk;
 
    const response = {
       statusCode: 200,
       body: {
-         results: getResult
+         results: getResult,
       },
    };
 
