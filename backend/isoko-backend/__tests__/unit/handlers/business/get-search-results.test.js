@@ -17,6 +17,10 @@ describe('GetSearchResultsHandler tests', () => {
       querySpy.mockRestore();
    });
 
+   afterEach(() => {
+      querySpy.mockReset();
+   });
+
    describe('Invalid location query param tests', () => {
       it('Should throw an error when location is missing altogether', async () => {
          // arrange
