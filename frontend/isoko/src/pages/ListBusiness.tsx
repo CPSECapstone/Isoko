@@ -190,7 +190,6 @@ const ListBusiness: React.FC = () => {
    const [state, setState] = useState('');
    const [zip, setZip] = useState('');
    const [tags, setTags] = useState([]);
-   const [keywords] = useState([]);
    const [category, setCategory] = useState('');
    const [businessURL, setBusinessURL] = useState('');
    const [shortDesc, setShortDesc] = useState('');
@@ -297,7 +296,6 @@ const ListBusiness: React.FC = () => {
          type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
          category,
-         keywords,
          shortDesc,
          links: isBrickAndMortar === 'true' ? '' : businessURL,
          hours:
