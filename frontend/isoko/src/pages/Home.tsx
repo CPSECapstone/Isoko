@@ -14,6 +14,7 @@ const Title = styled.h1`
    font-weight: normal;
    font-size: 6rem;
    color: #ffffff;
+   padding-top: 5%;
 `;
 
 const SubTitle = styled.h3`
@@ -34,54 +35,56 @@ const Container = styled.div`
 const LeftImg = styled.div`
    display: flex;
    flex-direction: column;
-   width: 30%;
+   width: 33%;
    height: 100%;
-   position: fixed;
+   position: absolute;
+   left: 0;
    z-index: -1;
    // padding: 100px;
    background-image: url(${flowers});
    background-size: cover;
-   // background-position: top left;
+   background-position: top left;
    background-repeat: no-repeat;
-   @media ${device.tablet} {
-      order: 2;
-      width: 100%;
-   }
+   // @media ${device.tablet} {
+   //    order: 2;
+   //    width: 100%;
+   // }
 `;
 
 const MidImg = styled.div`
    display: flex;
    flex-direction: column;
-   width: 30%;
+   width: 34%;
    height: 100%;
-   position: fixed;
+   position: absolute;
    z-index: -1;
-   // padding: 100px;
+   // padding: 1em;
    background-image: url(${sculptures});
    background-size: cover;
-   // background-position: center;
+   background-position: center;
    background-repeat: no-repeat;
-   @media ${device.tablet} {
-      order: 2;
-      width: 100%;
-   }
+   // @media ${device.tablet} {
+   //    order: 2;
+   //    width: 100%;
+   // }
 `;
 const RightImg = styled.div`
    display: flex;
    flex-direction: column;
-   width: 30%;
+   width: 33%;
    height: 100%;
    position: absolute;
+   right: 0px;
    z-index: -1;
-   // padding: 100px;
+   // padding: 1.1em;
    background-image: url(${coffee});
-   // background-size: cover;
-   // background-position: top right;
+   background-size: cover;
+   background-position: top right;
    background-repeat: no-repeat;
-   @media ${device.tablet} {
-      order: 2;
-      width: 100%;
-   }
+   // @media ${device.tablet} {
+   //    order: 2;
+   //    width: 100%;
+   // }
 `;
 
 const Home = () => (

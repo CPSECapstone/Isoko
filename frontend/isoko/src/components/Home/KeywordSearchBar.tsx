@@ -27,36 +27,27 @@ const StyledTextField = styled(TextField)`
    border-radius: 90px 0px 0px 90px;
 `;
 
-// interface KeywordProps extends React.HTMLProps<HTMLDivElement> {
-//    input: string;
-//    changeKeywordState: React.Dispatch<React.SetStateAction<string>>;
-// }
+interface KeywordProps extends React.HTMLProps<HTMLDivElement> {
+   input: string;
+   changeKeywordState: React.Dispatch<React.SetStateAction<string>>;
+}
 
-// const KeywordSearchBar: React.FC<KeywordProps> = (props) => {
-
-//    return (<StyledSearchBar
-//       disablePortal
-//       id="home-search-bar"
-//       options={options}
-//       sx={{}}
-//       value={props.input}
-//       onChange={(event) => props.changeKeywordState(event.currentTarget.value)}
-//       renderInput={(params) => (
-//          <StyledTextField {...params} placeholder="I'm looking for" />
-//       )}
-//    />)
-// );
-
-const KeywordSearchBar = () => (
-   <StyledSearchBar
-      disablePortal
-      id="home-search-bar"
-      options={options}
-      sx={{}}
-      renderInput={(params) => (
-         <StyledTextField {...params} placeholder="I'm looking for" />
-      )}
-   />
-);
+const KeywordSearchBar: React.FC<KeywordProps> = (props) => {
+   return (
+      <StyledSearchBar
+         disablePortal
+         id="home-search-bar"
+         options={options}
+         sx={{}}
+         value={props.input}
+         onChange={(event) =>
+            props.changeKeywordState(event.currentTarget.value)
+         }
+         renderInput={(params) => (
+            <StyledTextField {...params} placeholder="I'm looking for" />
+         )}
+      />
+   );
+};
 
 export default KeywordSearchBar;
