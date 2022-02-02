@@ -328,6 +328,20 @@ Resources:
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !GetAtt "UserPool.Arn"
+      Cors:
+        AllowMethods: "'POST, PUT, GET, DELETE, OPTIONS'"
+        AllowOrigin: "'*'"
+        AllowHeaders: "'content-type'"
+        AllowCredentials: "'*'"
+      GatewayResponses:
+        DEFAULT_4xx:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+        DEFAULT_5xx:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
 
   # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
   SampleTable:
