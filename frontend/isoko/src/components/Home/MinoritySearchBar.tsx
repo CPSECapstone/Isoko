@@ -4,13 +4,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 const StyledSearchBar = styled(Autocomplete)`
-   margin: 30px;
-
    .MuiOutlinedInput-notchedOutline {
       border: 2.5px solid #000000;
    }
 
-   ,
    .Mui-focused .MuiOutlinedInput-notchedOutline {
       border: 2.5px solid #000000;
    }
