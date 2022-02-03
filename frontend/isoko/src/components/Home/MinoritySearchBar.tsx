@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -22,23 +22,40 @@ const StyledTextField = styled(TextField)`
 `;
 
 const minorityGroups = [
-   { minority: 'Black' },
-   { minority: 'Mexican' },
-   { minority: 'LGBTQ+' },
-   { minority: 'Women' },
-   { minority: 'Any Minority' },
-   { minority: 'Asian' },
-   { minority: 'Latinx' },
-   { minority: 'Indigenous' },
+   'Black',
+   'Mexican',
+   'LGBTQ+',
+   'Women',
+   'Any Minority',
+   'Asian',
+   'Latinx',
+   'Indigenous',
 ];
 
+// interface MinorityProps extends React.HTMLProps<HTMLDivElement> {
+//    input: string[];
+//    changeMinorityState: React.Dispatch<React.SetStateAction<Array<any>>>;
+// }
+
+// const MinoritySearchBar: React.FC<MinorityProps> = (props) => {
+
+//    const changeSearchState = (value: any) => {
+//       props.changeMinorityState(value);
+
+//    }
+
 const MinoritySearchBar = () => {
+   const [minorityState, setMinorityState] = useState([] as any);
    return (
       <StyledSearchBar
          multiple
          id="tags-outlined"
          options={minorityGroups}
-         getOptionLabel={(option: any) => option.minority}
+         getOptionLabel={(option: any) => option}
+         value={minorityState}
+         onChange={(e, value) => {
+            setMinorityState(value);
+         }}
          filterSelectedOptions
          renderInput={(params) => (
             <StyledTextField {...params} placeholder="Owned" />

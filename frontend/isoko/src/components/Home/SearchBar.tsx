@@ -36,27 +36,37 @@ const LabelBox3 = styled.div`
 `;
 
 const SearchBar = () => {
-   // const [minorityState, setMinorityState] = useState('');
-   // const [locationState, setLocationState] = useState('');
-   // const [keywordState, setKeywordState] = useState('');
-
+   // const [minorityState, setMinorityState] =  useState([] as any);
+   // console.log(typeof minorityState)
+   //    const [minorityState, setMinorityState] = useState([]);
+   const [locationState, setLocationState] = useState('');
+   const [keywordState, setKeywordState] = useState('');
+   // console.log(keywordState)
+   // console.log(minorityState)
+   // console.log(locationState)
    return (
       <main>
          <Container>
             <LabelBox1>
                <SearchLabel>I&apos;m looking for</SearchLabel>
                <KeywordSearchBar
-               // input={keywordState}
-               // changeKeywordState={setKeywordState}
+                  input={keywordState}
+                  changeKeywordState={setKeywordState}
                ></KeywordSearchBar>
             </LabelBox1>
             <LabelBox2>
                <SearchLabel>Owned By</SearchLabel>
-               <MinoritySearchBar></MinoritySearchBar>
+               <MinoritySearchBar
+               //    input={minorityState}
+               //    changeMinorityState={setMinorityState}
+               ></MinoritySearchBar>
             </LabelBox2>
             <LabelBox3>
                <SearchLabel>Near</SearchLabel>
-               <LocationSearchBar></LocationSearchBar>
+               <LocationSearchBar
+                  input={locationState}
+                  changeLocationState={setLocationState}
+               ></LocationSearchBar>
             </LabelBox3>
          </Container>
       </main>

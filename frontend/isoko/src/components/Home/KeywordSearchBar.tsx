@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { produceWithPatches } from 'immer';
 
 const options = ['Candy', 'Candle', 'Burger', 'Burger Hut'];
 
@@ -40,9 +39,7 @@ const KeywordSearchBar: React.FC<KeywordProps> = (props) => {
          options={options}
          sx={{}}
          value={props.input}
-         onChange={(event) =>
-            props.changeKeywordState(event.currentTarget.value)
-         }
+         onInputChange={(e, value) => props.changeKeywordState(value as string)}
          renderInput={(params) => (
             <StyledTextField {...params} placeholder="I'm looking for" />
          )}

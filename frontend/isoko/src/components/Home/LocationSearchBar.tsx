@@ -26,16 +26,27 @@ const StyledTextField = styled(TextField)`
    border-radius: 0px 90px 90px 0px;
 `;
 
-const LocationSearchBar = () => (
-   <StyledSearchBar
-      disablePortal
-      id="home-search-bar"
-      options={options}
-      sx={{}}
-      renderInput={(params) => (
-         <StyledTextField {...params} placeholder="San Diego, CA" />
-      )}
-   />
-);
+interface LocationProps extends React.HTMLProps<HTMLDivElement> {
+   input: string;
+   changeLocationState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const LocationSearchBar: React.FC<LocationProps> = (props) => {
+   return (
+      <StyledSearchBar
+         disablePortal
+         id="home-search-bar"
+         options={options}
+         sx={{}}
+         value={props.input}
+         onInputChange={(e, value) =>
+            props.changeLocationState(value as string)
+         }
+         renderInput={(params) => (
+            <StyledTextField {...params} placeholder="San Diego, CA" />
+         )}
+      />
+   );
+};
 
 export default LocationSearchBar;
