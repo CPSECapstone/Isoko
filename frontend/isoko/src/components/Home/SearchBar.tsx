@@ -36,7 +36,7 @@ const LabelBox3 = styled.div`
 `;
 
 const SearchBar = () => {
-   // const [minorityState, setMinorityState] =  useState([] as any);
+   const [minorityState, setMinorityState] = useState([] as any);
    // console.log(typeof minorityState)
    //    const [minorityState, setMinorityState] = useState([]);
    const [locationState, setLocationState] = useState('');
@@ -57,8 +57,8 @@ const SearchBar = () => {
             <LabelBox2>
                <SearchLabel>Owned By</SearchLabel>
                <MinoritySearchBar
-               //    input={minorityState}
-               //    changeMinorityState={setMinorityState}
+                  input={minorityState}
+                  changeMinorityState={setMinorityState}
                ></MinoritySearchBar>
             </LabelBox2>
             <LabelBox3>
