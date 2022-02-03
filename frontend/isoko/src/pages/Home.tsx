@@ -96,6 +96,7 @@ const ContentContainer = styled.div`
    height: 100%;
    min-height: 100vh;
    padding: 30px;
+   margin-top: 350px;
 `;
 
 const SearchContainer = styled.div`
@@ -116,16 +117,16 @@ const FeaturedBusinesses = styled.div`
    max-width: 1200px;
 `;
 
-const Title = styled.h2`
+const StyledBusinessPreview = styled(BusinessPreview)`
+   margin-bottom: 15px;
+`;
+
+const SmallTitle = styled.h2`
    font-size: 1.25rem;
    margin: none;
    margin-block-start: 0em;
    margin-block-end: 0em;
    align-self: left;
-`;
-
-const StyledBusinessPreview = styled(BusinessPreview)`
-   margin-bottom: 15px;
 `;
 
 const Home = () => (
@@ -135,7 +136,6 @@ const Home = () => (
          <MidImg></MidImg>
          <RightImg></RightImg>
       </Container>
-      <SignOutButton />
       <Title>ISOKO</Title>
       <SubTitle>find something special</SubTitle>
       <SearchBar></SearchBar>
@@ -143,7 +143,7 @@ const Home = () => (
       <ContentContainer>
          <SearchContainer />
          <FeaturedBusinesses>
-            <Title>{'Featured Brick & Mortar Business'}</Title>
+            <SmallTitle>{'Featured Brick & Mortar Business'}</SmallTitle>
             <StyledBusinessPreview
                name="Bluth's Original Frozen Banana"
                imageUrl="https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg"
@@ -155,7 +155,7 @@ const Home = () => (
                path="/business"
                numReviews={150}
             />
-            <Title>{'Featured Online Business'}</Title>
+            <SmallTitle>{'Featured Online Business'}</SmallTitle>
             <StyledBusinessPreview
                name="Bob's Burgers"
                imageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"

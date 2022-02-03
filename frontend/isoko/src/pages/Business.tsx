@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Review from '../components/Review';
 import BusinessHeader from '../components/business/BusinessHeader';
+import BusienssSidebar from '../components/business/BusinessSidebar';
+import BusinessSidebar from '../components/business/BusinessSidebar';
 
 const Title = styled.h1`
    font-size: 2.5em;
@@ -9,9 +11,54 @@ const Title = styled.h1`
    padding: 0em 0em 0em 0.5em;
 `;
 
+const StyledBusinessSidebarOne = styled(BusinessSidebar)`
+   position: absolute;
+   right: 50px;
+   top: 150px;
+`;
+
+const StyledBusinessSidebarTwo = styled(BusinessSidebar)`
+   position: absolute;
+   right: 50px;
+   top: 800px;
+`;
+
 const Business = () => (
    <main>
-      <h1>Business Listing</h1>
+      <StyledBusinessSidebarOne
+         hours={{
+            Mon: '8:00am - 5:00pm',
+            Wed: '8:00am - 5:00pm',
+            Fri: '8:00am - 5:00pm',
+            Sat: '8:00am - 5:00pm',
+         }}
+         address="626 Broad St."
+         links={[
+            {
+               title: 'website',
+               link: 'https://www.firestonegrill.com/',
+            },
+         ]}
+         claimed={false}
+      />
+      <StyledBusinessSidebarTwo
+         hours={{
+            Tue: '11:00am - 2:00pm',
+            Sun: '6:00am - 11:00pm',
+         }}
+         address="626 Broad St."
+         links={[
+            {
+               title: 'website',
+               link: 'https://www.firestonegrill.com/',
+            },
+            {
+               title: 'other',
+               link: 'https://www.other.com/',
+            },
+         ]}
+         claimed={true}
+      />
       <BusinessHeader
          name="Bob's Burgers"
          description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"
