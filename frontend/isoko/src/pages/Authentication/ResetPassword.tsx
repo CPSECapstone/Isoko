@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import StyledButton from '../styles/StyledButton';
-import device from '../styles/devices';
+import StyledButton from '../../styles/StyledButton';
+import device from '../../styles/devices';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-   AuthenticationDetails,
-   CognitoUser,
-   CognitoUserPool,
-} from 'amazon-cognito-identity-js';
-import { environment } from '../environment/environment';
+import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { environment } from '../../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -53,7 +49,7 @@ const RightDiv = styled.div`
 `;
 
 const RowDiv = styled.div`
-   margin-top: 30%;
+   margin-top: 20%;
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -85,7 +81,7 @@ const StyledLabel = styled.label`
    justify-content: start;
 `;
 
-const StyledLink = styled(Link)`
+const SignUpHere = styled.div`
    margin-top: 5px;
    align-items: flex-end;
    justify-content: end;
@@ -93,12 +89,12 @@ const StyledLink = styled(Link)`
    margin-right: 15%;
 `;
 
-const SignUpHere = styled.div`
-   margin-top: 5px;
-   align-items: flex-end;
-   justify-content: end;
-   float: right;
-   margin-right: 15%;
+const FormError = styled.p`
+   justify-content: center;
+   color: red;
+   text-align: left;
+   width: 70%;
+   margin: 0 auto;
 `;
 
 const WideButton = styled(StyledButton)`
@@ -128,18 +124,28 @@ const Description = styled.div`
    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
 `;
 
-const Login: React.FC = () => {
+const TextContainer = styled.div`
+   width: 100%;
+   margin-bottom: 10px;
+`;
+
+const FPTitle = styled.h2`
+   color: #f97d0b;
+`;
+
+const ErrContainer = styled.div`
+   height: 20px;
+`;
+
+const ResetPassword = () => {
+   const [newPassword, setNewPassword] = useState('');
+   const [verificationCode, setVerificationCode] = useState('');
    const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+   const [err, setErr] = useState('');
 
    const navigate = useNavigate();
 
-   const login = () => {
-      const authDetails = new AuthenticationDetails({
-         Username: email,
-         Password: password,
-      });
-
+   const resetPassword = () => {
       const userPool = new CognitoUserPool({
          UserPoolId: environment.cognitoUserPoolId,
          ClientId: environment.cognitoAppClientId,
@@ -150,12 +156,12 @@ const Login: React.FC = () => {
          Pool: userPool,
       });
 
-      cognitoUser.authenticateUser(authDetails, {
-         onSuccess: (result) => {
-            navigate('/');
+      cognitoUser.confirmPassword(verificationCode, newPassword, {
+         onSuccess: () => {
+            navigate('/resetSuccess');
          },
          onFailure: (err) => {
-            alert(err.message || JSON.stringify(err));
+            setErr(err.message);
          },
       });
    };
@@ -177,33 +183,51 @@ const Login: React.FC = () => {
                      <Title>ISOKO</Title>
                   </RowDiv>
                   <InputContainer>
+                     <TextContainer>
+                        <FPTitle>Reset Password</FPTitle>
+                        <p>
+                           Please check the email you entered for your 6 digit
+                           verification code and enter a new password.
+                        </p>
+                     </TextContainer>
+                     <StyledLabel> Verification Code</StyledLabel>
+                     <StyledInput
+                        placeholder="111111"
+                        onChange={(e) => {
+                           setVerificationCode(e.target.value);
+                           setErr('');
+                        }}
+                     ></StyledInput>{' '}
+                     <br></br>
                      <StyledLabel> Email</StyledLabel>
                      <StyledInput
-                        type="email"
                         placeholder="example@gmail.com"
                         onChange={(e) => {
                            setEmail(e.target.value);
+                           setErr('');
+                        }}
+                     ></StyledInput>{' '}
+                     <br></br>
+                     <StyledLabel> New Password</StyledLabel>
+                     <StyledInput
+                        type="password"
+                        placeholder="new password"
+                        onChange={(e) => {
+                           setNewPassword(e.target.value);
+                           setErr('');
                         }}
                      ></StyledInput>{' '}
                      <br />
-                     <StyledLabel> Password</StyledLabel>
-                     <StyledInput
-                        type="password"
-                        placeholder="password"
-                        onChange={(e) => {
-                           setPassword(e.target.value);
-                        }}
-                     ></StyledInput>
                   </InputContainer>
-                  <StyledLink to="/forgotPassword">Forgot Password?</StyledLink>{' '}
-                  <br /> <br />
-                  <WideButton primary onClick={login}>
-                     Log In
+                  <ErrContainer>
+                     {err ? <FormError>{err}</FormError> : null}
+                  </ErrContainer>
+                  <WideButton primary onClick={resetPassword}>
+                     Reset Password
                   </WideButton>
                   <div>
                      <SignUpHere>
-                        New to ISOKO? &nbsp;
-                        <Link to="/signup">Sign up here</Link>
+                        <Link to="/login">Back to Login</Link>
                      </SignUpHere>
                   </div>
                </MainContent>
@@ -213,4 +237,4 @@ const Login: React.FC = () => {
    );
 };
 
-export default Login;
+export default ResetPassword;

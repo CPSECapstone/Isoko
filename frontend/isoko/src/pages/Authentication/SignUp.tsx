@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import StyledButton from '../styles/StyledButton';
-import device from '../styles/devices';
+import StyledButton from '../../styles/StyledButton';
+import device from '../../styles/devices';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import {
    CognitoUserPool,
    CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
-import { environment } from '../environment/environment';
+import { environment } from '../../environment/environment';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -78,13 +78,6 @@ const StyledInput = styled.input`
    text-indent: 10px;
 `;
 
-const StyledCheckboxInput = styled.input`
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);     
-   border: 1px solid rgba(0, 0, 0, 0.41)
-   border-radius: 3px;
-   box-sizing: border-box;
-`;
-
 const HalfStyledInput = styled.input`
    width: 100%;
    border-radius: 10px;
@@ -98,11 +91,6 @@ const StyledLabel = styled.label`
    text-align: left;
    align-items: flex-start;
    justify-content: start;
-`;
-
-const StyledLabelListBusiness = styled.label`
-   margin-left: auto;
-   margin-right: auto;
 `;
 
 const StyledLink = styled.div`
@@ -133,15 +121,6 @@ const NameInputContainer = styled.div`
    justify-content: space-between;
 `;
 
-const CheckboxInputContainer = styled.div`
-   display: flex;
-   flex-direction: row;
-   width: 100%;
-   justify-content: center;
-   gap: 20px;
-   margin-top: 10px;
-`;
-
 const NameDiv = styled.div`
    display: flex;
    flex-direction: column;
@@ -164,28 +143,54 @@ const Description = styled.div`
    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.25);
 `;
 
+const FormError = styled.p`
+   justify-content: center;
+   color: red;
+   text-align: left;
+   width: 70%;
+   margin: 0 auto;
+`;
+
 const SignUp: React.FC = () => {
-   const [listBusinessState, setListBusinessState] = useState('');
    const [firstName, setFirstName] = useState('');
    const [lastName, setLastName] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [confirmPassword, setConfirmPassword] = useState('');
+   const [err, setErr] = useState('');
+   const regExpPassword = RegExp(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{8,}$/
+   );
 
    const navigate = useNavigate();
 
-   const checkAllFieldsEntered = () => {
+   const checkAllFieldsEnteredProperly = () => {
       if (
-         listBusinessState.length === 0 ||
          firstName.length === 0 ||
          lastName.length === 0 ||
          email.length === 0 ||
          password.length === 0 ||
          confirmPassword.length === 0
       ) {
+         setErr('Make sure all fields are filled out');
          return false;
       }
-      return true;
+      checkPasswordValidity();
+   };
+
+   const checkPasswordValidity = () => {
+      if (password !== confirmPassword) {
+         setErr('Make sure your passwords match');
+         return false;
+      }
+      if (!regExpPassword.test(password)) {
+         // AWS cognito actually checks the password is valid, this is just to provide helpful error feedback to the users
+         setErr(
+            'Make sure your password is at least 8 digits, and contains a lowercase, uppercase, and special character'
+         );
+         return false;
+      }
+      onSignup();
    };
 
    const onSignup = () => {
@@ -214,14 +219,10 @@ const SignUp: React.FC = () => {
          [],
          (err, result) => {
             if (err) {
-               alert(err.message || JSON.stringify(err));
+               setErr(err.message || JSON.stringify(err));
                return;
             }
-            if (listBusinessState === 'YES') {
-               navigate('/listBusiness');
-            } else {
-               navigate('/login');
-            }
+            navigate('/emailVerification');
          }
       );
    };
@@ -249,7 +250,10 @@ const SignUp: React.FC = () => {
                            <HalfStyledInput
                               type="name"
                               placeholder="John"
-                              onChange={(e) => setFirstName(e.target.value)}
+                              onChange={(e) => {
+                                 setFirstName(e.target.value);
+                                 setErr('');
+                              }}
                            ></HalfStyledInput>{' '}
                         </NameDiv>
                         <NameDiv>
@@ -257,7 +261,10 @@ const SignUp: React.FC = () => {
                            <HalfStyledInput
                               type="name"
                               placeholder="Doe"
-                              onChange={(e) => setLastName(e.target.value)}
+                              onChange={(e) => {
+                                 setLastName(e.target.value);
+                                 setErr('');
+                              }}
                            ></HalfStyledInput>{' '}
                         </NameDiv>
                      </NameInputContainer>
@@ -266,50 +273,36 @@ const SignUp: React.FC = () => {
                      <StyledInput
                         type="email"
                         placeholder="example@gmail.com"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                           setEmail(e.target.value);
+                           setErr('');
+                        }}
                      ></StyledInput>{' '}
                      <br />
                      <StyledLabel> Password</StyledLabel>
                      <StyledInput
                         type="password"
                         placeholder="password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                           setPassword(e.target.value);
+                           setErr('');
+                        }}
                      ></StyledInput>
                      <br />
                      <StyledLabel>Confirm Password</StyledLabel>
                      <StyledInput
                         type="password"
                         placeholder="confirm password"
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={(e) => {
+                           setConfirmPassword(e.target.value);
+                           setErr('');
+                        }}
                      ></StyledInput>{' '}
                      <br />
-                     <StyledLabelListBusiness>
-                        Would you like to list a business on ISOKO right now?
-                     </StyledLabelListBusiness>
-                     <CheckboxInputContainer>
-                        <label>
-                           <StyledCheckboxInput
-                              type="checkbox"
-                              checked={listBusinessState === 'YES'}
-                              onChange={() => setListBusinessState('YES')}
-                           />
-                           Yes
-                        </label>
-                        <label>
-                           <StyledCheckboxInput
-                              type="checkbox"
-                              checked={listBusinessState === 'NO'}
-                              onChange={() => setListBusinessState('NO')}
-                           />
-                           No
-                        </label>
-                     </CheckboxInputContainer>
                   </InputContainer>
                   <br />
-                  <WideButton
-                     primary={checkAllFieldsEntered()}
-                     onClick={onSignup}
-                  >
+                  {err ? <FormError>{err}</FormError> : null}
+                  <WideButton primary onClick={checkAllFieldsEnteredProperly}>
                      {' '}
                      Sign Up
                   </WideButton>
