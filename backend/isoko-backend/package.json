@@ -9,13 +9,15 @@
    },
    "devDependencies": {
       "jest": "^26.6.3",
-      "prettier": "2.5.1"
+      "prettier": "2.5.1",
+      "husky": "^7.0.0"
    },
    "scripts": {
       "test": "jest",
       "format": "prettier --write \"**/*.+(js|json|ts)\"",
       "format-check": "prettier --check \"**/*.+(js|json|ts)\"",
-      "sam-deploy": "sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name isoko-backend --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1qv27121x2wo3 --capabilities CAPABILITY_IAM --region us-west-2 "
+      "sam-deploy": "sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name isoko-backend --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1qv27121x2wo3 --capabilities CAPABILITY_IAM --region us-west-2 ",
+      "prepare": "cd ../.. && husky install backend/isoko/.husky"
    },
    "jest": {
       "testPathIgnorePatterns": [
