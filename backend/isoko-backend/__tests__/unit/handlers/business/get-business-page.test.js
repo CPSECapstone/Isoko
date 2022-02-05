@@ -55,7 +55,7 @@ describe('GetBusinessPageHandler tests', () => {
    });
 
    describe('Failed get test', () => {
-      it('Should return a 400 response when put throws an error', async () => {
+      it('Should return a 400 response when get throws an error', async () => {
          // arrange
          expectedItem = {
             statusCode: 400,

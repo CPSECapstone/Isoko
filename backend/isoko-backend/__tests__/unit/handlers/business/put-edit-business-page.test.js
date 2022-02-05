@@ -147,7 +147,7 @@ describe('PutEditBusinessPageHandler tests', () => {
    });
 
    describe('Failed update test', () => {
-      it('Should return a 400 response when put throws an error', async () => {
+      it('Should return a 400 response when update throws an error', async () => {
          // arrange
          expectedItem = {
             statusCode: 400,
@@ -169,8 +169,6 @@ describe('PutEditBusinessPageHandler tests', () => {
 
          // act
          const result = await putEditBusinessPageHandler(event);
-         console.log('RESULT ISSLDKFJLKSDJFLKSDJF');
-         console.log(result);
 
          // assert
          expect(result).toEqual(expectedItem);

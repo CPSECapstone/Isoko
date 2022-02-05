@@ -71,6 +71,32 @@ describe('GetSearchResultsHandler tests', () => {
       });
    });
 
+   describe('Failed get test', () => {
+      it('Should return a 400 response when get throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Get failed') },
+         };
+         querySpy.mockImplementation(() => {
+            throw new Error('Get failed');
+         });
+
+         const event = {
+            httpMethod: 'GET',
+            body: JSON.stringify({
+               location: 'CA/Sunnyvale',
+            }),
+         };
+
+         // act
+         const result = await getSearchResultsHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      });
+   });
+
    describe('Valid Input tests', () => {
       it('Should retrieve all results with matching pk', async () => {
          // arrange
