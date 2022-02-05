@@ -34,28 +34,36 @@ exports.getUserReviewsHandler = async (event) => {
       },
    };
 
-   const dynamoResult = await docClient.query(params).promise();
+   let response;
 
-   let queryResults = dynamoResult.Items;
-   console.log(queryResults);
+   try {
+      const dynamoResult = await docClient.query(params).promise();
+      let queryResults = dynamoResult.Items;
+      console.log(queryResults);
 
-   // Remove DB specific fields from results
-   let reviewResults = [];
-   if (queryResults.reviews.length != 0) {
-      reviewResults = queryResults.reviews.map((review) => {
-         delete review.pk;
-         delete review.sk;
+      // Remove DB specific fields from results
+      let reviewResults = [];
+      if (queryResults.reviews.length != 0) {
+         reviewResults = queryResults.reviews.map((review) => {
+            delete review.pk;
+            delete review.sk;
 
-         return review;
-      });
+            return review;
+         });
+      }
+
+      response = {
+         statusCode: 200,
+         body: {
+            results: reviewResults,
+         },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e },
+      };
    }
-
-   const response = {
-      statusCode: 200,
-      body: {
-         results: reviewResults,
-      },
-   };
 
    console.info(
       `response from: ${event.path} statusCode: ${

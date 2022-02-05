@@ -54,6 +54,32 @@ describe('GetUserReviewsHandler tests', () => {
       });
    });
 
+   describe('Failed get test', () => {
+      it('Should return a 400 response when put throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Get failed') },
+         };
+         querySpy.mockImplementation(() => {
+            throw new Error('Get failed');
+         });
+
+         const event = {
+            httpMethod: 'GET',
+            pathParameters: {
+               userSub: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
+            },
+         };
+
+         // act
+         const result = await getUserReviewsHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      });
+   });
+
    describe('Valid input tests', () => {
       it('Should return an empty list for user who has not posted any reviews', async () => {
          //arrange
