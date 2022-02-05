@@ -53,6 +53,33 @@ describe('GetBusinessPageHandler tests', () => {
          }).rejects.toThrowError();
       });
    });
+
+   describe('Failed get test', () => {
+      it('Should return a 400 response when put throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Get failed') },
+         };
+         getSpy.mockImplementation(() => {
+            throw new Error('Get failed');
+         });
+
+         const event = {
+            httpMethod: 'GET',
+            pathParameters: {
+               businessId: '-664125567',
+            },
+         };
+
+         // act
+         const result = await getBusinessPageHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      });
+   });
+
    describe('Valid input tests', () => {
       it('Should return business details associated with given businessId', async () => {
          // arrange

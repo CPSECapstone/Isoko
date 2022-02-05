@@ -28,19 +28,25 @@ exports.getBusinessPageHandler = async (event) => {
       },
    };
 
-   const dynamoResult = await docClient.get(params).promise();
+   let response;
 
-   let getResult = dynamoResult.Items;
-   // delete DynamoDB specific items
-   delete getResult.pk;
-   delete getResult.sk;
+   try {
+      const dynamoResult = await docClient.get(params).promise();
 
-   const response = {
-      statusCode: 200,
-      body: {
-         results: getResult,
-      },
-   };
+      let getResults = dynamoResult.Items;
+      delete getResults.pk;
+      delete getResults.sk;
+
+      response = {
+         statusCode: 200,
+         body: { results: getResults },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e },
+      };
+   }
 
    console.info(
       `response from: ${event.path} statusCode: ${
