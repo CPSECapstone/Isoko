@@ -137,7 +137,7 @@ const ErrContainer = styled.div`
    height: 20px;
 `;
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
    const [email, setEmail] = useState('');
    const [err, setErr] = useState('');
 

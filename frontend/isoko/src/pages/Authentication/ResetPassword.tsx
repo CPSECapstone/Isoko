@@ -137,7 +137,7 @@ const ErrContainer = styled.div`
    height: 20px;
 `;
 
-const ResetPassword = () => {
+const ResetPassword: React.FC = () => {
    const [newPassword, setNewPassword] = useState('');
    const [verificationCode, setVerificationCode] = useState('');
    const [email, setEmail] = useState('');

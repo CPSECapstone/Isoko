@@ -9,7 +9,7 @@ const Title = styled.h1`
    padding: 0em 0em 0em 0.5em;
 `;
 
-const Business = () => (
+const Business: React.FC = () => (
    <main>
       <h1>Business Listing</h1>
       <BusinessHeader
