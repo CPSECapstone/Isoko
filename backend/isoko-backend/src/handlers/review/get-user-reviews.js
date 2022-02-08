@@ -39,7 +39,6 @@ exports.getUserReviewsHandler = async (event) => {
    try {
       const dynamoResult = await docClient.query(params).promise();
       let queryResults = dynamoResult.Items;
-      console.log(queryResults);
 
       // Remove DB specific fields from results
       let reviewResults = [];
