@@ -52,41 +52,48 @@ exports.getSearchResultsHandler = async (event) => {
    const keyword = _.get(requestBody, 'keyword');
    const tags = _.get(requestBody, 'tags');
 
-   const dynamoResult = await docClient
-      .query(buildQueryParams(location, category))
-      .promise();
-   let queryResults = dynamoResult.Items;
+   let response;
 
-   if (tags && tags.length && keyword) {
-      queryResults = queryResults.filter(
-         (busPreview) =>
-            busPreview.tags.some((tag) => _.includes(tags, tag)) &&
+   try {
+      const dynamoResult = await docClient
+         .query(buildQueryParams(location, category))
+         .promise();
+      let queryResults = dynamoResult.Items;
+
+      if (tags && tags.length && keyword) {
+         queryResults = queryResults.filter(
+            (busPreview) =>
+               busPreview.tags.some((tag) => _.includes(tags, tag)) &&
+               _.includes(busPreview.keywords, keyword)
+         );
+      } else if (tags && tags.length) {
+         queryResults = queryResults.filter((busPreview) =>
+            busPreview.tags.some((tag) => _.includes(tags, tag))
+         );
+      } else if (keyword) {
+         queryResults = queryResults.filter((busPreview) =>
             _.includes(busPreview.keywords, keyword)
-      );
-   } else if (tags && tags.length) {
-      queryResults = queryResults.filter((busPreview) =>
-         busPreview.tags.some((tag) => _.includes(tags, tag))
-      );
-   } else if (keyword) {
-      queryResults = queryResults.filter((busPreview) =>
-         _.includes(busPreview.keywords, keyword)
-      );
+         );
+      }
+
+      // Remove DB specific fields from results
+      const searchResults = queryResults.map((busPreview) => {
+         delete busPreview.pk;
+         delete busPreview.sk;
+
+         return busPreview;
+      });
+
+      response = {
+         statusCode: 200,
+         body: { results: searchResults },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e },
+      };
    }
-
-   // Remove DB specific fields from results
-   const searchResults = queryResults.map((busPreview) => {
-      delete busPreview.pk;
-      delete busPreview.sk;
-
-      return busPreview;
-   });
-
-   const response = {
-      statusCode: 200,
-      body: {
-         results: searchResults,
-      },
-   };
 
    console.info(
       `response from: ${event.path} statusCode: ${

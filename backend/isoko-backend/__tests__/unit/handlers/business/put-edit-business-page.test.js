@@ -57,11 +57,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          // arrange
          expectedItem = {
             statusCode: 400,
-            body: {
-               results: {
-                  error: Error('Cannot update restricted field: pk'),
-               },
-            },
+            body: { error: Error('Cannot update restricted field: pk') },
          };
 
          updateSpy.mockImplementation(() => {
@@ -89,11 +85,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          // arrange
          expectedItem = {
             statusCode: 400,
-            body: {
-               results: {
-                  error: Error('Cannot update restricted field: rating'),
-               },
-            },
+            body: { error: Error('Cannot update restricted field: rating') },
          };
 
          updateSpy.mockImplementation(() => {
@@ -123,11 +115,9 @@ describe('PutEditBusinessPageHandler tests', () => {
          expectedItem = {
             statusCode: 400,
             body: {
-               results: {
-                  error: Error(
-                     'Cannot update restricted field: rating,numReviews'
-                  ),
-               },
+               error: Error(
+                  'Cannot update restricted field: rating,numReviews'
+               ),
             },
          };
 
@@ -155,6 +145,36 @@ describe('PutEditBusinessPageHandler tests', () => {
          expect(result).toEqual(expectedItem);
       });
    });
+
+   describe('Failed update test', () => {
+      it('Should return a 400 response when update throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Update failed') },
+         };
+         updateSpy.mockImplementation(() => {
+            throw new Error('Update failed');
+         });
+
+         const event = {
+            httpMethod: 'PUT',
+            pathParameters: {
+               businessId: '-664125567',
+            },
+            body: JSON.stringify({
+               city: 'Venice Beach',
+            }),
+         };
+
+         // act
+         const result = await putEditBusinessPageHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      });
+   });
+
    describe('Valid input tests', () => {
       it('Should update value of one target field', async () => {
          // arrange
