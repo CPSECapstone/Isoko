@@ -297,7 +297,7 @@ const ListBusiness: React.FC = () => {
          tags: tags,
          category,
          shortDesc,
-         links: isBrickAndMortar === 'true' ? '' : businessURL,
+         links: isBrickAndMortar === 'true' ? {} : { BusinessURL: businessURL },
          hours:
             isBrickAndMortar === 'true'
                ? {

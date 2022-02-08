@@ -30,12 +30,12 @@ exports.postListBusinessHandler = async (event) => {
    // add defaultVal param for attributes that are optional/don't appear on non-owner list a business page
    const name = _.get(requestBody, 'name');
    const city = _.get(requestBody, 'city', '');
-   const state = _.get(requestBody, 'state');
-   const street = _.get(requestBody, 'street');
-   const zip = _.get(requestBody, 'zip');
-   const type = _.get(requestBody, 'type');
-   const tags = _.get(requestBody, 'tags');
-   const keywords = _.get(requestBody, 'keywords');
+   const state = _.get(requestBody, 'state', '');
+   const street = _.get(requestBody, 'street', '');
+   const zip = _.get(requestBody, 'zip', '');
+   const type = _.get(requestBody, 'type', '');
+   const tags = _.get(requestBody, 'tags', '');
+   const category = _.get(requestBody, 'category', '');
    const shortDesc = _.get(requestBody, 'shortDesc', '');
    const hours = _.get(requestBody, 'hours', {});
    const links = _.get(requestBody, 'links', {});
@@ -61,7 +61,7 @@ exports.postListBusinessHandler = async (event) => {
          zip: zip,
          type: type,
          tags: tags,
-         keywords: keywords,
+         category: category,
          shortDesc: shortDesc,
          businessId: hash(name, street),
          hours: hours,
@@ -78,11 +78,14 @@ exports.postListBusinessHandler = async (event) => {
          lister: lister,
       },
    };
+   console.info("params"); 
+   console.info(params); 
 
    const dynamoResult = await docClient.put(params).promise();
 
    let putResult = dynamoResult.Items;
-
+   console.info("put result"); 
+   console.info(putResult); 
    // delete DynamoDB specific items
    delete putResult.pk;
    delete putResult.sk;
