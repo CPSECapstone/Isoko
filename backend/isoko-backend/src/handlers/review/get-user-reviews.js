@@ -1,5 +1,4 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
-const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
 
