@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Review from '../components/Review';
 import BusinessHeader from '../components/business/BusinessHeader';
+import ImageCarousel from '../components/business/ImageCarousel';
 
 const Title = styled.h1`
    font-size: 2.5em;
@@ -9,9 +10,23 @@ const Title = styled.h1`
    padding: 0em 0em 0em 0.5em;
 `;
 
+const StyledCarousel = styled(ImageCarousel)`
+   width: 90%;
+   margin-top: 5px;
+`;
+
 const Business: React.FC = () => (
    <main>
-      <h1>Business Listing</h1>
+      <StyledCarousel
+         images={[
+            'https://www.thebossykitchen.com/wp-content/uploads/2021/05/French-fries-720x720.jpg',
+            'https://www.thecookierookie.com/wp-content/uploads/2018/04/how-to-broil-hamburgers-broiled-hamburger-recipe-7-of-9.compressed-copy.jpg',
+            'https://www.drinkstuff.com/productimg/104599_large.jpg',
+            'https://www.thebossykitchen.com/wp-content/uploads/2021/05/French-fries-720x720.jpg',
+            'https://www.thecookierookie.com/wp-content/uploads/2018/04/how-to-broil-hamburgers-broiled-hamburger-recipe-7-of-9.compressed-copy.jpg',
+            'https://www.drinkstuff.com/productimg/104599_large.jpg',
+         ]}
+      />
       <BusinessHeader
          name="Bob's Burgers"
          description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"

@@ -40,7 +40,7 @@ exports.putItemHandler = async (event) => {
 
    // All log statements are written to CloudWatch
    console.info(
-      `response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`
+      `response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body} results: ${result}`
    );
    return response;
 };
