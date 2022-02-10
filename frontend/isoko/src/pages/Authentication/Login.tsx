@@ -160,7 +160,7 @@ const Login: React.FC = () => {
       });
 
       cognitoUser.authenticateUser(authDetails, {
-         onSuccess: (result) => {
+         onSuccess: () => {
             navigate('/');
          },
          onFailure: (err) => {

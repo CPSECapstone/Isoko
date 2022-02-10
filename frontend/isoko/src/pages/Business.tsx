@@ -16,7 +16,7 @@ const StyledCarousel = styled(ImageCarousel)`
    margin-top: 5px;
 `;
 
-const Business = () => (
+const Business: React.FC = () => (
    <main>
       <StyledCarousel
          images={[

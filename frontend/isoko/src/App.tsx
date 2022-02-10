@@ -18,7 +18,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ResetPassword from './pages/Authentication/ResetPassword';
 
-const App = () => (
+const App: React.FC = () => (
    <div className="App">
       <link
          href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500&family=Heebo:wght@300;400;500&family=Inter:wght@300;400;500&family=Open+Sans:wght@300;400;500&display=swap"

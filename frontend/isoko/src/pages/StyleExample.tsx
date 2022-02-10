@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledButton from '../styles/StyledButton';
 
-const StyleExample = () => (
+const StyleExample: React.FC = () => (
    <div>
       <h1>ISOKO</h1>
       <h2>here is a header</h2>

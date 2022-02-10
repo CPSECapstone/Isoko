@@ -43,7 +43,7 @@ const StyledBusinessPreview = styled(BusinessPreview)`
    margin-bottom: 15px;
 `;
 
-const Home = () => (
+const Home: React.FC = () => (
    <main>
       <h1>Home!</h1>
       <SignOutButton />
