@@ -115,7 +115,6 @@ exports.putEditBusinessPageHandler = async (event) => {
       ReturnValues: 'UPDATED_NEW',
    };
 
-   let dynamoResult;
    let response;
 
    try {
@@ -126,7 +125,7 @@ exports.putEditBusinessPageHandler = async (event) => {
          throw new Error(`Cannot update restricted field: ${fields}`);
       }
 
-      dynamoResult = await docClient.update(params).promise();
+      const dynamoResult = await docClient.update(params).promise();
 
       const updateResult = dynamoResult.Items;
 
@@ -143,9 +142,7 @@ exports.putEditBusinessPageHandler = async (event) => {
    } catch (e) {
       response = {
          statusCode: 400,
-         body: {
-            results: { error: e },
-         },
+         body: { error: e },
       };
    }
 
