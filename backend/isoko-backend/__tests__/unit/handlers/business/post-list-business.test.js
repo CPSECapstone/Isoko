@@ -37,6 +37,34 @@ describe('PostListBusinessHandler tests', () => {
       });
    });
 
+   describe('Failed put test', () => {
+      it('Should return a 400 response when put throws an error', async () => {
+         // arrange
+         expectedItem = {
+            statusCode: 400,
+            body: { error: Error('Put failed') },
+         };
+         putSpy.mockImplementation(() => {
+            throw new Error('Put failed');
+         });
+
+         const event = {
+            httpMethod: 'POST',
+            body: JSON.stringify({
+               name: "Bluth's Original Frozen Banana",
+               street: '70 Newport Pier',
+               businessId: '-664125567',
+            }),
+         };
+
+         // act
+         const result = await postListBusinessHandler(event);
+
+         // assert
+         expect(result).toEqual(expectedItem);
+      });
+   });
+
    describe('Valid input tests', () => {
       it('Should post business info with all optional params included and return details', async () => {
          // arrange

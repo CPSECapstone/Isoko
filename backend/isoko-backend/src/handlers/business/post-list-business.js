@@ -78,24 +78,26 @@ exports.postListBusinessHandler = async (event) => {
          lister: lister,
       },
    };
-   console.info("params"); 
-   console.info(params); 
 
-   const dynamoResult = await docClient.put(params).promise();
+   let response;
 
-   let putResult = dynamoResult.Items;
-   console.info("put result"); 
-   console.info(putResult); 
-   // delete DynamoDB specific items
-   delete putResult.pk;
-   delete putResult.sk;
+   try {
+      const dynamoResult = await docClient.put(params).promise();
 
-   const response = {
-      statusCode: 200,
-      body: {
-         results: putResult,
-      },
-   };
+      let putResults = dynamoResult.Items;
+      delete putResults.pk;
+      delete putResults.sk;
+
+      response = {
+         statusCode: 200,
+         body: { results: putResults },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e },
+      };
+   }
 
    console.info(
       `response from: ${event.path} statusCode: ${

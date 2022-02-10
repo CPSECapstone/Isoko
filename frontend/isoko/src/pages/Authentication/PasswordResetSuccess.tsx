@@ -90,7 +90,7 @@ const FPTitle = styled.h2`
    color: #f97d0b;
 `;
 
-const PasswordResetSuccess = () => {
+const PasswordResetSuccess: React.FC = () => {
    const navigate = useNavigate();
 
    useEffect(() => {

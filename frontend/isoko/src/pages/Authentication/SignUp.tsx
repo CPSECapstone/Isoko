@@ -217,7 +217,7 @@ const SignUp: React.FC = () => {
             }),
          ],
          [],
-         (err, result) => {
+         (err) => {
             if (err) {
                setErr(err.message || JSON.stringify(err));
                return;

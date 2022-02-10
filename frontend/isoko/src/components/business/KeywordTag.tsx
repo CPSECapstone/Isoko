@@ -1,5 +1,4 @@
 import React from 'react';
-import { propTypes } from 'react-bootstrap/esm/Image';
 import styled from 'styled-components';
 
 const KeywordTagContainer = styled.div`

@@ -50,11 +50,10 @@ exports.postReviewHandler = async (event) => {
       },
    };
 
-   let dynamoResult;
    let response;
 
    try {
-      dynamoResult = await docClient.put(params).promise();
+      const dynamoResult = await docClient.put(params).promise();
 
       let putResults = dynamoResult.Items;
       delete putResults.pk;

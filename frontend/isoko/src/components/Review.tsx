@@ -63,7 +63,7 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    imageUrls?: string[];
 }
 
-const Review = (props: ReviewProps) => {
+const Review: React.FC = (props: ReviewProps) => {
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>

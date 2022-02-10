@@ -398,7 +398,7 @@ const ListBusiness: React.FC = () => {
                         multiple
                         id="tags-outlined"
                         options={minorityGroups}
-                        getOptionLabel={(option: any) => option}
+                        getOptionLabel={(option: string) => option}
                         value={tags}
                         onChange={(e, value) => {
                            setTags(value);

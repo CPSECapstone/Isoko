@@ -4,7 +4,7 @@ import { environment } from '../environment/environment';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { useNavigate } from 'react-router-dom';
 
-const SignOutButton = () => {
+const SignOutButton: React.FC = () => {
    const navigate = useNavigate();
 
    const signOut = () => {

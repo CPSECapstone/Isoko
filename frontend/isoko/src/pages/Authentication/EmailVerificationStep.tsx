@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const EmailVerification = () => {
+const EmailVerification: React.FC = () => {
    const Background = styled.div`
       padding: 40px;
       min-width: 100vh;
