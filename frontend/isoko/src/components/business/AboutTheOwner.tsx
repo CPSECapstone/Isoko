@@ -2,25 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 
 const AboutTheOwnerContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    text-align: left;
-    margin: 12px;
-    padding: 0em 0em 0em 0.5em;
-    min-height: 140px;
+   display: flex;
+   flex-direction: column;
+   align-items: left;
+   text-align: left;
+   margin: 12px;
+   padding: 0em 0em 0em 0.5em;
+   min-height: 140px;
 `;
 
 const ContentText = styled.p`
-    padding: 0.5em 0em 0.5em 2em;
-    width: 100%;
+   padding: 0.5em 0em 0.5em 2em;
+   font-size: 1.15em;
+   width: 100%;
 `;
 
 const Content = styled.div`
-    display: flex;
-    align-items: center; 
+   display: flex;
+   align-items: center;
 `;
-
 
 const Photo = styled.img`
    height: 120px;
@@ -32,19 +32,19 @@ const Photo = styled.img`
 `;
 
 interface AboutTheOwnerProps extends React.HTMLProps<HTMLDivElement> {
-    ownerImageUrl: string;
-    content: string;
- }
- 
- const AboutTheOwner: React.FC<AboutTheOwnerProps> = (props) => {
-    return (
-       <AboutTheOwnerContainer className={props.className}>
-           <Content>
-            <Photo src={props.ownerImageUrl}/>
+   ownerImageUrl: string;
+   content: string;
+}
+
+const AboutTheOwner: React.FC<AboutTheOwnerProps> = (props) => {
+   return (
+      <AboutTheOwnerContainer className={props.className}>
+         <Content>
+            <Photo src={props.ownerImageUrl} />
             <ContentText>{props.content}</ContentText>
-           </Content>
-       </AboutTheOwnerContainer>
-    );
- };
- 
- export default AboutTheOwner;
+         </Content>
+      </AboutTheOwnerContainer>
+   );
+};
+
+export default AboutTheOwner;
