@@ -1,19 +1,57 @@
+const dynamodb = require('aws-sdk/clients/dynamodb');
+const docClient = new dynamodb.DocumentClient();
+const { BUSINESS_TABLE } = require('../../constants');
 
 /**
  * HTTP get method to get business page with details and reviews for specific businessId.
  */
 exports.getBusinessPageHandler = async (event) => {
-    if (event.httpMethod !== 'GET') {
-        throw new Error(`getBusinessPage only accept GET method, you tried: ${event.httpMethod}`);
-    }
+   if (event.httpMethod !== 'GET') {
+      throw new Error(
+         `getBusinessPage only accept GET method, you tried: ${event.httpMethod}`
+      );
+   }
 
-    console.info('received:', event);
+   console.info('received:', event);
+   const { businessId } = event.pathParameters;
 
-    const response = {
-        statusCode: 200,
-        body: {...JSON.parse(event.body), requestParams: event.pathParameters }       
-    };
+   if (businessId == null) {
+      throw new Error(
+         `Missing query parameter 'businessId'. Request URL format: GET/business/{businessId}`
+      );
+   }
 
-    console.info(`response from: ${event.path} statusCode: ${response.statusCode} body: ${JSON.stringify(response.body)}`);
-    return response;
-}
+   const params = {
+      TableName: BUSINESS_TABLE,
+      Key: {
+         businessId: businessId,
+      },
+   };
+
+   let response;
+
+   try {
+      const dynamoResult = await docClient.get(params).promise();
+
+      let getResults = dynamoResult.Items;
+      delete getResults.pk;
+      delete getResults.sk;
+
+      response = {
+         statusCode: 200,
+         body: { results: getResults },
+      };
+   } catch (e) {
+      response = {
+         statusCode: 400,
+         body: { error: e },
+      };
+   }
+
+   console.info(
+      `response from: ${event.path} statusCode: ${
+         response.statusCode
+      } body: ${JSON.stringify(response.body)}`
+   );
+   return response;
+};
