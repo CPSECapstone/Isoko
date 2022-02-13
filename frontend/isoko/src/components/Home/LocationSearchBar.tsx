@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-
-const options = ['Candy', 'Candle', 'Burger', 'Burger Hut'];
+import AWS from 'aws-sdk';
 
 const StyledSearchBar = styled(Autocomplete)`
    .MuiOutlinedInput-notchedOutline {
@@ -32,16 +31,41 @@ interface LocationProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const LocationSearchBar: React.FC<LocationProps> = (props) => {
+   const credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'us-west-2:7e6f6851-3cee-4edf-af12-50c3e00f365b',
+   });
+
+   const client = new AWS.Location({
+      credentials,
+      region: 'us-west-2', // region containing the identity pool
+   });
+
+   const [optionsState, setOptionsState] = useState<Array<string>>([]);
+   const updatingLocState = async (value: string) => {
+      props.changeLocationState(value);
+
+      const rsp = await client
+         .searchPlaceIndexForSuggestions({
+            IndexName: 'Isoko-Index',
+            Text: value,
+            MaxResults: 7,
+            FilterCountries: ['USA'],
+         })
+         .promise();
+
+      const options = rsp.Results.map((value) => value.Text);
+      setOptionsState(options);
+      console.log(optionsState);
+   };
+
    return (
       <StyledSearchBar
          disablePortal
          id="home-search-bar"
-         options={options}
+         options={optionsState}
          sx={{}}
          value={props.input}
-         onInputChange={(e, value) =>
-            props.changeLocationState(value as string)
-         }
+         onInputChange={(e, value) => updatingLocState(value as string)}
          renderInput={(params) => (
             <StyledTextField {...params} placeholder="San Diego, CA" />
          )}

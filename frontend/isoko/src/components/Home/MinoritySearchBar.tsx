@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { produceWithPatches } from 'immer';
 
 const StyledSearchBar = styled(Autocomplete)`
    .MuiOutlinedInput-notchedOutline {
