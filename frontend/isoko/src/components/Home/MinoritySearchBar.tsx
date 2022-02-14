@@ -4,21 +4,41 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 const StyledSearchBar = styled(Autocomplete)`
-   .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
-   }
+   border: 2.5px solid #000000;
+   background: #ffffff;
+   // .MuiOutlinedInput-notchedOutline {
+   //       // border: 2.5px solid #000000;
+   //    }
 
-   .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
-   }
+   //    .Mui-focused .MuiOutlinedInput-notchedOutline {
+   //       // border: 2.5px solid #000000;
+   //    }
 
-   hover .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
-   }
+   //    hover .MuiOutlinedInput-notchedOutline {
+   //       // border: 2.5px solid #000000;
+   //    }
+
+   //    .MuiAutocomplete-root fieldset:hover{
+   //       border-color: #000000 !important;
+   //    }
 `;
 
 const StyledTextField = styled(TextField)`
-   background: #ffffff;
+   background: white;
+   & label.Mui-focused {
+      color: white;
+   }
+   & .MuiOutlinedInput-root {
+      & fieldset {
+         border-color: white;
+      }
+      &:hover fieldset {
+         border-color: white;
+      }
+      &.Mui-focused fieldset {
+         border-color: white;
+      }
+   }
 `;
 
 const minorityGroups = [
@@ -43,7 +63,7 @@ const MinoritySearchBar: React.FC<MinorityProps> = (props) => {
          multiple
          id="tags-outlined"
          options={minorityGroups}
-         getOptionLabel={(option: any) => option}
+         getOptionLabel={(option) => (typeof option === 'string' ? option : '')}
          value={props.minorityState}
          onChange={(e, value) => {
             props.setMinorityState(Array.isArray(value) ? value : []);

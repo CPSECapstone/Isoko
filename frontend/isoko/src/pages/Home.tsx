@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchBar from '../components/Home/SearchBar';
-import SignOutButton from '../components/SignOutButton';
 import coffee from '../components/Home/BackgroundPics/coffee.png';
 import sculptures from '../components/Home/BackgroundPics/sculptures.png';
 import flowers from '../components/Home/BackgroundPics/flowers.png';
-import device from '../styles/devices';
 import BusinessPreview from '../components/business/BusinessPreview';
 
 const Title = styled.h1`
@@ -33,6 +31,10 @@ const Container = styled.div`
    justify-content: center;
 `;
 
+const TopHalfContainer = styled.div`
+   margin-top: 11%;
+`;
+
 const LeftImg = styled.div`
    display: flex;
    flex-direction: column;
@@ -41,15 +43,10 @@ const LeftImg = styled.div`
    position: absolute;
    left: 0;
    z-index: -1;
-   // padding: 100px;
    background-image: url(${flowers});
    background-size: cover;
    background-position: top left;
    background-repeat: no-repeat;
-   // @media ${device.tablet} {
-   //    order: 2;
-   //    width: 100%;
-   // }
 `;
 
 const MidImg = styled.div`
@@ -59,15 +56,10 @@ const MidImg = styled.div`
    height: 100%;
    position: absolute;
    z-index: -1;
-   // padding: 1em;
    background-image: url(${sculptures});
    background-size: cover;
    background-position: center;
    background-repeat: no-repeat;
-   // @media ${device.tablet} {
-   //    order: 2;
-   //    width: 100%;
-   // }
 `;
 const RightImg = styled.div`
    display: flex;
@@ -77,15 +69,10 @@ const RightImg = styled.div`
    position: absolute;
    right: 0px;
    z-index: -1;
-   // padding: 1.1em;
    background-image: url(${coffee});
    background-size: cover;
    background-position: top right;
    background-repeat: no-repeat;
-   // @media ${device.tablet} {
-   //    order: 2;
-   //    width: 100%;
-   // }
 `;
 
 const ContentContainer = styled.div`
@@ -113,6 +100,7 @@ const FeaturedBusinesses = styled.div`
    height: 50%;
    margin-left: 10%;
    margin-right: 10%;
+   margin-top: 40%;
    max-width: 1200px;
 `;
 
@@ -135,10 +123,11 @@ const Home: React.FC = () => (
          <MidImg></MidImg>
          <RightImg></RightImg>
       </Container>
-      <SignOutButton />
-      <Title>ISOKO</Title>
-      <SubTitle>find something special</SubTitle>
-      <SearchBar></SearchBar>
+      <TopHalfContainer>
+         <Title>ISOKO</Title>
+         <SubTitle>find something special</SubTitle>
+         <SearchBar></SearchBar>
+      </TopHalfContainer>
 
       <ContentContainer>
          <SearchContainer />

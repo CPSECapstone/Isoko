@@ -24,7 +24,7 @@ const LabelBox1 = styled.div`
 `;
 
 const LabelBox2 = styled.div`
-   width: 34%;
+   width: 34%;s
    display: flex;
    flex-direction: column;
 `;
@@ -35,7 +35,7 @@ const LabelBox3 = styled.div`
    flex-direction: column;
 `;
 
-const SearchBar = () => {
+const SearchBar: React.FC = () => {
    const [minorityState, setMinorityState] = useState<Array<string>>([]);
    const [locationState, setLocationState] = useState('');
    const [keywordState, setKeywordState] = useState('');

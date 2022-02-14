@@ -6,6 +6,9 @@ import TextField from '@mui/material/TextField';
 const options = ['Candy', 'Candle', 'Burger', 'Burger Hut'];
 
 const StyledSearchBar = styled(Autocomplete)`
+   border: 2.5px solid #000000;
+   background: #ffffff;
+   border-radius: 90px 0px 0px 90px;
    .MuiOutlinedInput-notchedOutline {
       border: 2.5px solid #000000;
       border-radius: 90px 0px 0px 90px;
@@ -22,8 +25,22 @@ const StyledSearchBar = styled(Autocomplete)`
 `;
 
 const StyledTextField = styled(TextField)`
-   background: #ffffff;
+   background: white;
    border-radius: 90px 0px 0px 90px;
+   & label.Mui-focused {
+      color: white;
+   }
+   & .MuiOutlinedInput-root {
+      & fieldset {
+         border-color: white;
+      }
+      &:hover fieldset {
+         border-color: white;
+      }
+      &.Mui-focused fieldset {
+         border-color: white;
+      }
+   }
 `;
 
 interface KeywordProps extends React.HTMLProps<HTMLDivElement> {
