@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-const BusinessContainer = styled(Container)`
+const BusinessContainer = styled.div`
    cursor: pointer;
    display: flex;
    flex-direction: row;
@@ -90,7 +90,7 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
 
    return (
       <BusinessContainer
-         className={`fluid overflow-auto ${props.className}`}
+         className={props.className}
          onClick={() => {
             navigate(props.path);
          }}

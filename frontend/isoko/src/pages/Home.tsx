@@ -13,7 +13,6 @@ const Title = styled.h1`
    font-weight: normal;
    font-size: 6rem;
    color: #ffffff;
-   padding-top: 5%;
 `;
 
 const SubTitle = styled.h3`
@@ -25,21 +24,22 @@ const SubTitle = styled.h3`
    color: #ffffff;
 `;
 
-const Container = styled.div`
+const ImageContainer = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
 `;
 
 const TopHalfContainer = styled.div`
-   margin-top: 11%;
+   height: 100vh;
+   min-height: 500px;
 `;
 
+// TODO: Combine these three into a single component taking in props
 const LeftImg = styled.div`
-   display: flex;
-   flex-direction: column;
    width: 33%;
    height: 100%;
+   min-height: 500px;
    position: absolute;
    left: 0;
    z-index: -1;
@@ -50,8 +50,7 @@ const LeftImg = styled.div`
 `;
 
 const MidImg = styled.div`
-   display: flex;
-   flex-direction: column;
+   min-height: 500px;
    width: 34%;
    height: 100%;
    position: absolute;
@@ -61,9 +60,9 @@ const MidImg = styled.div`
    background-position: center;
    background-repeat: no-repeat;
 `;
+
 const RightImg = styled.div`
-   display: flex;
-   flex-direction: column;
+   min-height: 500px;
    width: 33%;
    height: 100%;
    position: absolute;
@@ -75,63 +74,59 @@ const RightImg = styled.div`
    background-repeat: no-repeat;
 `;
 
-const ContentContainer = styled.div`
-   display: flex;
-   justify-content: center;
-   flex-shrink: 1;
-   width: 100%;
-   height: 100%;
-   min-height: 100vh;
-   padding: 30px;
-`;
-
-const SearchContainer = styled.div`
-   display: flex;
-   height: 50%;
-`;
-
-const FeaturedBusinesses = styled.div`
-   align-self: center;
-   display: flex;
-   flex-grow: 1;
-   flex-shrink: 1;
-   flex-direction: column;
-   align-items: flex-start;
-   height: 50%;
-   margin-left: 10%;
-   margin-right: 10%;
-   margin-top: 40%;
-   max-width: 1200px;
-`;
-
 const FTitle = styled.h2`
    font-size: 1.25rem;
-   margin: none;
    margin-block-start: 0em;
    margin-block-end: 0em;
-   align-self: left;
 `;
 
 const StyledBusinessPreview = styled(BusinessPreview)`
    margin-bottom: 15px;
 `;
 
+const TopContentContianer = styled.div`
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+
+   height: 100%;
+`;
+
+const BottomContent = styled.div`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   height: 100vh;
+   min-height: 500px;
+`;
+
+const CenterDiv = styled.div`
+   display: flex;
+   align-items: flex-start;
+   flex-direction: column;
+
+   width: 90%;
+`;
+
 const Home: React.FC = () => (
    <main>
-      <Container>
-         <LeftImg></LeftImg>
-         <MidImg></MidImg>
-         <RightImg></RightImg>
-      </Container>
       <TopHalfContainer>
-         <Title>ISOKO</Title>
-         <SubTitle>find something special</SubTitle>
-         <SearchBar></SearchBar>
+         <ImageContainer>
+            <LeftImg></LeftImg>
+            <MidImg></MidImg>
+            <RightImg></RightImg>
+         </ImageContainer>
+
+         <TopContentContianer>
+            <Title>ISOKO</Title>
+            <SubTitle>find something special</SubTitle>
+            <SearchBar />
+         </TopContentContianer>
       </TopHalfContainer>
 
-      <ContentContainer>
-         <SearchContainer />
-         <FeaturedBusinesses>
+      <BottomContent>
+         <CenterDiv>
             <FTitle>{'Featured Brick & Mortar Business'}</FTitle>
             <StyledBusinessPreview
                name="Bluth's Original Frozen Banana"
@@ -156,8 +151,8 @@ const Home: React.FC = () => (
                path="/business"
                numReviews={80}
             />
-         </FeaturedBusinesses>
-      </ContentContainer>
+         </CenterDiv>
+      </BottomContent>
    </main>
 );
 
