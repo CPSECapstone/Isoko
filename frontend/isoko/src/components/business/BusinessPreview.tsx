@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Container } from 'react-bootstrap';
 import MinorityTag from './MinorityTag';
 import KeywordTag from './KeywordTag';
 import StarRating from './StarRating';
