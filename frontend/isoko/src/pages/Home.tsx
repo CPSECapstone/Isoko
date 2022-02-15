@@ -30,7 +30,7 @@ const ImageContainer = styled.div`
    justify-content: center;
 `;
 
-const TopHalfContainer = styled.div`
+const TopContent = styled.div`
    height: 100vh;
    min-height: 500px;
 `;
@@ -84,7 +84,7 @@ const StyledBusinessPreview = styled(BusinessPreview)`
    margin-bottom: 15px;
 `;
 
-const TopContentContianer = styled.div`
+const SearchBarContent = styled.div`
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -111,19 +111,19 @@ const CenterDiv = styled.div`
 
 const Home: React.FC = () => (
    <main>
-      <TopHalfContainer>
+      <TopContent>
          <ImageContainer>
             <LeftImg></LeftImg>
             <MidImg></MidImg>
             <RightImg></RightImg>
          </ImageContainer>
 
-         <TopContentContianer>
+         <SearchBarContent>
             <Title>ISOKO</Title>
             <SubTitle>find something special</SubTitle>
             <SearchBar />
-         </TopContentContianer>
-      </TopHalfContainer>
+         </SearchBarContent>
+      </TopContent>
 
       <BottomContent>
          <CenterDiv>
