@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import AWS from 'aws-sdk';
 
 const StyledSearchBar = styled(Autocomplete)`
-   border: 2.5px solid #000000;
+   border-left: 2px solid lightgray;
    background: #ffffff;
    border-radius: 0px 90px 90px 0px;
    .MuiOutlinedInput-notchedOutline {
