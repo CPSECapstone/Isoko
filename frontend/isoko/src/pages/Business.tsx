@@ -39,14 +39,14 @@ const Business: React.FC = () => (
       />
       <Title>About the Owner</Title>
       <AboutTheOwner
-         ownerImageUrl='https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg'
-         content='My name is Bill and I am the proud owner of Bill’s Diner. 
+         ownerImageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
+         content="My name is Bill and I am the proud owner of Bill’s Diner. 
          For the past 15 years I’ve been in the restuarant industry and 
          I’ve always been a proud black business owner. As a black 
          business owner some of the things I value is seving authentic 
          and delicious food to the great community here in San Luis Obispo. 
          Come on down to Bill’s Diner and don’t be afraid to say hi if 
-         you see me there!'
+         you see me there!"
       />
       <Title>Ratings & Reviews</Title>
       <Review
