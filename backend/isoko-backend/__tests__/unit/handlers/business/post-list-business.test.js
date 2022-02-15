@@ -104,6 +104,8 @@ describe('PostListBusinessHandler tests', () => {
             photos: [],
             reviews: [],
             lister: 'George Michael Bluth',
+            timestamp: 1644963553,
+            verified: true, 
          };
          putSpy.mockReturnValue({
             promise: () => Promise.resolve({ Items: mockPutResults }),
@@ -144,6 +146,8 @@ describe('PostListBusinessHandler tests', () => {
                photos: [],
                reviews: [],
                lister: 'George Michael Bluth',
+               timestamp: 1644963553, 
+               verified: true, 
             }),
          };
 
@@ -181,6 +185,8 @@ describe('PostListBusinessHandler tests', () => {
             photos: [],
             reviews: [],
             lister: 'George Michael Bluth',
+            timestamp: 1644963553,
+            verified: true, 
          };
 
          // act
@@ -226,6 +232,8 @@ describe('PostListBusinessHandler tests', () => {
                photos: [],
                reviews: [],
                lister: 'George Michael Bluth',
+               timestamp: 1644963553, 
+               verified: true,
             },
          });
       });
@@ -254,6 +262,7 @@ describe('PostListBusinessHandler tests', () => {
             photos: [],
             reviews: [],
             lister: 'George Michael Bluth',
+            verified: false, 
          };
          putSpy.mockReturnValue({
             promise: () => Promise.resolve({ Items: mockPutResults }),
@@ -277,6 +286,7 @@ describe('PostListBusinessHandler tests', () => {
                photos: [],
                reviews: [],
                lister: 'George Michael Bluth',
+               verified: false, 
             }),
          };
 
@@ -300,6 +310,7 @@ describe('PostListBusinessHandler tests', () => {
             photos: [],
             reviews: [],
             lister: 'George Michael Bluth',
+            verified: false, 
          };
 
          // act
@@ -334,6 +345,7 @@ describe('PostListBusinessHandler tests', () => {
                photos: [],
                reviews: [],
                lister: 'George Michael Bluth',
+               verified: false, 
             },
          });
       });
