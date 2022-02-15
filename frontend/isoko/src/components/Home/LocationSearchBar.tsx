@@ -8,38 +8,23 @@ const StyledSearchBar = styled(Autocomplete)`
    border-left: 2px solid lightgray;
    background: #ffffff;
    border-radius: 0px 90px 90px 0px;
+
    .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
-      border-radius: 0px 90px 90px 0px;
+      border: none;
    }
 
    .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
-      border-radius: 0px 90px 90px 0px;
+      border: none;
    }
 
    hover .MuiOutlinedInput-notchedOutline {
-      border: 2.5px solid #000000;
+      border: none;
    }
 `;
 
 const StyledTextField = styled(TextField)`
    background: white;
    border-radius: 0px 90px 90px 0px;
-   & label.Mui-focused {
-      color: white;
-   }
-   & .MuiOutlinedInput-root {
-      & fieldset {
-         border-color: white;
-      }
-      &:hover fieldset {
-         border-color: white;
-      }
-      &.Mui-focused fieldset {
-         border-color: white;
-      }
-   }
 `;
 
 interface LocationProps extends React.HTMLProps<HTMLDivElement> {

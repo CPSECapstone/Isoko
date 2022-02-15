@@ -4,41 +4,21 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 const StyledSearchBar = styled(Autocomplete)`
-   // border: 2.5px solid #000000;
-   background: #ffffff;
-   // .MuiOutlinedInput-notchedOutline {
-   //       // border: 2.5px solid #000000;
-   //    }
+   .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
 
-   //    .Mui-focused .MuiOutlinedInput-notchedOutline {
-   //       // border: 2.5px solid #000000;
-   //    }
+   .Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
 
-   //    hover .MuiOutlinedInput-notchedOutline {
-   //       // border: 2.5px solid #000000;
-   //    }
-
-   //    .MuiAutocomplete-root fieldset:hover{
-   //       border-color: #000000 !important;
-   //    }
+   hover .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
 `;
 
 const StyledTextField = styled(TextField)`
    background: white;
-   & label.Mui-focused {
-      color: white;
-   }
-   & .MuiOutlinedInput-root {
-      & fieldset {
-         border-color: white;
-      }
-      &:hover fieldset {
-         border-color: white;
-      }
-      &.Mui-focused fieldset {
-         border-color: white;
-      }
-   }
 `;
 
 const minorityGroups = [
