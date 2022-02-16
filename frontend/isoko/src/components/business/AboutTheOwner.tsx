@@ -13,6 +13,7 @@ const AboutTheOwnerContainer = styled.div`
 
 const ContentText = styled.p`
    padding: 0.5em 0em 0.5em 2em;
+   font-size: 1.15em;
    width: 100%;
 `;
 
