@@ -19,7 +19,7 @@ const StyledCarousel = styled(ImageCarousel)`
 
 const Business: React.FC = () => (
    <main>
-      <NavbarComponent></NavbarComponent>
+      <NavbarComponent />
       <StyledCarousel
          images={[
             'https://www.thebossykitchen.com/wp-content/uploads/2021/05/French-fries-720x720.jpg',

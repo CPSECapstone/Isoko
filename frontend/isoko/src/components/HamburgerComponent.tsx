@@ -1,60 +1,107 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-   Navbar,
-   Nav,
-   NavDropdown,
-   Container,
-   Offcanvas,
-} from 'react-bootstrap';
+import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Position = styled.div`
-   border: 1px solid blue;
    position: absolute;
    top: 0;
    right: 0;
    padding: 0;
-   margin: 0;
+   margin: 2px;
 `;
 
 const StyledNavbar = styled(Navbar)`
    padding: 0px;
-   padding-right: 0;
-   padding-left: 0;
-   margin: 0;
-   width: 100%;
 
-   .container-fluid {
+   .navbar-toggler {
       padding: 0px;
+   }
+
+   .navbar-toggler-icon {
+      width: 32px;
+      height: 32px;
+   }
+`;
+
+const StyledContainer = styled(Container)`
+   padding: 0px;
+`;
+
+const StyledToggle = styled(Navbar.Toggle)`
+   border: 0px;
+   outline: 0px;
+   box-shadow: none;
+
+   &:hover,
+   &:focus,
+   &:active {
+      outline: 1px solid darkgrey;
+      box-shadow: none;
+   }
+`;
+
+const StyledOffcanvas = styled(Navbar.Offcanvas)`
+   width: 250px;
+   background-color: #fbfbfb;
+`;
+
+const StyledTitle = styled(Offcanvas.Title)`
+   font-family: Comfortaa, sans-serif;
+   font-size: 1.5rem;
+`;
+
+const StyledLink = styled(Nav.Link)`
+   color: #0645ad;
+   font-family: Open Sans;
+   font-size: 1.25em;
+   line-height: 1.5;
+   border-bottom: 1px solid lightgrey;
+
+   &:hover {
+      color: #00368c;
+      cursor: pointer;
    }
 `;
 
 // TODO: get rid of ISOKO heading on small screens to make more space.
 const HamburgerComponent: React.FC = () => {
+   const navigate = useNavigate();
+
    return (
       <Position>
          <StyledNavbar bg="light" expand={false}>
-            <Container fluid>
-               <Navbar.Toggle aria-controls="offcanvasNavbar" />
-               <Navbar.Offcanvas
+            <StyledContainer fluid>
+               <StyledToggle aria-controls="offcanvasNavbar" />
+               <StyledOffcanvas
                   id="offcanvasNavbar"
                   aria-labelledby="offcanvasNavbarLabel"
                   placement="end"
                >
                   <Offcanvas.Header closeButton>
-                     <Offcanvas.Title id="offcanvasNavbarLabel">
-                        Offcanvas
-                     </Offcanvas.Title>
+                     <StyledTitle id="offcanvasNavbarLabel">ISOKO</StyledTitle>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                      <Nav className="justify-content-end flex-grow-1 pe-3">
-                        <Nav.Link href="#action3">Back To Home</Nav.Link>
-                        <Nav.Link href="#action1">List A Business</Nav.Link>
-                        <Nav.Link href="#action2">Sign Up</Nav.Link>
+                        <StyledLink onClick={() => navigate('/')}>
+                           Back To Home
+                        </StyledLink>
+                        <StyledLink onClick={() => navigate('/listBusiness')}>
+                           List A Business
+                        </StyledLink>
+                        <StyledLink onClick={() => navigate('/businessDash')}>
+                           Business Dashboard
+                        </StyledLink>
+                        <StyledLink onClick={() => navigate('/profile')}>
+                           Profile
+                        </StyledLink>
+                        <StyledLink onClick={() => navigate('/login')}>
+                           Sign Up
+                        </StyledLink>
                      </Nav>
                   </Offcanvas.Body>
-               </Navbar.Offcanvas>
-            </Container>
+               </StyledOffcanvas>
+            </StyledContainer>
          </StyledNavbar>
       </Position>
    );
