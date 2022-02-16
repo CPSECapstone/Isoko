@@ -23,7 +23,7 @@ const TagRow = styled.div`
 
 const Text = styled.p`
    width: 100%;
-   font-size: 1.2em;
+   font-size: 1.15em;
    margin-bottom: 5px;
 `;
 
