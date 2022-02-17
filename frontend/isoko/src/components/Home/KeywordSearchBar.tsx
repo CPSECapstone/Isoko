@@ -4,7 +4,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import keywordList from '../../constants/keywordList';
 
-// const options = ['Candy', 'Candle', 'Burger', 'Burger Hut'];
 
 const StyledSearchBar = styled(Autocomplete)`
    border-right: 2px solid lightgray;
