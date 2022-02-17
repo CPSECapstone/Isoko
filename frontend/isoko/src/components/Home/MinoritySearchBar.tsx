@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import minorityGroups from '../../constants/minorityGroups';
 
 const StyledSearchBar = styled(Autocomplete)`
    .MuiOutlinedInput-notchedOutline {
@@ -20,17 +21,6 @@ const StyledSearchBar = styled(Autocomplete)`
 const StyledTextField = styled(TextField)`
    background: white;
 `;
-
-const minorityGroups = [
-   'Black',
-   'Mexican',
-   'LGBTQ+',
-   'Women',
-   'Any Minority',
-   'Asian',
-   'Latinx',
-   'Indigenous',
-];
 
 interface MinorityProps extends React.HTMLProps<HTMLDivElement> {
    minorityState: string[];
