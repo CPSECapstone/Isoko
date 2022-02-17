@@ -297,7 +297,7 @@ const ListBusiness: React.FC = () => {
          tags: tags,
          category,
          shortDesc,
-         links: isBrickAndMortar === 'true' ? '' : businessURL,
+         links: isBrickAndMortar === 'true' ? {} : { BusinessURL: businessURL },
          hours:
             isBrickAndMortar === 'true'
                ? {
@@ -400,7 +400,7 @@ const ListBusiness: React.FC = () => {
                         multiple
                         id="tags-outlined"
                         options={minorityGroups}
-                        getOptionLabel={(option: any) => option}
+                        getOptionLabel={(option: string) => option}
                         value={tags}
                         onChange={(e, value) => {
                            setTags(value);

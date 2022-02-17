@@ -2,7 +2,7 @@ import React from 'react';
 import SearchResults from './SearchResults';
 import moment from 'moment';
 
-const Search = () => (
+const Search: React.FC = () => (
    <main>
       <h1>Search + Search Results</h1>
       <SearchResults

@@ -173,7 +173,9 @@ const ClaimBusinessSection = () => {
    );
 };
 
-const BusinessSidebar = (props: BusinessSidebarProps) => {
+const BusinessSidebar: React.FC<BusinessSidebarProps> = (
+   props: BusinessSidebarProps
+) => {
    return (
       <SidebarContainer className={props.className}>
          {/* HOURS */}

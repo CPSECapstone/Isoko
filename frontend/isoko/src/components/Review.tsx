@@ -6,11 +6,9 @@ const ReviewContainer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: start;
-   width: 40%;
    padding: 0.5em;
    margin: 0em 0em 1em 1em;
-   border: 2px solid darkgrey;
-   border-radius: 10px;
+   border-left: 2px solid #999999;
 `;
 
 const UserPhoto = styled.img`
@@ -63,7 +61,7 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    imageUrls?: string[];
 }
 
-const Review = (props: ReviewProps) => {
+const Review: React.FC = (props: ReviewProps) => {
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>

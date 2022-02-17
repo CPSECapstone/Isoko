@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ModDash = () => (
+const ModDash: React.FC = () => (
    <main>
       <h1>Moderator Dashboard</h1>
    </main>
