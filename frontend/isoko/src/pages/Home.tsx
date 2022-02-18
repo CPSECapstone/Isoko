@@ -35,7 +35,6 @@ const TopContent = styled.div`
    min-height: 500px;
 `;
 
-// TODO: Combine these three into a single component taking in props
 const LeftImg = styled.div`
    width: 33%;
    height: 100%;

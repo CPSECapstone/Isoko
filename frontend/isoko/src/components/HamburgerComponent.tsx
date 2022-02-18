@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Position = styled.div`
    position: absolute;
-   top: 0;
-   right: 0;
+   top: 0px;
+   right: 0px;
    padding: 0;
    margin: 2px;
 `;
@@ -64,7 +64,6 @@ const StyledLink = styled(Nav.Link)`
    }
 `;
 
-// TODO: get rid of ISOKO heading on small screens to make more space.
 const HamburgerComponent: React.FC = () => {
    const navigate = useNavigate();
 
