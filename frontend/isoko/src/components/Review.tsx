@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
+import ImageCarousel from './business/ImageCarousel';
 
 const ReviewContainer = styled.div`
    display: flex;
@@ -9,14 +10,6 @@ const ReviewContainer = styled.div`
    padding: 0.5em;
    margin: 0em 0em 1em 1em;
    border-left: 2px solid #999999;
-`;
-
-const UserPhoto = styled.img`
-   height: 30px;
-   width: 30px;
-   object-fit: cover;
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-   border-radius: 50%;
 `;
 
 const ReviewPhoto = styled.img`
@@ -32,6 +25,14 @@ const ReviewPhotoContainer = styled.div`
    justify-content: space-evenly;
    margin-top: 1em;
    align-items: center;
+`;
+
+const UserPhoto = styled.img`
+   height: 30px;
+   width: 30px;
+   object-fit: cover;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   border-radius: 50%;
 `;
 
 const UserContainer = styled.div`
@@ -52,6 +53,11 @@ const StarContainer = styled.div`
    margin: -0.5em 0em 0em 0em;
 `;
 
+const StyledCarousel = styled(ImageCarousel)`
+   width: 100%;
+   margin-top: 5px;
+`;
+
 interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    reviewerName: string;
    reviewerImageUrl: string;
@@ -62,6 +68,10 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const Review: React.FC = (props: ReviewProps) => {
+   let images = props.imageUrls;
+   if (images == null) {
+      images = [];
+   }
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>
@@ -84,13 +94,15 @@ const Review: React.FC = (props: ReviewProps) => {
          ) : (
             <br></br>
          )}
-         {props.imageUrls ? (
+         {images.length >= 3 ? (
+            <StyledCarousel images={images}></StyledCarousel>
+         ) : (
             <ReviewPhotoContainer>
-               {props.imageUrls.map((photo, index) => (
+               {images.map((photo, index) => (
                   <ReviewPhoto key={index} src={photo}></ReviewPhoto>
                ))}
             </ReviewPhotoContainer>
-         ) : null}
+         )}
       </ReviewContainer>
    );
 };
