@@ -3,16 +3,9 @@ import styled from 'styled-components';
 import BusinessPreview from '../components/business/BusinessPreview';
 import MinorityTag from '../components/business/MinorityTag';
 import AddTag from '../components/search/AddTag';
-import StyledButton from '../styles/StyledButton';
-import {
-   Modal,
-   Form,
-   Dropdown,
-   DropdownButton,
-   Container,
-   Row,
-   Col,
-} from 'react-bootstrap';
+import SortResultsDropdown from '../components/search/SortResultsDropdown';
+import AddTagModal from '../components/search/AddTagModal';
+import { Form, Container, Row, Col } from 'react-bootstrap';
 import moment from 'moment-timezone';
 
 const Sidebar = styled.div`
@@ -36,39 +29,6 @@ const SidebarContainer = styled.div`
    flex-shrink: 1;
    align-self: left;
    margin-bottom: 10px;
-`;
-
-const StyledDropdownButton = styled(DropdownButton)`
-   background: #fff;
-   color: #000;
-   text-decoration: underline;
-   font-size: 0.5rem;
-
-   .btn-primary {
-      background-color: #fbfbfb;
-      color: black;
-      border-color: #fbfbfb;
-      padding: 0px;
-      font-size: 0.9rem;
-
-      &:focus {
-         background-color: #fbfbfb;
-         color: black;
-         border-color: #fbfbfb;
-      }
-
-      &:hover {
-         box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
-      }
-
-      &.dropdown-toggle:focus {
-         box-shadow: none;
-      }
-   }
-
-   .btn {
-      text-decoration: underline;
-   }
 `;
 
 const ResultsContainer = styled.div`
@@ -323,90 +283,33 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // sort businesses by value of sort dropdown
    const sortBusinesses = (key) => {
       if (key === 'reviews') {
-         setFilteredBusinesses(
-            filteredBusinesses.sort(
+         setFilteredBusinesses([
+            ...filteredBusinesses.sort(
                (a, b) => b.reviews.length - a.reviews.length
-            )
-         );
+            ),
+         ]);
       } else if (key === 'recent') {
-         console.log('here');
-         setFilteredBusinesses(
-            filteredBusinesses.sort((a, b) => a.timestamp - b.timestamp)
-         );
+         setFilteredBusinesses([
+            ...filteredBusinesses.sort((a, b) => a.timestamp - b.timestamp),
+         ]);
       }
    };
 
    // this function will requery with new tags
    // already added to props.minorityTags
-   const applyNewTags = () => {
+   const applyNewTags = (e, newTags) => {
+      console.log(newTags);
+      newTags.forEach((t, i) => {
+         if (!props.minorityTags.includes(t)) {
+            props.minorityTags.push(t);
+         }
+      });
       setShowModal(false);
-      console.log('hi');
    };
 
    // modal functions
    const handleCloseModal = () => {
       setShowModal(false);
-   };
-
-   // handle when a user clicks a minority tag in the Add Tags modal
-   const addTag = (id) => {
-      const btn = document.getElementById(id);
-
-      if (props.minorityTags.includes(id)) {
-         btn.style.background = '#fff';
-         btn.style.color = '#F97D0B';
-         const index = props.minorityTags.indexOf(id);
-         props.minorityTags.splice(index, 1);
-      } else {
-         btn.style.background = '#F97D0B';
-         btn.style.color = '#fff';
-         props.minorityTags.push(id);
-      }
-   };
-
-   // build rows of minority tags in the Add Tags modal
-   const renderRows = () => {
-      const fullList = [];
-      const finalArr = [];
-      let columns = [];
-
-      props.minorityTags.forEach((m, i) => {
-         fullList.push(m);
-      });
-
-      // remove tags that are already selected
-      allTags.forEach((t, i) => {
-         if (!props.minorityTags.includes(t)) {
-            fullList.push(t);
-         }
-      });
-
-      fullList.forEach((tag, i) => {
-         if (props.minorityTags.includes(tag)) {
-            columns.push(
-               <ModalTagCol className="col-auto" key={i}>
-                  <StyledButton primary id={tag} onClick={() => addTag(tag)}>
-                     {tag}
-                  </StyledButton>
-               </ModalTagCol>
-            );
-         } else {
-            columns.push(
-               <ModalTagCol className="col-auto" key={i}>
-                  <StyledButton id={tag} onClick={() => addTag(tag)}>
-                     {tag}
-                  </StyledButton>
-               </ModalTagCol>
-            );
-         }
-         // only 4 tags/row
-         if ((i + 1) % 3 === 0) {
-            finalArr.push(<ModalTagRow>{columns}</ModalTagRow>);
-            columns = [];
-         }
-      });
-      finalArr.push(<ModalTagRow>{columns}</ModalTagRow>);
-      return finalArr;
    };
 
    return (
@@ -416,37 +319,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                <Sidebar>
                   <StyledH2>Sort</StyledH2>
                   <SidebarContainer>
-                     <StyledDropdownButton title={sortKey}>
-                        <Dropdown.Item as="button">
-                           <div
-                              onClick={(e) => {
-                                 setSortKey(e.target.textContent);
-                                 sortBusinesses('recent');
-                              }}
-                           >
-                              Recently added
-                           </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item as="button">
-                           <div
-                              onClick={(e) => {
-                                 setSortKey(e.target.textContent);
-                                 sortBusinesses('reviews');
-                              }}
-                           >
-                              Most reviews
-                           </div>
-                        </Dropdown.Item>
-                        <Dropdown.Item as="button">
-                           <div
-                              onClick={(e) => {
-                                 setSortKey(e.target.textContent);
-                              }}
-                           >
-                              Highest rated
-                           </div>
-                        </Dropdown.Item>
-                     </StyledDropdownButton>
+                     <SortResultsDropdown sortFunction={sortBusinesses} />
                   </SidebarContainer>
                   <StyledH2>Filters</StyledH2>
                   <StyledH3>Tags</StyledH3>
@@ -472,27 +345,17 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            <div
                               onClick={() => {
                                  setShowModal(true);
-                                 console.log('hit');
                               }}
                            >
                               <AddTag />
                            </div>
-                           <Modal show={showModal} onHide={handleCloseModal}>
-                              <Modal.Header closeButton>
-                                 <Modal.Title>Business Tags</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                 <Container>{renderRows()}</Container>
-                              </Modal.Body>
-                              <Modal.Footer>
-                                 <StyledButton onClick={handleCloseModal}>
-                                    Cancel
-                                 </StyledButton>
-                                 <StyledButton primary onClick={applyNewTags}>
-                                    Confirm
-                                 </StyledButton>
-                              </Modal.Footer>
-                           </Modal>
+                           <AddTagModal
+                              show={showModal}
+                              selectedTags={props.minorityTags}
+                              allTags={allTags}
+                              handleClose={handleCloseModal}
+                              applyNewTags={applyNewTags}
+                           />
                         </AddTagCol>
                      </Row>
                   </TagContainer>
