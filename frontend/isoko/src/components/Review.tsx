@@ -17,12 +17,13 @@ const ReviewPhoto = styled.img`
    max-height: 40%;
    object-fit: contain;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   margin: 0px 7px 0px 0px;
 `;
 
 const ReviewPhotoContainer = styled.div`
    display: flex;
    flex-direction: row;
-   justify-content: space-evenly;
+   justify-content: start;
    margin-top: 1em;
    align-items: center;
 `;
