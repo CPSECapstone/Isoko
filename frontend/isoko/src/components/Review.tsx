@@ -12,9 +12,13 @@ const ReviewContainer = styled.div`
    border-left: 2px solid #999999;
 `;
 
-const ReviewPhoto = styled.img`
-   max-width: 32.5%;
-   max-height: 40%;
+interface ReviewPhotoProps {
+   maxWidth?: number;
+}
+
+const ReviewPhoto = styled.img<ReviewPhotoProps>`
+   max-height: 200px;
+   max-width: ${(props) => `${props.maxWidth}%`}
    object-fit: contain;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    margin: 0px 7px 0px 0px;
@@ -56,7 +60,7 @@ const StarContainer = styled.div`
 
 const StyledCarousel = styled(ImageCarousel)`
    width: 100%;
-   margin-top: 5px;
+   margin-top: 1em;
 `;
 
 interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
@@ -96,11 +100,15 @@ const Review: React.FC = (props: ReviewProps) => {
             <br></br>
          )}
          {images.length >= 3 ? (
-            <StyledCarousel images={images}></StyledCarousel>
+            <StyledCarousel maxHeight={200} images={images}></StyledCarousel>
          ) : (
             <ReviewPhotoContainer>
                {images.map((photo, index) => (
-                  <ReviewPhoto key={index} src={photo}></ReviewPhoto>
+                  <ReviewPhoto
+                     maxWidth={100 / images.length}
+                     key={index}
+                     src={photo}
+                  ></ReviewPhoto>
                ))}
             </ReviewPhotoContainer>
          )}

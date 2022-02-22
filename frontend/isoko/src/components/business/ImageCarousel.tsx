@@ -19,6 +19,7 @@ const Photo = styled.img`
    border-radius: 5px;
    object-fit: cover;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   max-height: ${(props) => (props.maxHeight ? `${props.maxHeight}px` : null)};
 `;
 
 const RightArrow = styled(FontAwesomeIcon)`
@@ -37,6 +38,7 @@ const LeftArrow = styled(FontAwesomeIcon)`
 
 interface CarouselProps extends React.HTMLProps<HTMLDivElement> {
    images: string[];
+   maxHeight: number;
 }
 
 const CustomRightArrow = ({ onClick }: ArrowProps) => (
@@ -71,7 +73,7 @@ const ImageCarousel: React.FC<CarouselProps> = (props) => {
             infinite={true}
          >
             {images.map((img, idx) => (
-               <Photo src={img} key={idx} />
+               <Photo maxHeight={props.maxHeight} src={img} key={idx} />
             ))}
          </Carousel>
       </CarouselContainer>
