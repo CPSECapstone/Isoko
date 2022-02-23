@@ -242,7 +242,9 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    const [tags, setTags] = useState(props.minorityTags || []);
    const [keywords, setKeywords] = useState(props.keywordTags || []);
    const [category, setCategory] = useState(props.category || '');
-   const [businessURL, setBusinessURL] = useState(props.links[0].link || '');
+   const [businessURL, setBusinessURL] = useState(
+      props.links ? props.links[0].link : ''
+   );
    const [shortDesc, setShortDesc] = useState(props.description || '');
    const [ownerName, setOwnerName] = useState(props.ownerName || '');
    const [ownerPhone, setOwnerPhone] = useState(props.ownerPhone || '');
@@ -267,21 +269,23 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    });
 
    // This function parses hours input and makes it form ready
-   const getOpenHoursFromHours = () => {
-      Object.entries(props.hours).forEach((entry) => {
-         const [key, value] = entry;
-         openHours[key] = value.split('-')[0];
-         closeHours[key] = value.split('-')[1];
-      });
-      setOpenHours(openHours);
-      setCloseHours(closeHours);
+   const parseHours = () => {
+      if (props.hours) {
+         Object.entries(props.hours).forEach((entry) => {
+            const [key, value] = entry;
+            openHours[key] = value.split('-')[0];
+            closeHours[key] = value.split('-')[1];
+         });
+         setOpenHours(openHours);
+         setCloseHours(closeHours);
+      }
    };
 
    // renders the data form the constants to the page,
    // useEffect needed to load fields before page loads
    useEffect(() => {
       const categoryDataList = document.getElementById('category-groups');
-      getOpenHoursFromHours();
+      parseHours();
       categoryList.forEach((item) => {
          const option = document.createElement('option');
          option.value = item;
