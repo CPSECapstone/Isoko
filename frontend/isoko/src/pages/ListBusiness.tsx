@@ -4,6 +4,7 @@ import StyledButton from '../styles/StyledButton';
 import { Form } from 'react-bootstrap';
 import categoryList from '../constants/categoryList';
 import minorityGroups from '../constants/minorityGroups';
+import keywordList from '../constants/keywordList';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
@@ -76,6 +77,9 @@ const StyledControl = styled(Form.Control)`
    &:focus {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border: 1px solid rgb(249, 125, 11);
+   }
+   ::placeholder {
+      color: #aaaaaa;
    }
 `;
 
@@ -178,24 +182,71 @@ const StyledCheck = styled(Form.Check)`
 const HourLabel = styled(Form.Label)`
    min-width: 70px;
 `;
-const ListBusiness: React.FC = () => {
+
+export enum Day {
+   Mon = 'Mon',
+   Tue = 'Tue',
+   Wed = 'Wed',
+   Thu = 'Thu',
+   Fri = 'Fri',
+   Sat = 'Sat',
+   Sun = 'Sun',
+}
+
+interface Hours {
+   [Day.Mon]?: string;
+   [Day.Tue]?: string;
+   [Day.Wed]?: string;
+   [Day.Thu]?: string;
+   [Day.Fri]?: string;
+   [Day.Sat]?: string;
+   [Day.Sun]?: string;
+}
+
+interface Link {
+   title: string;
+   link: string;
+}
+
+interface ListBusinessProps extends React.HTMLProps<HTMLDivElement> {
+   name: string;
+   city: string;
+   category: string;
+   state: string;
+   street: string;
+   zip: string;
+   ownerName: string;
+   ownerPhone: string;
+   ownerDesc: string;
+   description: string;
+   stars: number;
+   minorityTags: string[];
+   keywordTags: string[];
+   verified: boolean;
+   numReviews: number;
+   hours: Hours;
+   links: Link[];
+}
+
+const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    const [err, setErr] = useState('');
-
-   const [isOwner, setIsOwner] = useState('');
-   const [isBrickAndMortar, setIsBrickAndMortar] = useState('');
-
-   const [businessName, setBusinessName] = useState('');
-   const [street, setStreet] = useState('');
-   const [city, setCity] = useState('');
-   const [state, setState] = useState('');
-   const [zip, setZip] = useState('');
-   const [tags, setTags] = useState([]);
-   const [category, setCategory] = useState('');
-   const [businessURL, setBusinessURL] = useState('');
-   const [shortDesc, setShortDesc] = useState('');
-   const [ownerName, setOwnerName] = useState('');
-   const [ownerPhone, setOwnerPhone] = useState('');
-   const [ownerDesc, setOwnerDesc] = useState('');
+   const [isOwner, setIsOwner] = useState(props.ownerDesc ? 'true' : '');
+   const [isBrickAndMortar, setIsBrickAndMortar] = useState(
+      props.street ? 'true' : props.links ? 'false' : ''
+   );
+   const [businessName, setBusinessName] = useState(props.name || '');
+   const [street, setStreet] = useState(props.street || '');
+   const [city, setCity] = useState(props.city || '');
+   const [state, setState] = useState(props.state || '');
+   const [zip, setZip] = useState(props.zip || '');
+   const [tags, setTags] = useState(props.minorityTags || []);
+   const [keywords, setKeywords] = useState(props.keywordTags || []);
+   const [category, setCategory] = useState(props.category || '');
+   const [businessURL, setBusinessURL] = useState(props.links[0].link || '');
+   const [shortDesc, setShortDesc] = useState(props.description || '');
+   const [ownerName, setOwnerName] = useState(props.ownerName || '');
+   const [ownerPhone, setOwnerPhone] = useState(props.ownerPhone || '');
+   const [ownerDesc, setOwnerDesc] = useState(props.ownerDesc || '');
    const [openHours, setOpenHours] = useState({
       Sun: '',
       Mon: '',
@@ -215,10 +266,22 @@ const ListBusiness: React.FC = () => {
       Sat: '',
    });
 
+   // This function parses hours input and makes it form ready
+   const getOpenHoursFromHours = () => {
+      Object.entries(props.hours).forEach((entry) => {
+         const [key, value] = entry;
+         openHours[key] = value.split('-')[0];
+         closeHours[key] = value.split('-')[1];
+      });
+      setOpenHours(openHours);
+      setCloseHours(closeHours);
+   };
+
    // renders the data form the constants to the page,
    // useEffect needed to load fields before page loads
    useEffect(() => {
       const categoryDataList = document.getElementById('category-groups');
+      getOpenHoursFromHours();
       categoryList.forEach((item) => {
          const option = document.createElement('option');
          option.value = item;
@@ -234,7 +297,6 @@ const ListBusiness: React.FC = () => {
    };
 
    // this function contains a lot of ifs for more accurate error reporting
-   // This function could still prob be improved
    const isValid = () => {
       if (businessName.length === 0) {
          setErr('Please fill out Business Name');
@@ -369,7 +431,6 @@ const ListBusiness: React.FC = () => {
                      }}
                   />
                </Form.Group>
-
                <SplitContainer>
                   <SplitFormGroup
                      className="mb-3"
@@ -391,29 +452,23 @@ const ListBusiness: React.FC = () => {
                      <StyledDataList id="category-groups"></StyledDataList>
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
-                     <Form.Label>
-                        Minority Group <Required>*</Required>
-                     </Form.Label>
+                     <Form.Label>Business Tags</Form.Label>
                      <StyledSearchBar
                         multiple
-                        id="tags-outlined"
-                        options={minorityGroups}
+                        id="keywords-outlined"
+                        options={keywordList}
                         getOptionLabel={(option: string) => option}
-                        value={tags}
+                        value={keywords}
                         onChange={(e, value) => {
-                           setTags(value);
+                           setKeywords(value);
                         }}
                         filterSelectedOptions
                         renderInput={(params) => (
-                           <StyledTextField
-                              {...params}
-                              placeholder="Viet-Owned"
-                           />
+                           <StyledTextField {...params} placeholder="Burgers" />
                         )}
                      />
                   </SplitFormGroup>
                </SplitContainer>
-
                <SectionLabel>Business Owner Details</SectionLabel>
                <SplitContainer>
                   <SplitFormGroup
@@ -445,6 +500,30 @@ const ListBusiness: React.FC = () => {
                            setOwnerPhone(e.target.value);
                            setErr('');
                         }}
+                     />
+                  </SplitFormGroup>
+               </SplitContainer>
+               <SplitContainer>
+                  <SplitFormGroup className="mb-3 ">
+                     <Form.Label>
+                        Business Owner Minority Group <Required>*</Required>
+                     </Form.Label>
+                     <StyledSearchBar
+                        multiple
+                        id="tags-outlined"
+                        options={minorityGroups}
+                        getOptionLabel={(option: string) => option}
+                        value={tags}
+                        onChange={(e, value) => {
+                           setTags(value);
+                        }}
+                        filterSelectedOptions
+                        renderInput={(params) => (
+                           <StyledTextField
+                              {...params}
+                              placeholder="Viet-Owned"
+                           />
+                        )}
                      />
                   </SplitFormGroup>
                </SplitContainer>

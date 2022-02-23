@@ -56,7 +56,7 @@ const StyledLink = styled.p`
 `;
 
 const BusinessDash: React.FC = () => {
-   const [activeComponent, setActiveComponent] = React.useState('Preview');
+   const [activeComponent, setActiveComponent] = React.useState('UpdateInfo');
    return (
       <main>
          <h1>Business Owner Dashboard</h1>
