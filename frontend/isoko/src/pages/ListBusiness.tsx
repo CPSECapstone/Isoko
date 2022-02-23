@@ -239,8 +239,10 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    const [city, setCity] = useState(props.city || '');
    const [state, setState] = useState(props.state || '');
    const [zip, setZip] = useState(props.zip || '');
-   const [tags, setTags] = useState(props.minorityTags || []);
-   const [keywords, setKeywords] = useState(props.keywordTags || []);
+   const [tags, setTags] = useState<Array<string>>(props.minorityTags || []);
+   const [keywords, setKeywords] = useState<Array<string>>(
+      props.keywordTags || []
+   );
    const [category, setCategory] = useState(props.category || '');
    const [businessURL, setBusinessURL] = useState(
       props.links ? props.links[0].link : ''
@@ -270,14 +272,33 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
 
    // This function parses hours input and makes it form ready
    const parseHours = () => {
-      if (props.hours) {
+      const x = {
+         Sun: '',
+         Mon: '',
+         Tue: '',
+         Wed: '',
+         Thu: '',
+         Fri: '',
+         Sat: '',
+      };
+      const y = {
+         Sun: '',
+         Mon: '',
+         Tue: '',
+         Wed: '',
+         Thu: '',
+         Fri: '',
+         Sat: '',
+      };
+      console.log('PH: ', props.hours);
+      if (props.hours !== undefined) {
          Object.entries(props.hours).forEach((entry) => {
             const [key, value] = entry;
-            openHours[key] = value.split('-')[0];
-            closeHours[key] = value.split('-')[1];
+            x[key] = value.split('-')[0];
+            y[key] = value.split('-')[1];
          });
-         setOpenHours(openHours);
-         setCloseHours(closeHours);
+         setOpenHours(x);
+         setCloseHours(y);
       }
    };
 
@@ -461,10 +482,12 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                         multiple
                         id="keywords-outlined"
                         options={keywordList}
-                        getOptionLabel={(option: string) => option}
+                        getOptionLabel={(option) =>
+                           typeof option === 'string' ? option : ''
+                        }
                         value={keywords}
                         onChange={(e, value) => {
-                           setKeywords(value);
+                           setKeywords(Array.isArray(value) ? value : []);
                         }}
                         filterSelectedOptions
                         renderInput={(params) => (
@@ -516,10 +539,12 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                         multiple
                         id="tags-outlined"
                         options={minorityGroups}
-                        getOptionLabel={(option: string) => option}
+                        getOptionLabel={(option) =>
+                           typeof option === 'string' ? option : ''
+                        }
                         value={tags}
                         onChange={(e, value) => {
-                           setTags(value);
+                           setTags(Array.isArray(value) ? value : []);
                         }}
                         filterSelectedOptions
                         renderInput={(params) => (
