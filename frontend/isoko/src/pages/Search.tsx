@@ -7,7 +7,7 @@ const Search: React.FC = () => (
       <h1>Search + Search Results</h1>
       <SearchResults
          category="Restaurants"
-         minorityTags={['LGBTQ-Owned', 'Women-Owned']}
+         minorityTags={['LGBTQ+ Owned', 'Women Owned']}
          keywordTags={['Burgers', 'Milkshakes']}
          location="San Luis Obispo/CA"
       />

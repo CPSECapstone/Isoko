@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
+import minorityGroups from '../../constants/minorityGroups';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 
 const ModalTagCol = styled(Col)`
@@ -10,34 +11,68 @@ const ModalTagCol = styled(Col)`
 interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    selectedTags: string[];
-   allTags: string[];
    handleClose: () => void;
    applyNewTags: (e: MouseEvent, tags: string[]) => void;
 }
 
 const AddTagModal: React.FC<AddTagModalProps> = (props) => {
-   const newTags = [...props.selectedTags];
-   const tags = [
-      {
-         text: 'Black-Owned',
-         selected: true,
-      },
-      {
-         text: 'Asian-Owned',
-         selected: true,
-      },
-      {
-         text: 'Viet-Owned',
-         selected: false,
-      },
-   ];
+   //const newTags = [...props.selectedTags];
+   const allTags = [...minorityGroups];
+   // const [chosenTags, setChosenTags] = useState(props.selectedTags);
+   // useEffect(() => { setChosenTags(props.selectedTags), [props.selectedTags]});
+
+   const newTags = [];
+   const tags = [];
+   allTags.forEach((t, i) => {
+      console.log('here');
+      let tagObject;
+      if (props.selectedTags.includes(t)) {
+         tagObject = {
+            text: t,
+            selected: true,
+         };
+      } else {
+         tagObject = {
+            text: t,
+            selected: false,
+         };
+      }
+      tags.push(tagObject);
+   });
+   // const tags = [
+   //    {
+   //       text: 'Black-Owned',
+   //       selected: true,
+   //    },
+   //    {
+   //       text: 'Asian-Owned',
+   //       selected: true,
+   //    },
+   //    {
+   //       text: 'Viet-Owned',
+   //       selected: false,
+   //    },
+   // ];
 
    const [tagState, setTagState] = useState(tags);
+   console.log('tag state');
+   console.log(tagState);
+   useEffect(() => {
+      setTagState(tags);
+   }, [props.selectedTags]);
 
    const onTagClicked = (idx) => {
       const updatedTagState = [...tagState];
       updatedTagState[idx].selected = !updatedTagState[idx].selected;
       setTagState(updatedTagState);
+   };
+
+   const addNewTags = () => {
+      tagState.forEach((t, i) => {
+         if (t.selected) {
+            newTags.push(t.text);
+         }
+      });
    };
 
    // handle when a user clicks a minority tag in the Add Tags modal
@@ -82,7 +117,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
                   {tagState.map((tag, index) => (
                      <ModalTagCol md={4} key={index}>
                         <StyledButton
-                           key={index}
+                           key={tag.text}
                            primary={tag.selected}
                            onClick={() => onTagClicked(index)}
                         >
@@ -97,7 +132,10 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
             <StyledButton onClick={props.handleClose}>Cancel</StyledButton>
             <StyledButton
                primary
-               onClick={(e) => props.applyNewTags(e, newTags)}
+               onClick={(e) => {
+                  addNewTags();
+                  props.applyNewTags(e, newTags);
+               }}
             >
                Confirm
             </StyledButton>

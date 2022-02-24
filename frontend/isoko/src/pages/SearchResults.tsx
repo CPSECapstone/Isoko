@@ -69,16 +69,19 @@ interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const SearchResults: React.FC<SearchResultsProps> = (props) => {
+   console.log('selected search');
+   console.log(props.minorityTags);
    const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
-   // will be replaced upon completion of is-88
-   const allTags = [
-      'Black-Owned',
-      'Asian-Owned',
-      'Mexican-Owned',
-      'Women-Owned',
-      'LGBTQ-Owned',
-   ];
+
+   // // will be replaced upon completion of is-88
+   // const allTags = [
+   //    'Black-Owned',
+   //    'Asian-Owned',
+   //    'Mexican-Owned',
+   //    'Women-Owned',
+   //    'LGBTQ-Owned',
+   // ];
    // mock response from API
    const businessResults = [
       {
@@ -90,7 +93,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
          street: '20 W 34th St',
          zip: '10001',
          type: 'B&M',
-         tags: ['LGBTQ-Owned'],
+         tags: ['LGBTQ+ Owned'],
          category: 'Burgers',
          keywords: ['Burger'],
          shortDesc: 'We do our best',
@@ -120,7 +123,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
          street: '70 Newport Pier',
          zip: '92663',
          type: 'B&M',
-         tags: ['Women-Owned'],
+         tags: ['Women Owned'],
          category: 'Desserts',
          keywords: ['Chocolate', 'Bananas'],
          shortDesc: "There's always money in the banana stand.",
@@ -284,6 +287,13 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
          }
       });
 
+      props.minorityTags.forEach((t, i) => {
+         if (!newTags.includes(t)) {
+            const index = props.minorityTags.indexOf(t);
+            props.minorityTags.splice(index, 1);
+         }
+      });
+
       setShowModal(false);
    };
 
@@ -330,7 +340,6 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            <AddTagModal
                               show={showModal}
                               selectedTags={props.minorityTags}
-                              allTags={allTags}
                               handleClose={() => {
                                  setShowModal(false);
                               }}
