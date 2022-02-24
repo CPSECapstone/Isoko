@@ -18,7 +18,7 @@ interface ReviewPhotoProps {
 
 const ReviewPhoto = styled.img<ReviewPhotoProps>`
    max-height: 200px;
-   max-width: ${(props) => `${props.maxWidth}%`}
+   max-width: ${(props) => `${props.maxWidth}%`};
    object-fit: contain;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    margin: 0px 7px 0px 0px;
@@ -105,7 +105,7 @@ const Review: React.FC = (props: ReviewProps) => {
             <ReviewPhotoContainer>
                {images.map((photo, index) => (
                   <ReviewPhoto
-                     maxWidth={100 / images.length}
+                     maxWidth={images.length === 2 ? 48 : 75}
                      key={index}
                      src={photo}
                   ></ReviewPhoto>
