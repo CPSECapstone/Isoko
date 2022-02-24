@@ -167,7 +167,7 @@ const ClaimBusinessSection = () => {
                navigate('/claim');
             }}
          >
-            Claim Bussiness
+            Claim Business
          </ClaimBusinessButton>
       </div>
    );
