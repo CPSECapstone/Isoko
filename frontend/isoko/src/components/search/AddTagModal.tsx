@@ -3,15 +3,8 @@ import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 
-const ModalTagRow = styled(Row)`
-   display: flex;
-   justify-content: left;
-   padding-bottom: 5px;
-`;
-
 const ModalTagCol = styled(Col)`
-   display: flex;
-   align-self: flex-start;
+   margin-bottom: 5px;
 `;
 
 interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
@@ -23,7 +16,7 @@ interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const AddTagModal: React.FC<AddTagModalProps> = (props) => {
-   const newTags = [];
+   const newTags = [...props.selectedTags];
 
    // handle when a user clicks a minority tag in the Add Tags modal
    const addTag = (id) => {
@@ -34,60 +27,11 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
          btn.style.color = '#F97D0B';
          const index = newTags.indexOf(id);
          newTags.splice(index, 1);
-         // const index = props.selectedTags.indexOf(id);
-         // props.selectedTags.splice(index, 1);
       } else {
          btn.style.background = '#F97D0B';
          btn.style.color = '#fff';
          newTags.push(id);
-         //props.selectedTags.push(id);
       }
-   };
-
-   // build rows of minority tags in the Add Tags modal
-   const renderRows = () => {
-      const fullList = [];
-      const finalArr = [];
-      let columns = [];
-
-      props.selectedTags.forEach((m, i) => {
-         fullList.push(m);
-         newTags.push(m);
-      });
-
-      // remove tags that are already selected
-      props.allTags.forEach((t, i) => {
-         if (!props.selectedTags.includes(t)) {
-            fullList.push(t);
-         }
-      });
-
-      fullList.forEach((tag, i) => {
-         if (props.selectedTags.includes(tag)) {
-            columns.push(
-               <ModalTagCol className="col-auto" key={i}>
-                  <StyledButton primary id={tag} onClick={() => addTag(tag)}>
-                     {tag}
-                  </StyledButton>
-               </ModalTagCol>
-            );
-         } else {
-            columns.push(
-               <ModalTagCol className="col-auto" key={i}>
-                  <StyledButton id={tag} onClick={() => addTag(tag)}>
-                     {tag}
-                  </StyledButton>
-               </ModalTagCol>
-            );
-         }
-         // only 4 tags/row
-         if ((i + 1) % 3 === 0) {
-            finalArr.push(<ModalTagRow>{columns}</ModalTagRow>);
-            columns = [];
-         }
-      });
-      finalArr.push(<ModalTagRow>{columns}</ModalTagRow>);
-      return finalArr;
    };
 
    return (
@@ -96,7 +40,24 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
             <Modal.Title>Business Tags</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <Container>{renderRows()}</Container>
+            <Container>
+               <Row>
+                  {props.allTags.map((tag, index) => (
+                     <ModalTagCol md={4} key={index}>
+                        <StyledButton
+                           key={index}
+                           id={tag}
+                           primary={
+                              props.selectedTags.includes(tag) ? true : false
+                           }
+                           onClick={() => addTag(tag)}
+                        >
+                           {tag}
+                        </StyledButton>
+                     </ModalTagCol>
+                  ))}
+               </Row>
+            </Container>
          </Modal.Body>
          <Modal.Footer>
             <StyledButton onClick={props.handleClose}>Cancel</StyledButton>

@@ -28,6 +28,12 @@ const StyledDropdownButton = styled(DropdownButton)`
       &.dropdown-toggle:focus {
          box-shadow: none;
       }
+
+      &.dropdown-toggle {
+         color: black;
+         background-color: #fbfbfb;
+         border-color: none;
+      }
    }
 
    .btn {

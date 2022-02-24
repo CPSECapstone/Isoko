@@ -10,7 +10,6 @@ const Search: React.FC = () => (
          minorityTags={['LGBTQ-Owned', 'Women-Owned']}
          keywordTags={['Burgers', 'Milkshakes']}
          location="San Luis Obispo/CA"
-         time={moment().format('llll')}
       />
    </main>
 );

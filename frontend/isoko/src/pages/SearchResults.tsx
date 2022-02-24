@@ -52,17 +52,6 @@ const TagContainer = styled(Container)`
    margin: 8px;
 `;
 
-const ModalTagRow = styled(Row)`
-   display: flex;
-   justify-content: left;
-   padding-bottom: 5px;
-`;
-
-const ModalTagCol = styled(Col)`
-   display: flex;
-   align-self: flex-start;
-`;
-
 const SelectedTagRow = styled(Row)`
    margin-bottom: 5px;
    max-width: 200px;
@@ -77,11 +66,10 @@ interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
    minorityTags: string[];
    keywordTags: string[];
    location: string;
-   time: string;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = (props) => {
-   const [sortKey, setSortKey] = useState('Recently added');
+   const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
    // will be replaced upon completion of is-88
    const allTags = [
@@ -184,12 +172,12 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       useState(businessResults);
 
    const dayOfWeek = () => {
-      const dateComponents = props.time.split(',');
+      const dateComponents = time.split(',');
       return dateComponents[0];
    };
 
    const displayTime = () => {
-      return moment(props.time, 'llll').format('h:mm A');
+      return moment(time, 'llll').format('h:mm A');
    };
 
    const filterByTime = (business, day) => {
@@ -217,7 +205,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       const open = moment(openString, 'h:mm a');
       const closed = moment(closedString, 'h:mm a');
 
-      const now = moment(props.time, 'h:mm a');
+      const now = moment(time, 'h:mm a');
 
       if (now.isAfter(open) && now.isBefore(closed)) {
          return true;
@@ -254,30 +242,22 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       }
    };
 
-   // filter businesses based on sidebar components
-   const filterBusinesses = (e, key, businesses) => {
-      // filter by "open now"
-      if (key == 'time') {
-         const day = dayOfWeek();
-         console.log('day');
-         console.log(day);
-         console.log(e.target.checked);
-         // filter by time if box is checked, if unchecked, revert to original results
-         if (e.target.checked) {
-            setFilteredBusinesses(
-               businesses.filter((b) => filterByTime(b, day))
-            );
-         } else {
-            setFilteredBusinesses(businessResults);
-         }
+   // filter businesses based on time
+   const filterBusinessesByTime = (e, businesses) => {
+      const day = dayOfWeek();
+      // filter by time if box is checked, if unchecked, revert to original results
+      if (e.target.checked) {
+         setFilteredBusinesses(businesses.filter((b) => filterByTime(b, day)));
+      } else {
+         setFilteredBusinesses(businessResults);
       }
+   };
 
-      // minority tag removed
-      else {
-         setFilteredBusinesses(businesses.filter((b) => removeTag(b, key)));
-         const tagIndex = props.minorityTags.indexOf(key);
-         props.minorityTags.splice(tagIndex, 1);
-      }
+   // filter business results when customer removes a tag
+   const filterBusinessesRemoveTag = (key, businesses) => {
+      setFilteredBusinesses(businesses.filter((b) => removeTag(b, key)));
+      const tagIndex = props.minorityTags.indexOf(key);
+      props.minorityTags.splice(tagIndex, 1);
    };
 
    // sort businesses by value of sort dropdown
@@ -298,17 +278,12 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // this function will requery with new tags
    // already added to props.minorityTags
    const applyNewTags = (e, newTags) => {
-      console.log(newTags);
       newTags.forEach((t, i) => {
          if (!props.minorityTags.includes(t)) {
             props.minorityTags.push(t);
          }
       });
-      setShowModal(false);
-   };
 
-   // modal functions
-   const handleCloseModal = () => {
       setShowModal(false);
    };
 
@@ -329,7 +304,10 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            <SelectedTagRow
                               key={index}
                               onClick={(e) =>
-                                 filterBusinesses(e, tag, filteredBusinesses)
+                                 filterBusinessesRemoveTag(
+                                    tag,
+                                    filteredBusinesses
+                                 )
                               }
                            >
                               <MinorityTag
@@ -353,7 +331,9 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                               show={showModal}
                               selectedTags={props.minorityTags}
                               allTags={allTags}
-                              handleClose={handleCloseModal}
+                              handleClose={() => {
+                                 setShowModal(false);
+                              }}
                               applyNewTags={applyNewTags}
                            />
                         </AddTagCol>
@@ -366,7 +346,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            type="checkbox"
                            label={`Open now: ${displayTime()}`}
                            onChange={(e) => {
-                              filterBusinesses(e, 'time', filteredBusinesses);
+                              filterBusinessesByTime(e, filteredBusinesses);
                            }}
                         />
                      </LeftDiv>
