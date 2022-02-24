@@ -32,7 +32,7 @@ const StyledDropdownButton = styled(DropdownButton)`
       &.dropdown-toggle {
          color: black;
          background-color: #fbfbfb;
-         border-color: none;
+         border: none;
       }
    }
 

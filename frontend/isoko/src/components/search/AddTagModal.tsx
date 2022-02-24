@@ -17,22 +17,44 @@ interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
 
 const AddTagModal: React.FC<AddTagModalProps> = (props) => {
    const newTags = [...props.selectedTags];
+   const tags = [
+      {
+         text: 'Black-Owned',
+         selected: true,
+      },
+      {
+         text: 'Asian-Owned',
+         selected: true,
+      },
+      {
+         text: 'Viet-Owned',
+         selected: false,
+      },
+   ];
+
+   const [tagState, setTagState] = useState(tags);
+
+   const onTagClicked = (idx) => {
+      const updatedTagState = [...tagState];
+      updatedTagState[idx].selected = !updatedTagState[idx].selected;
+      setTagState(updatedTagState);
+   };
 
    // handle when a user clicks a minority tag in the Add Tags modal
-   const addTag = (id) => {
-      const btn = document.getElementById(id);
+   // const addTag = (id) => {
+   //    const btn = document.getElementById(id);
 
-      if (props.selectedTags.includes(id)) {
-         btn.style.background = '#fff';
-         btn.style.color = '#F97D0B';
-         const index = newTags.indexOf(id);
-         newTags.splice(index, 1);
-      } else {
-         btn.style.background = '#F97D0B';
-         btn.style.color = '#fff';
-         newTags.push(id);
-      }
-   };
+   //    if (props.selectedTags.includes(id)) {
+   //       btn.style.background = '#fff';
+   //       btn.style.color = '#F97D0B';
+   //       const index = newTags.indexOf(id);
+   //       newTags.splice(index, 1);
+   //    } else {
+   //       btn.style.background = '#F97D0B';
+   //       btn.style.color = '#fff';
+   //       newTags.push(id);
+   //    }
+   // };
 
    return (
       <Modal show={props.show} onHide={props.handleClose}>
@@ -42,7 +64,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
          <Modal.Body>
             <Container>
                <Row>
-                  {props.allTags.map((tag, index) => (
+                  {/* {props.allTags.map((tag, index) => (
                      <ModalTagCol md={4} key={index}>
                         <StyledButton
                            key={index}
@@ -53,6 +75,18 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
                            onClick={() => addTag(tag)}
                         >
                            {tag}
+                        </StyledButton>
+                     </ModalTagCol>
+                  ))} */}
+
+                  {tagState.map((tag, index) => (
+                     <ModalTagCol md={4} key={index}>
+                        <StyledButton
+                           key={index}
+                           primary={tag.selected}
+                           onClick={() => onTagClicked(index)}
+                        >
+                           {tag.text}
                         </StyledButton>
                      </ModalTagCol>
                   ))}
