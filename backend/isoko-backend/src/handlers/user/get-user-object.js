@@ -1,4 +1,6 @@
-
+const dynamodb = require('aws-sdk/clients/dynamodb');
+const docClient = new dynamodb.DocumentClient();
+const { USER_TABLE } = require('../../constants');
 /**
  * HTTP get method to geta user object based off of the userSub specified in the request.
  */
@@ -30,9 +32,7 @@ exports.getUserObjectHandler = async (event) => {
    try {
       const dynamoResult = await docClient.get(params).promise();
 
-      let getResults = dynamoResult.Items;
-      delete getResults.pk;
-      delete getResults.sk;
+      let getResults = dynamoResult.Item;
 
       response = {
          statusCode: 200,
