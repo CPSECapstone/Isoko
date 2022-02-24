@@ -8,16 +8,16 @@ const StyledDropdownButton = styled(DropdownButton)`
    text-decoration: underline;
    font-size: 0.5rem;
    .btn-primary {
-      background-color: #c4c4c4;
+      background-color: #fbfbfb;
       color: black;
-      border-color: #c4c4c4;
+      border-color: #fbfbfb;
       border-radius: 5px;
       padding: 0px;
       font-size: 0.75rem;
       &:focus {
-         background-color: #c4c4c4;
+         background-color: #fbfbfb;
          color: black;
-         border-color: #c4c4c4;
+         border-color: #fbfbfb;
       }
       &:hover {
          box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);

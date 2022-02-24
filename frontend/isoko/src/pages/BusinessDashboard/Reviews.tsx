@@ -12,6 +12,7 @@ const ReviewsContainer = styled.div`
 const ReviewsTitle = styled.h2`
    text-align: left;
    margin-bottom: 1em;
+   margin-top: 0.7em;
 `;
 
 const SortByContainer = styled.div`
@@ -21,12 +22,8 @@ const SortByContainer = styled.div`
 `;
 
 const SortByText = styled.h3`
-   margin-top: 0.6em;
+   margin-top: 0.8em;
    margin-right: 0.5em;
-`;
-
-const StyledSortReviewsDropdown = styled(SortReviewsDropdown)`
-   border: 5px red;
 `;
 
 const Reviews: React.FC = () => {
@@ -98,9 +95,9 @@ const Reviews: React.FC = () => {
          <ReviewsTitle>Reviews</ReviewsTitle>
          <SortByContainer>
             <SortByText>Sort By: </SortByText>
-            <StyledSortReviewsDropdown
+            <SortReviewsDropdown
                sortFunction={sortReviews}
-            ></StyledSortReviewsDropdown>
+            ></SortReviewsDropdown>
          </SortByContainer>
          <Col>
             {sortedReviews.map((review, index) => (
