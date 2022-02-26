@@ -43,7 +43,7 @@ const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
          <Dropdown.Item as="button">
             <div
                onClick={(e) => {
-                  setSortKey(e.target.textContent);
+                  setSortKey((e.target as HTMLElement).textContent);
                   props.sortFunction('recent');
                }}
             >
@@ -53,7 +53,7 @@ const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
          <Dropdown.Item as="button">
             <div
                onClick={(e) => {
-                  setSortKey(e.target.textContent);
+                  setSortKey((e.target as HTMLElement).textContent);
                   props.sortFunction('highestRated');
                }}
             >
@@ -63,7 +63,7 @@ const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
          <Dropdown.Item as="button">
             <div
                onClick={(e) => {
-                  setSortKey(e.target.textContent);
+                  setSortKey((e.target as HTMLElement).textContent);
                   props.sortFunction('lowestRated');
                }}
             >
