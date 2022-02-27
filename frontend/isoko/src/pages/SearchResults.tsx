@@ -7,6 +7,7 @@ import SortResultsDropdown from '../components/search/SortResultsDropdown';
 import AddTagModal from '../components/search/AddTagModal';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import moment from 'moment-timezone';
+import minorityGroups from '../constants/minorityGroups';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -69,19 +70,28 @@ interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const SearchResults: React.FC<SearchResultsProps> = (props) => {
-   console.log('selected search');
-   console.log(props.minorityTags);
    const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
 
-   // // will be replaced upon completion of is-88
-   // const allTags = [
-   //    'Black-Owned',
-   //    'Asian-Owned',
-   //    'Mexican-Owned',
-   //    'Women-Owned',
-   //    'LGBTQ-Owned',
-   // ];
+   const tags = [];
+   minorityGroups.forEach((t, i) => {
+      let tagObject;
+      if (props.minorityTags.includes(t)) {
+         tagObject = {
+            text: t,
+            selected: true,
+         };
+      } else {
+         tagObject = {
+            text: t,
+            selected: false,
+         };
+      }
+      tags.push(tagObject);
+   });
+
+   const [tagState, setTagState] = useState(tags);
+
    // mock response from API
    const businessResults = [
       {
@@ -220,14 +230,10 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // when a user clicks on one of the minority tags on the left, it will be remove the tag from the search
    const removeTag = (business, tag) => {
       const tags = business.tags;
-      const selectedTags = [];
+      const selectedTags = tagState.filter((t) => t.selected == true);
 
-      props.minorityTags.forEach((t, i) => {
-         selectedTags.push(t);
-      });
-
-      const tagIndex = selectedTags.indexOf(tag);
-      selectedTags.splice(tagIndex, 1);
+      const index = selectedTags.map((t) => t.text).indexOf(tag);
+      selectedTags.splice(index, 1);
 
       // if the tag to remove isn't associated with this business, it should still be displayed
       if (tags.indexOf(tag) === -1) {
@@ -241,7 +247,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
 
       // if there are more minorities to filter by, check if other tags associated with business fulfill them
       if (selectedTags.length > 0) {
-         return selectedTags.some((t) => tags.includes(t));
+         return selectedTags.some((t) => tags.includes(t.text));
       }
    };
 
@@ -259,8 +265,10 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // filter business results when customer removes a tag
    const filterBusinessesRemoveTag = (key, businesses) => {
       setFilteredBusinesses(businesses.filter((b) => removeTag(b, key)));
-      const tagIndex = props.minorityTags.indexOf(key);
-      props.minorityTags.splice(tagIndex, 1);
+      const updatedTagState = [...tagState];
+      const idx = tagState.map((t) => t.text).indexOf(key);
+      updatedTagState[idx].selected = !updatedTagState[idx].selected;
+      setTagState(updatedTagState);
    };
 
    // sort businesses by value of sort dropdown
@@ -281,16 +289,15 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // this function will requery with new tags
    // already added to props.minorityTags
    const applyNewTags = (e, newTags) => {
-      newTags.forEach((t, i) => {
-         if (!props.minorityTags.includes(t)) {
-            props.minorityTags.push(t);
-         }
-      });
-
-      props.minorityTags.forEach((t, i) => {
-         if (!newTags.includes(t)) {
-            const index = props.minorityTags.indexOf(t);
-            props.minorityTags.splice(index, 1);
+      // toggle tags if previously selected and were deleted from modal, or if not selected and added through the modal
+      tagState.forEach((t, i) => {
+         if (
+            (t.selected && !newTags.includes(t.text)) ||
+            (!t.selected && newTags.includes(t.text))
+         ) {
+            const updatedTagState = [...tagState];
+            updatedTagState[i].selected = !updatedTagState[i].selected;
+            setTagState(updatedTagState);
          }
       });
 
@@ -310,23 +317,25 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                   <StyledH3>Tags</StyledH3>
                   <TagContainer>
                      <Row>
-                        {props.minorityTags.map((tag, index) => (
-                           <SelectedTagRow
-                              key={index}
-                              onClick={(e) =>
-                                 filterBusinessesRemoveTag(
-                                    tag,
-                                    filteredBusinesses
-                                 )
-                              }
-                           >
-                              <MinorityTag
+                        {tagState.map((tag, index) =>
+                           tag.selected === true ? (
+                              <SelectedTagRow
                                  key={index}
-                                 name={tag}
-                                 mutable={true}
-                              />
-                           </SelectedTagRow>
-                        ))}
+                                 onClick={(e) =>
+                                    filterBusinessesRemoveTag(
+                                       tag.text,
+                                       filteredBusinesses
+                                    )
+                                 }
+                              >
+                                 <MinorityTag
+                                    key={index}
+                                    name={tag.text}
+                                    mutable={true}
+                                 />
+                              </SelectedTagRow>
+                           ) : null
+                        )}
                      </Row>
                      <Row>
                         <AddTagCol className="col-auto">
@@ -339,7 +348,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            </div>
                            <AddTagModal
                               show={showModal}
-                              selectedTags={props.minorityTags}
+                              tags={[...tagState]}
                               handleClose={() => {
                                  setShowModal(false);
                               }}
