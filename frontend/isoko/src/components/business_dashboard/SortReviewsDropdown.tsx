@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const StyledDropdownButton = styled(DropdownButton)`
-   background: #fff;
-   color: #000;
-   text-decoration: underline;
-   font-size: 0.5rem;
    .btn-primary {
       background-color: #fbfbfb;
       color: black;

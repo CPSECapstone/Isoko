@@ -22,7 +22,7 @@ const SortByContainer = styled.div`
 `;
 
 const SortByText = styled.h3`
-   margin-top: 0.8em;
+   margin-top: 0.7em;
    margin-right: 0.5em;
 `;
 
@@ -43,7 +43,7 @@ const Reviews: React.FC = () => {
             'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
             'https://www.robin-noorda.com/uploads/1/6/8/3/16830688/3347022_orig.jpg',
          ],
-         ts: 1645601555,
+         ts: 1645923559,
       },
       {
          pk: '12345678',
@@ -59,7 +59,7 @@ const Reviews: React.FC = () => {
             'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
             'https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg',
          ],
-         ts: 1645601222,
+         ts: 1631235559,
       },
       {
          pk: '12345678',
@@ -75,15 +75,17 @@ const Reviews: React.FC = () => {
          pictures: [
             'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
          ],
-         ts: 1645601444,
+         ts: 1637715559,
       },
    ];
 
-   const [sortedReviews, setSortedReviews] = useState(reviewsList);
+   const [sortedReviews, setSortedReviews] = useState(
+      reviewsList.sort((a, b) => b.ts - a.ts)
+   );
 
    const sortReviews = (key) => {
       if (key === 'recent') {
-         setSortedReviews([...sortedReviews.sort((a, b) => a.ts - b.ts)]);
+         setSortedReviews([...sortedReviews.sort((a, b) => b.ts - a.ts)]);
       } else if (key === 'highestRated') {
          setSortedReviews([...sortedReviews.sort((a, b) => b.stars - a.stars)]);
       } else if (key === 'lowestRated') {
@@ -109,6 +111,7 @@ const Reviews: React.FC = () => {
                      subject={review.reviewTitle}
                      content={review.description}
                      imageUrls={review.pictures}
+                     ts={review.ts}
                   />
                </Row>
             ))}
