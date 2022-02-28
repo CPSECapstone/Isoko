@@ -22,7 +22,7 @@ Resources:
   getSearchResultsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/business/get-search-results.getSearchResultsHandler
+      Handler: src/handlers/business/post-search-results.postSearchResultsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
