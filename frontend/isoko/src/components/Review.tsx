@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import ImageCarousel from './business/ImageCarousel';
+import moment from 'moment';
 
 const ReviewContainer = styled.div`
    display: flex;
@@ -55,7 +56,14 @@ const ContentText = styled.div`
 `;
 
 const StarContainer = styled.div`
-   margin: -0.5em 0em 0em 0em;
+   margin: -0.6em 0em 0em 0em;
+   display: flex;
+   align-items: center;
+`;
+
+const ReviewDateText = styled.div`
+   color: #a7a8a8;
+   padding: 0.3em 0em 0em 0.4em;
 `;
 
 const StyledCarousel = styled(ImageCarousel)`
@@ -70,13 +78,16 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    subject?: string;
    content?: string;
    imageUrls?: string[];
+   ts: number;
 }
 
-const Review: React.FC = (props: ReviewProps) => {
+const Review: React.FC<ReviewProps> = (props: ReviewProps) => {
    let images = props.imageUrls;
    if (images == null) {
       images = [];
    }
+   const reviewDate = new Date(props.ts * 1000);
+   const formattedReviewDate = moment(reviewDate).format('MM/DD/YYYY');
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>
@@ -93,6 +104,7 @@ const Review: React.FC = (props: ReviewProps) => {
                initialValue={props.stars}
                ratingValue={0}
             />
+            <ReviewDateText>{formattedReviewDate}</ReviewDateText>
          </StarContainer>
          {props.content ? (
             <ContentText>{props.content}</ContentText>

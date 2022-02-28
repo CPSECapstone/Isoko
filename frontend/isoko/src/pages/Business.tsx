@@ -95,6 +95,7 @@ const Business: React.FC = () => (
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
                      'https://www.robin-noorda.com/uploads/1/6/8/3/16830688/3347022_orig.jpg',
                   ]}
+                  ts={1645923559}
                />
                <Review
                   reviewerName="Sir Theodore"
@@ -106,6 +107,7 @@ const Business: React.FC = () => (
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
                      'https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg',
                   ]}
+                  ts={1645923576}
                />
                <Review
                   reviewerName="Sir Theodore"
@@ -116,6 +118,7 @@ const Business: React.FC = () => (
                   imageUrls={[
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
                   ]}
+                  ts={1631235559}
                />
                <Review
                   reviewerName="Sir Theodore"
@@ -123,6 +126,7 @@ const Business: React.FC = () => (
                   stars={4}
                   subject="Great food and service!"
                   content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
+                  ts={1637715559}
                />
             </StyledCol>
             <StyledCol md={4} xs={12}>
