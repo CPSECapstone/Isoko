@@ -28,17 +28,14 @@ Resources:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: Includes a HTTP get method to get all businesses that match search criteria.
+      Description: Includes a HTTP post method to get all businesses that match search criteria.
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /business
-            Method: GET
+            Path: /searchBusiness
+            Method: POST
             RestApiId: !Ref IsokoBackendApi
-            RequestParameters: 
-              - method.request.querystring.location:
-                  Required: true
 
   postListBusinessFunction:
     Type: AWS::Serverless::Function
