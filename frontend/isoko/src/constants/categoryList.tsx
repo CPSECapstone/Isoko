@@ -21,7 +21,7 @@ const categoryList = [
    'Public Services & Government',
    'Real Estate',
    'Religious Organizations',
-   'Restaraunts',
+   'Restaurants',
    'Shopping',
 ];
 

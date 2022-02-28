@@ -64,7 +64,7 @@ const SearchBar: React.FC = () => {
       }
 
       return {
-         location: `${locationSplit[1]}/${locationSplit[0]}`,
+         location: `${locationSplit[1]}#${locationSplit[0]}`,
          tags: minorityState,
          ...(categoryList.includes(keywordState)
             ? { category: keywordState }
@@ -109,8 +109,8 @@ const SearchBar: React.FC = () => {
                <StyledCol sm={1}>
                   <SearchButton
                      primary
-                     onClick={() => {
-                        dispatch(
+                     onClick={async () => {
+                        await dispatch(
                            getSearchResultsAsync(
                               getSearchParams(
                                  locationState,
