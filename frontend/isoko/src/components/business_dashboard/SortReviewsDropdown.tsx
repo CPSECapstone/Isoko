@@ -7,9 +7,8 @@ const StyledDropdownButton = styled(DropdownButton)`
       background-color: #fbfbfb;
       color: black;
       border-color: #fbfbfb;
-      border-radius: 5px;
       padding: 0px;
-      font-size: 0.75rem;
+      font-size: 0.9rem;
       &:focus {
          background-color: #fbfbfb;
          color: black;
@@ -20,6 +19,11 @@ const StyledDropdownButton = styled(DropdownButton)`
       }
       &.dropdown-toggle:focus {
          box-shadow: none;
+      }
+      &.dropdown-toggle {
+         color: black;
+         background-color: #fbfbfb;
+         border: none;
       }
    }
    .btn {
