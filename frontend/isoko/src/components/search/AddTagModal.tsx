@@ -36,7 +36,6 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
             newTags.push(t.text);
          }
       });
-      console.log(newTags);
    };
 
    return (

@@ -307,7 +307,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    return (
       <SearchContainer>
          <Row>
-            <Col className="col-sm-3">
+            <Col sm={3}>
                <Sidebar>
                   <StyledH2>Sort</StyledH2>
                   <SidebarContainer>
