@@ -3,16 +3,9 @@ const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
 
-const processLocationParam = (locationParam) => {
-   const splitLocationParam = locationParam.split('/');
-
-   if (splitLocationParam.length != 2) {
-      throw new Error(
-         `Invalid location query parameter "${locationParam}", must be in the format of State/City`
-      );
-   }
-
-   return `${splitLocationParam[0]}#${splitLocationParam[1]}`;
+const validateLocationParam = (locationParam) => {
+   const splitLocationParam = locationParam && locationParam.split('#');
+   return splitLocationParam && splitLocationParam.length === 2;
 };
 
 const buildQueryParams = (location, category) => {
@@ -38,16 +31,29 @@ const buildQueryParams = (location, category) => {
  * HTTP get method to get all businesses that match search criteria.
  */
 exports.postSearchResultsHandler = async (event) => {
-   if (event.httpMethod !== 'GET') {
-      throw new Error(
-         `getSearchResults only accept GET method, you tried: ${event.httpMethod}`
-      );
+   if (event.httpMethod !== 'POST') {
+      return {
+         statusCode: 400,
+         body: {
+            error: `postSearchResults only accept POST method, you tried: ${event.httpMethod}`,
+         },
+      };
    }
 
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
 
-   const location = processLocationParam(_.get(requestBody, 'location'));
+   const location = _.get(requestBody, 'location');
+
+   if (!validateLocationParam(location)) {
+      return {
+         statusCode: 400,
+         body: {
+            error: `Invalid location parameter: ${location}, must be in the format State#City`,
+         },
+      };
+   }
+
    const category = _.get(requestBody, 'category');
    const keyword = _.get(requestBody, 'keyword');
    const tags = _.get(requestBody, 'tags');
@@ -91,7 +97,7 @@ exports.postSearchResultsHandler = async (event) => {
    } catch (e) {
       response = {
          statusCode: 400,
-         body: { error: e },
+         body: { error: e.message },
       };
    }
 
