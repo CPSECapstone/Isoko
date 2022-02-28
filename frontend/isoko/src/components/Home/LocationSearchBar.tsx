@@ -7,7 +7,7 @@ import AWS from 'aws-sdk';
 const StyledSearchBar = styled(Autocomplete)`
    border-left: 2px solid lightgray;
    background: #ffffff;
-   border-radius: 0px 90px 90px 0px;
+   border-radius: 0px 0px 0px 0px;
 
    .MuiOutlinedInput-notchedOutline {
       border: none;
@@ -24,7 +24,7 @@ const StyledSearchBar = styled(Autocomplete)`
 
 const StyledTextField = styled(TextField)`
    background: white;
-   border-radius: 0px 90px 90px 0px;
+   border-radius: 0px 0px 0px 0px;
 `;
 
 interface LocationProps extends React.HTMLProps<HTMLDivElement> {
