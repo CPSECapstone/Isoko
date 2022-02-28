@@ -37,7 +37,7 @@ const buildQueryParams = (location, category) => {
 /**
  * HTTP get method to get all businesses that match search criteria.
  */
-exports.getSearchResultsHandler = async (event) => {
+exports.postSearchResultsHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
       throw new Error(
          `getSearchResults only accept GET method, you tried: ${event.httpMethod}`
