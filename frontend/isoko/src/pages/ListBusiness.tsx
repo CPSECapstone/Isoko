@@ -340,6 +340,8 @@ const ListBusiness: React.FC = () => {
                     ownerDesc,
                  }
                : {},
+         timestamp: new Date().getTime(),
+         verified: isOwner == 'true' ? true : false,
       };
       return businessInfo;
    };

@@ -48,6 +48,8 @@ exports.postListBusinessHandler = async (event) => {
    const photos = _.get(requestBody, 'photos', []);
    const reviews = _.get(requestBody, 'reviews', []);
    const lister = _.get(requestBody, 'lister');
+   const timestamp = _.get(requestBody, 'timestamp'); 
+   const verified = _.get(requestBody, 'verified'); 
 
    const params = {
       TableName: BUSINESS_TABLE,
@@ -76,6 +78,8 @@ exports.postListBusinessHandler = async (event) => {
          photos: photos,
          reviews: reviews,
          lister: lister,
+         timestamp: timestamp,
+         verified: verified, 
       },
    };
 
