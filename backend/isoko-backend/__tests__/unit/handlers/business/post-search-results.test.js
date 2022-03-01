@@ -1,12 +1,12 @@
 const {
-   getSearchResultsHandler,
-} = require('../../../../src/handlers/business/get-search-results.js');
+   postSearchResultsHandler,
+} = require('../../../../src/handlers/business/post-search-results.js');
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const { BUSINESS_TABLE } = require('../../../../src/constants');
 
 jest.mock('aws-sdk/clients/dynamodb');
 
-describe('GetSearchResultsHandler tests', () => {
+describe('PostSearchResultsHandler tests', () => {
    let querySpy;
 
    beforeAll(() => {
@@ -32,7 +32,7 @@ describe('GetSearchResultsHandler tests', () => {
 
          // assert
          await expect(async () => {
-            await getSearchResultsHandler(event);
+            await postSearchResultsHandler(event);
          }).rejects.toThrowError();
       });
 
@@ -49,7 +49,7 @@ describe('GetSearchResultsHandler tests', () => {
 
          // assert
          await expect(async () => {
-            await getSearchResultsHandler(event);
+            await postSearchResultsHandler(event);
          }).rejects.toThrowError('CA');
       });
 
@@ -66,7 +66,7 @@ describe('GetSearchResultsHandler tests', () => {
 
          // assert
          await expect(async () => {
-            await getSearchResultsHandler(event);
+            await postSearchResultsHandler(event);
          }).rejects.toThrowError('CA/Sunnyvale/SantaClara');
       });
    });
@@ -90,7 +90,7 @@ describe('GetSearchResultsHandler tests', () => {
          };
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result).toEqual(expectedItem);
@@ -172,7 +172,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -235,7 +235,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -345,7 +345,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -442,7 +442,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -540,7 +540,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
