@@ -19,7 +19,7 @@ const Title = styled.h1`
 `;
 
 const StyledSearchBar = styled.div`
-   width: 85%;
+   width: 100%;
    margin-right: 50px;
 `;
 

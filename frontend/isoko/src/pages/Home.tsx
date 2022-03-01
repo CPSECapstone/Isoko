@@ -5,6 +5,7 @@ import coffee from '../components/Home/BackgroundPics/coffee.png';
 import sculptures from '../components/Home/BackgroundPics/sculptures.png';
 import flowers from '../components/Home/BackgroundPics/flowers.png';
 import BusinessPreview from '../components/business/BusinessPreview';
+import HamburgerComponent from '../components/HamburgerComponent';
 
 const Title = styled.h1`
    text-align: center;
@@ -111,6 +112,7 @@ const CenterDiv = styled.div`
 const Home: React.FC = () => (
    <main>
       <TopContent>
+         <HamburgerComponent />
          <ImageContainer>
             <LeftImg></LeftImg>
             <MidImg></MidImg>

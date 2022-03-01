@@ -49,6 +49,7 @@ const NavContainer = styled.div`
 `;
 
 const NavBox = styled.div`
+   border: 1px solid red;
    min-width: 225px;
    @media ${device.laptop} {
       min-width: 150px;
@@ -56,6 +57,7 @@ const NavBox = styled.div`
 `;
 
 const WiderNavBox = styled.div`
+   border: 1px solid green;
    min-width: 250px;
    @media ${device.laptop} {
       min-width: 150px;
@@ -76,8 +78,9 @@ const NavStyledButton = styled(StyledButton)`
 const OuterContainer = styled.div`
    margin-top: 5px;
    margin-right: 5px;
-   display: flex;
-   float: right;
+   width: 100%;
+   border: 1px solid blue;
+   display: inline-block;
 `;
 
 const SearchBar: React.FC = () => {
@@ -151,10 +154,10 @@ const SearchBar: React.FC = () => {
                         isHome={isHome}
                      ></LocationSearchBar>
                   </NavBox>
+                  <NavStyledButton primary onClick={() => navigate('/search')}>
+                     <NavFontAwesomeIcon icon={faSearch} color="white" />
+                  </NavStyledButton>
                </NavContainer>
-               <NavStyledButton primary onClick={() => navigate('/search')}>
-                  <NavFontAwesomeIcon icon={faSearch} color="white" />
-               </NavStyledButton>
             </OuterContainer>
          )}
       </main>

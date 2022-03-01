@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Position = styled.div`
    position: absolute;
-   top: 0px;
-   right: 0px;
+   top: 3px;
+   right: 3px;
    padding: 0;
    margin: 2px;
 `;
@@ -69,7 +69,7 @@ const HamburgerComponent: React.FC = () => {
 
    return (
       <Position>
-         <StyledNavbar bg="light" expand={false}>
+         <StyledNavbar expand={false}>
             <StyledContainer fluid>
                <StyledToggle aria-controls="offcanvasNavbar" />
                <StyledOffcanvas
@@ -82,9 +82,6 @@ const HamburgerComponent: React.FC = () => {
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                      <Nav className="justify-content-end flex-grow-1 pe-3">
-                        <StyledLink onClick={() => navigate('/')}>
-                           Back To Home
-                        </StyledLink>
                         <StyledLink onClick={() => navigate('/listBusiness')}>
                            List A Business
                         </StyledLink>

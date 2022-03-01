@@ -91,7 +91,7 @@ const Business: React.FC = () => (
                   reviewerImageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
                   stars={4}
                   subject="Great food and service!"
-                  content="I've never regretted eating at Bills Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bills food made with love and care."
+                  content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
                   imageUrls={[
                      'https://images.unsplash.com/photo-1587410131477-f01b22c59e1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dGFsbCUyMHRvd2VyfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
@@ -103,7 +103,7 @@ const Business: React.FC = () => (
                   reviewerImageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
                   stars={4}
                   subject="Great food and service!"
-                  content="I've never regretted eating at Bills Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bills food made with love and care."
+                  content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
                   imageUrls={[
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
                      'https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg',
@@ -114,7 +114,7 @@ const Business: React.FC = () => (
                   reviewerImageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
                   stars={4}
                   subject="Great food and service!"
-                  content="I've never regretted eating at Bills Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bills food made with love and care."
+                  content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
                   imageUrls={[
                      'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
                   ]}
@@ -124,7 +124,7 @@ const Business: React.FC = () => (
                   reviewerImageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
                   stars={4}
                   subject="Great food and service!"
-                  content="I've never regretted eating at Bills Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bills food made with love and care."
+                  content="I've never regretted eating at Bill's Diner. The Signature Burger is to die for and Bill is a homie. Everyone should come and eat some of Bill's food made with love and care."
                />
             </StyledCol>
             <StyledCol md={4} xs={12}>
