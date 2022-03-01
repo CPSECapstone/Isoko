@@ -35,7 +35,7 @@ interface SortDropdownProps extends React.HTMLProps<HTMLDivElement> {
    sortFunction: (key: string) => void;
 }
 
-const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
+const SortReviewsDropdown: React.FC<SortDropdownProps> = (props) => {
    const [sortKey, setSortKey] = useState('Recently Added');
 
    return (
@@ -74,4 +74,4 @@ const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
    );
 };
 
-export default SortResultsDropdown;
+export default SortReviewsDropdown;
