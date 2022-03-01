@@ -49,15 +49,16 @@ const NavContainer = styled.div`
 `;
 
 const NavBox = styled.div`
-   border: 1px solid red;
-   min-width: 225px;
+   min-width: 250px;
    @media ${device.laptop} {
+      min-width: 200px;
+   }
+   @media ${device.tablet} {
       min-width: 150px;
    }
 `;
 
 const WiderNavBox = styled.div`
-   border: 1px solid green;
    min-width: 250px;
    @media ${device.laptop} {
       min-width: 150px;
@@ -78,9 +79,11 @@ const NavStyledButton = styled(StyledButton)`
 const OuterContainer = styled.div`
    margin-top: 5px;
    margin-right: 5px;
-   width: 100%;
-   border: 1px solid blue;
    display: inline-block;
+`;
+const MiddleDiv = styled.div`
+   display: flex;
+   flex-direction: row;
 `;
 
 const SearchBar: React.FC = () => {
@@ -132,32 +135,34 @@ const SearchBar: React.FC = () => {
             </Container>
          ) : (
             <OuterContainer>
-               <NavContainer>
-                  <NavBox>
-                     <KeywordSearchBar
-                        input={keywordState}
-                        changeKeywordState={setKeywordState}
-                        isHome={isHome}
-                     ></KeywordSearchBar>
-                  </NavBox>
-                  <WiderNavBox>
-                     <MinoritySearchBar
-                        minorityState={minorityState}
-                        setMinorityState={setMinorityState}
-                        isHome={isHome}
-                     ></MinoritySearchBar>
-                  </WiderNavBox>
-                  <NavBox>
-                     <LocationSearchBar
-                        input={locationState}
-                        changeLocationState={setLocationState}
-                        isHome={isHome}
-                     ></LocationSearchBar>
-                  </NavBox>
+               <MiddleDiv>
+                  <NavContainer>
+                     <NavBox>
+                        <KeywordSearchBar
+                           input={keywordState}
+                           changeKeywordState={setKeywordState}
+                           isHome={isHome}
+                        ></KeywordSearchBar>
+                     </NavBox>
+                     <WiderNavBox>
+                        <MinoritySearchBar
+                           minorityState={minorityState}
+                           setMinorityState={setMinorityState}
+                           isHome={isHome}
+                        ></MinoritySearchBar>
+                     </WiderNavBox>
+                     <NavBox>
+                        <LocationSearchBar
+                           input={locationState}
+                           changeLocationState={setLocationState}
+                           isHome={isHome}
+                        ></LocationSearchBar>
+                     </NavBox>
+                  </NavContainer>
                   <NavStyledButton primary onClick={() => navigate('/search')}>
                      <NavFontAwesomeIcon icon={faSearch} color="white" />
                   </NavStyledButton>
-               </NavContainer>
+               </MiddleDiv>
             </OuterContainer>
          )}
       </main>
