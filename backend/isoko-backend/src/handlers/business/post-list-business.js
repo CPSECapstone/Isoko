@@ -19,90 +19,88 @@ const hash = (name, street) => {
  */
 exports.postListBusinessHandler = async (event) => {
    if (event.httpMethod !== 'POST') {
-      throw new Error(
-         `postListBusiness only accept POST method, you tried: ${event.httpMethod}`
-      );
+      return {
+         statusCode: 400,
+         body: {
+            error: `postListBusiness only accept POST method, you tried: ${event.httpMethod}`,
+         },
+      };
    }
 
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
 
-   // add defaultVal param for attributes that are optional/don't appear on non-owner list a business page
-   const name = _.get(requestBody, 'name');
-   const city = _.get(requestBody, 'city', '');
-   const state = _.get(requestBody, 'state', '');
-   const street = _.get(requestBody, 'street', '');
-   const zip = _.get(requestBody, 'zip', '');
-   const type = _.get(requestBody, 'type', '');
-   const tags = _.get(requestBody, 'tags', '');
-   const category = _.get(requestBody, 'category', '');
-   const shortDesc = _.get(requestBody, 'shortDesc', '');
-   const hours = _.get(requestBody, 'hours', {});
-   const links = _.get(requestBody, 'links', {});
-   const aboutOwner = _.get(requestBody, 'aboutOwner');
-   const owner = _.get(aboutOwner, 'owner', '');
-   const ownerName = _.get(aboutOwner, 'ownerName');
-   const ownerPhone = _.get(aboutOwner, 'ownerPhone');
-   const ownerDesc = _.get(aboutOwner, 'ownerDesc', '');
-   const ownerPhoto = _.get(aboutOwner, 'ownerPhoto', '');
-   const photos = _.get(requestBody, 'photos', []);
-   const reviews = _.get(requestBody, 'reviews', []);
-   const lister = _.get(requestBody, 'lister');
+   const type = _.get(requestBody, 'type');
 
-   const params = {
-      TableName: BUSINESS_TABLE,
-      Item: {
-         pk: hash(name, street),
-         sk: 'INFO',
-         name: name,
-         city: city,
-         street: street,
-         state: state,
-         zip: zip,
-         type: type,
-         tags: tags,
-         category: category,
-         shortDesc: shortDesc,
-         businessId: hash(name, street),
-         hours: hours,
-         links: links,
-         aboutOwner: {
-            owner: owner,
-            ownerName: ownerName,
-            ownerPhone: ownerPhone,
-            ownerDesc: ownerDesc,
-            ownerPhoto: ownerPhoto,
+   if (!type) {
+      return {
+         statusCode: 400,
+         body: {
+            error: 'type is a required field.',
          },
-         photos: photos,
-         reviews: reviews,
-         lister: lister,
-      },
-   };
+      };
+   }
+
+   let params;
+
+   const name = _.get(requestBody, 'name');
+   const street = _.get(requestBody, 'street');
+   const onlineUrl = _.get(requestBody, ['links', 'BusinessURL']);
+
+   // Check for required fields for hashing
+   if (type == 'B&M') {
+      if (name && street) {
+         params = {
+            TableName: BUSINESS_TABLE,
+            Item: {
+               pk: hash(name, street),
+               sk: 'INFO',
+               ...requestBody,
+            },
+         };
+      } else {
+         return {
+            statusCode: 400,
+            body: {
+               error: 'name and street are required fields for Brick and Mortar Businesses.',
+            },
+         };
+      }
+   } else if (type == 'Online') {
+      if (name && onlineUrl) {
+         params = {
+            TableName: BUSINESS_TABLE,
+            Item: {
+               pk: hash(name, onlineUrl),
+               sk: 'INFO',
+               ...requestBody,
+            },
+         };
+      } else {
+         return {
+            statusCode: 400,
+            body: {
+               error: 'name and links.BusinessURL are required fields for Online businesses.',
+            },
+         };
+      }
+   }
 
    let response;
 
    try {
-      const dynamoResult = await docClient.put(params).promise();
-
-      let putResults = dynamoResult.Items;
-      delete putResults.pk;
-      delete putResults.sk;
+      console.info(params);
+      await docClient.put(params).promise();
 
       response = {
          statusCode: 200,
-         body: { results: putResults },
+         body: { ...requestBody },
       };
    } catch (e) {
       response = {
          statusCode: 400,
-         body: { error: e },
+         body: { error: e.message },
       };
    }
-
-   console.info(
-      `response from: ${event.path} statusCode: ${
-         response.statusCode
-      } body: ${JSON.stringify(response.body)}`
-   );
    return response;
 };
