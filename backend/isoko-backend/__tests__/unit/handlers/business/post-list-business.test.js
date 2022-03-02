@@ -154,6 +154,8 @@ describe('PostListBusinessHandler tests', () => {
                   'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
             },
             lister: 'George Michael Bluth',
+            timestamp: 1644963553,
+            verified: true, 
          };
 
          const event = {

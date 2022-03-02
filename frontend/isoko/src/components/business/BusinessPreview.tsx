@@ -105,7 +105,7 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
 
             <TagRow>
                {props.minorityTags.map((tag, index) => (
-                  <MinorityTag key={index} name={tag} />
+                  <MinorityTag key={index} name={tag} mutable={false} />
                ))}
             </TagRow>
 
