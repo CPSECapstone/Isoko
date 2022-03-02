@@ -89,7 +89,7 @@ exports.postListBusinessHandler = async (event) => {
    let response;
 
    try {
-      console.info(params);
+      console.info(`DynamoDB put params: ${params}`);
       await docClient.put(params).promise();
 
       response = {
