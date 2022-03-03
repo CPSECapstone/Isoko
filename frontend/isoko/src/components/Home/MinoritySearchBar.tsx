@@ -33,7 +33,7 @@ const NavSearchBar = styled(Autocomplete)`
    }
 
    .MuiOutlinedInput-input {
-      font-size: 0.75em;
+      font-size: 0.9em;
    }
 
    .MuiAutocomplete-tag {

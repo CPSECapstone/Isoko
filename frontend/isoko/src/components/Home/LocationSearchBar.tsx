@@ -33,11 +33,15 @@ const NavSearchBar = styled(Autocomplete)`
 
    .MuiOutlinedInput-root .MuiAutocomplete-input {
       max-height: 32px;
-      padding: 0px;
+      padding: 6px;
    }
 
    .MuiOutlinedInput-input {
-      font-size: 0.75em;
+      font-size: 0.9em;
+   }
+
+   .MuiOutlinedInput-root {
+      padding: 0px;
    }
 
    .MuiOutlinedInput-notchedOutline {
