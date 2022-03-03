@@ -12,18 +12,18 @@ exports.getUserObjectHandler = async (event) => {
    }
 
    console.info('received:', event);
-   const { userSub } = event.pathParameters;
+   const { pk } = event.pathParameters;
 
-   if (userSub == null) {
+   if (pk == null) {
       throw new Error(
-         `Missing query parameter 'userSub'. Request URL format: GET/user/{userSub}`
+         `Missing query parameter 'pk'. Request URL format: GET/user/{pk}`
       );
    }
 
    const params = {
       TableName: USER_TABLE,
       Key: {
-         pk: userSub,
+         pk: pk,
       },
    };
 

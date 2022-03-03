@@ -1,10 +1,37 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
+const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { USER_TABLE } = require('../../constants');
+
 /**
  * HTTP put method t that allows the user object specified to be updated according to the request body.
 
  */
+
+
+/**
+ *
+ * @param {*} names is a list of names representing attribute names to be updated
+ * @param {*} requestBody is an object containing attribute names and new values
+ * @param {*} attrValues is an object containing mappings that match update expression
+ */
+ const buildUpdateExpression = (names, requestBody, attrValues) => {
+   let exp = `set `;
+   let expArr = [];
+   let count = 97;
+   names.forEach((n) => {
+      const val = _.get(requestBody, n);
+      const mapping = `:${String.fromCharCode(count)}`;
+      expArr.push(`${n} = ${mapping}`);
+      attrValues[mapping] = val;
+      count += 1;
+      }
+   );
+   exp += expArr.join(`, `);
+   exp.trim();
+   return exp;
+};
+
 exports.putUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'PUT') {
       throw new Error(
@@ -13,31 +40,56 @@ exports.putUserObjectHandler = async (event) => {
    }
 
    console.info('received:', event);
-   const { userSub } = event.pathParameters;
+   const { pk } = event.pathParameters;
 
-   if (userSub == null) {
+   if (pk == null) {
       throw new Error(
-         `Missing query parameter 'userSub'. Request URL format: GET/user/{userSub}`
+         `Missing query parameter 'pk'. Request URL format: PUT/user/{pk}`
       );
    }
+
+   const requestBody = event.body && JSON.parse(event.body);
+   const fieldNames = _.keys(requestBody);
+
+   let exprAttrVals = {};
+   const updateExpr = buildUpdateExpression(
+      fieldNames,
+      requestBody,
+      exprAttrVals
+   );
 
    const params = {
       TableName: USER_TABLE,
       Key: {
-         pk: userSub,
+         pk: pk,
       },
+      UpdateExpression: updateExpr,
+      ExpressionAttributeValues: exprAttrVals,
+      ReturnValues: 'UPDATED_NEW',
    };
 
    let response;
 
    try {
-      const dynamoResult = await docClient.get(params).promise();
+      // pk (usersub id) is a restricted field so entire request fails
+      if (fieldNames.includes('pk')) {
+         console.log('this is restricted');
+         throw new Error(`Cannot update restricted field: pk`);
+      }
 
-      let getResults = dynamoResult.Item;
+      const dynamoResult = await docClient.update(params).promise();
+
+      const updateResult = dynamoResult.Item;
+
+      // delete DynamoDB specific items
+      // delete updateResult.pk;
+      // delete updateResult.sk;
 
       response = {
          statusCode: 200,
-         body: { results: getResults },
+         body: {
+            results: updateResult,
+         },
       };
    } catch (e) {
       response = {
@@ -52,4 +104,5 @@ exports.putUserObjectHandler = async (event) => {
       } body: ${JSON.stringify(response.body)}`
    );
    return response;
+
 };
