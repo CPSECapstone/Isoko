@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Position = styled.div`
    position: absolute;
-   top: 4px;
+   top: 3px;
    right: 5px;
    padding: 0;
    margin: 2px;
