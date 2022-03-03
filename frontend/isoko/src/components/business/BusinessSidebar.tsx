@@ -167,13 +167,15 @@ const ClaimBusinessSection = () => {
                navigate('/claim');
             }}
          >
-            Claim Bussiness
+            Claim Business
          </ClaimBusinessButton>
       </div>
    );
 };
 
-const BusinessSidebar = (props: BusinessSidebarProps) => {
+const BusinessSidebar: React.FC<BusinessSidebarProps> = (
+   props: BusinessSidebarProps
+) => {
    return (
       <SidebarContainer className={props.className}>
          {/* HOURS */}

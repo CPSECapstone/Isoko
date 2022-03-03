@@ -1,16 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
+import ImageCarousel from './business/ImageCarousel';
+import moment from 'moment';
 
 const ReviewContainer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: start;
-   width: 40%;
    padding: 0.5em;
    margin: 0em 0em 1em 1em;
-   border: 2px solid darkgrey;
-   border-radius: 10px;
+   border-left: 2px solid #999999;
+`;
+
+interface ReviewPhotoProps {
+   maxWidth?: number;
+}
+
+const ReviewPhoto = styled.img<ReviewPhotoProps>`
+   max-height: 200px;
+   max-width: ${(props) => `${props.maxWidth}%`};
+   object-fit: contain;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   margin: 0px 7px 0px 0px;
+`;
+
+const ReviewPhotoContainer = styled.div`
+   display: flex;
+   flex-direction: row;
+   justify-content: start;
+   margin-top: 1em;
+   align-items: center;
 `;
 
 const UserPhoto = styled.img`
@@ -19,21 +39,6 @@ const UserPhoto = styled.img`
    object-fit: cover;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    border-radius: 50%;
-`;
-
-const ReviewPhoto = styled.img`
-   max-width: 32.5%;
-   max-height: 40%;
-   object-fit: contain;
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const ReviewPhotoContainer = styled.div`
-   display: flex;
-   flex-direction: row;
-   justify-content: space-evenly;
-   margin-top: 1em;
-   align-items: center;
 `;
 
 const UserContainer = styled.div`
@@ -51,7 +56,19 @@ const ContentText = styled.div`
 `;
 
 const StarContainer = styled.div`
-   margin: -0.5em 0em 0em 0em;
+   margin: -0.6em 0em 0em 0em;
+   display: flex;
+   align-items: center;
+`;
+
+const ReviewDateText = styled.div`
+   color: #a7a8a8;
+   padding: 0.3em 0em 0em 0.4em;
+`;
+
+const StyledCarousel = styled(ImageCarousel)`
+   width: 100%;
+   margin-top: 1em;
 `;
 
 interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
@@ -61,9 +78,16 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
    subject?: string;
    content?: string;
    imageUrls?: string[];
+   ts: number;
 }
 
-const Review: React.FC = (props: ReviewProps) => {
+const Review: React.FC<ReviewProps> = (props: ReviewProps) => {
+   let images = props.imageUrls;
+   if (images == null) {
+      images = [];
+   }
+   const reviewDate = new Date(props.ts * 1000);
+   const formattedReviewDate = moment(reviewDate).format('MM/DD/YYYY');
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>
@@ -80,19 +104,26 @@ const Review: React.FC = (props: ReviewProps) => {
                initialValue={props.stars}
                ratingValue={0}
             />
+            <ReviewDateText>{formattedReviewDate}</ReviewDateText>
          </StarContainer>
          {props.content ? (
             <ContentText>{props.content}</ContentText>
          ) : (
             <br></br>
          )}
-         {props.imageUrls ? (
+         {images.length >= 3 ? (
+            <StyledCarousel maxHeight={200} images={images}></StyledCarousel>
+         ) : (
             <ReviewPhotoContainer>
-               {props.imageUrls.map((photo, index) => (
-                  <ReviewPhoto key={index} src={photo}></ReviewPhoto>
+               {images.map((photo, index) => (
+                  <ReviewPhoto
+                     maxWidth={images.length === 2 ? 48 : 75}
+                     key={index}
+                     src={photo}
+                  ></ReviewPhoto>
                ))}
             </ReviewPhotoContainer>
-         ) : null}
+         )}
       </ReviewContainer>
    );
 };

@@ -19,26 +19,23 @@ Resources:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
  # This is a Lambda function config associated with the source code: get-search-businesses.js
-  getSearchResultsFunction:
+  postSearchResultsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/business/get-search-results.getSearchResultsHandler
+      Handler: src/handlers/business/post-search-results.postSearchResultsHandler
       Runtime: nodejs14.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: Includes a HTTP get method to get all businesses that match search criteria.
+      Description: Includes a HTTP post method to get all businesses that match search criteria.
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /business
-            Method: GET
+            Path: /searchBusiness
+            Method: POST
             RestApiId: !Ref IsokoBackendApi
-            RequestParameters: 
-              - method.request.querystring.location:
-                  Required: true
 
   postListBusinessFunction:
     Type: AWS::Serverless::Function

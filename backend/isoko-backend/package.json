@@ -19,8 +19,7 @@
       "format-check": "prettier --check \"**/*.+(js|json|ts)\"",
       "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src --quiet",
       "lint-autofix": "eslint --ext .js,.jsx,.ts,.tsx ./src --quiet --fix",
-      "sam-deploy": "sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name isoko-backend --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1qv27121x2wo3 --capabilities CAPABILITY_IAM --region us-west-2 ",
-      "prepare": "cd ../.. && husky install backend/isoko-backend/.husky"
+      "sam-deploy": "sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name isoko-backend --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-1qv27121x2wo3 --capabilities CAPABILITY_IAM --region us-west-2 "
    },
    "jest": {
       "testPathIgnorePatterns": [
