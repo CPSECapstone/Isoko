@@ -31,7 +31,7 @@ const UpdateInfo: React.FC = () => (
          ]}
          description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long this is long this is long this is long this is long this is long this is long this is long this is long"
          stars={3}
-         minorityTags={['Black-Owned']}
+         minorityTags={['Black Owned']}
          category="Food"
          keywordTags={['Burgers']}
          verified={true}

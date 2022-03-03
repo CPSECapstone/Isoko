@@ -290,7 +290,6 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          Fri: '',
          Sat: '',
       };
-      console.log('PH: ', props.hours);
       if (props.hours !== undefined) {
          Object.entries(props.hours).forEach((entry) => {
             const [key, value] = entry;
@@ -319,6 +318,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          const businessInfo = gatherBusinessInfo();
          postBusinessInfo(businessInfo);
       } // no need for an else. Errors are set in isValid
+      alert('Business details have been successfully saved!');
    };
 
    // this function contains a lot of ifs for more accurate error reporting
