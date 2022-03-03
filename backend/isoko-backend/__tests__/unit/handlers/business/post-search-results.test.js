@@ -1,12 +1,12 @@
 const {
-   getSearchResultsHandler,
-} = require('../../../../src/handlers/business/get-search-results.js');
+   postSearchResultsHandler,
+} = require('../../../../src/handlers/business/post-search-results.js');
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const { BUSINESS_TABLE } = require('../../../../src/constants');
 
 jest.mock('aws-sdk/clients/dynamodb');
 
-describe('GetSearchResultsHandler tests', () => {
+describe('PostSearchResultsHandler tests', () => {
    let querySpy;
 
    beforeAll(() => {
@@ -21,76 +21,96 @@ describe('GetSearchResultsHandler tests', () => {
       querySpy.mockReset();
    });
 
-   describe('Invalid location query param tests', () => {
-      it('Should throw an error when location is missing altogether', async () => {
+   describe('Invalid request tests', () => {
+      it('Should return 400 response when invalid http method', async () => {
          // arrange
          const event = {
             httpMethod: 'GET',
          };
 
          // act
+         const response = await postSearchResultsHandler(event);
 
          // assert
-         await expect(async () => {
-            await getSearchResultsHandler(event);
-         }).rejects.toThrowError();
+         expect(response.statusCode).toBe(400);
+         expect(response.body.error).toContain('GET');
+      });
+
+      it('Should return 400 response when location is missing altogether', async () => {
+         // arrange
+         const event = {
+            httpMethod: 'POST',
+         };
+
+         // act
+         const response = await postSearchResultsHandler(event);
+
+         // assert
+         expect(response.statusCode).toBe(400);
+         expect(response.body.error).toContain(
+            'Invalid location parameter: undefined'
+         );
       });
 
       it('Should throw an error when location is missing information', async () => {
          // arrange
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
                location: 'CA',
             }),
          };
 
          // act
+         const response = await postSearchResultsHandler(event);
 
          // assert
-         await expect(async () => {
-            await getSearchResultsHandler(event);
-         }).rejects.toThrowError('CA');
+         expect(response.statusCode).toBe(400);
+         expect(response.body.error).toContain(
+            'Invalid location parameter: CA'
+         );
       });
 
       it('Should throw an error when location has extra information', async () => {
          // arrange
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
-               location: 'CA/Sunnyvale/SantaClara',
+               location: 'CA#Sunnyvale#SantaClara',
             }),
          };
 
          // act
+         const response = await postSearchResultsHandler(event);
 
          // assert
-         await expect(async () => {
-            await getSearchResultsHandler(event);
-         }).rejects.toThrowError('CA/Sunnyvale/SantaClara');
+         expect(response.statusCode).toBe(400);
+         expect(response.body.error).toContain(
+            'Invalid location parameter: CA#Sunnyvale#SantaClara'
+         );
       });
    });
 
    describe('Failed get test', () => {
       it('Should return a 400 response when get throws an error', async () => {
          // arrange
-         expectedItem = {
+         const expectedItem = {
             statusCode: 400,
-            body: { error: Error('Get failed') },
+            body: { error: 'Get failed' },
          };
          querySpy.mockImplementation(() => {
             throw new Error('Get failed');
          });
 
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result).toEqual(expectedItem);
@@ -136,9 +156,9 @@ describe('GetSearchResultsHandler tests', () => {
             promise: () => Promise.resolve({ Items: mockQueryResults }),
          });
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
@@ -172,7 +192,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -211,10 +231,10 @@ describe('GetSearchResultsHandler tests', () => {
             promise: () => Promise.resolve({ Items: mockQueryResults }),
          });
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
                category: 'restaurant',
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
@@ -235,7 +255,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -307,11 +327,11 @@ describe('GetSearchResultsHandler tests', () => {
             promise: () => Promise.resolve({ Items: mockQueryResults }),
          });
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
                category: 'restaurant',
                tags: ['Asian-Owned', 'Latinx-Owned'],
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
@@ -345,7 +365,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -417,11 +437,11 @@ describe('GetSearchResultsHandler tests', () => {
             promise: () => Promise.resolve({ Items: mockQueryResults }),
          });
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
                category: 'restaurant',
                keyword: 'Korean',
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
@@ -442,7 +462,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);
@@ -514,12 +534,12 @@ describe('GetSearchResultsHandler tests', () => {
             promise: () => Promise.resolve({ Items: mockQueryResults }),
          });
          const event = {
-            httpMethod: 'GET',
+            httpMethod: 'POST',
             body: JSON.stringify({
                category: 'restaurant',
                tags: ['Asian-Owned'],
                keyword: 'Korean',
-               location: 'CA/Sunnyvale',
+               location: 'CA#Sunnyvale',
             }),
          };
 
@@ -540,7 +560,7 @@ describe('GetSearchResultsHandler tests', () => {
          ];
 
          // act
-         const result = await getSearchResultsHandler(event);
+         const result = await postSearchResultsHandler(event);
 
          // assert
          expect(result.body.results).toEqual(expectedItems);

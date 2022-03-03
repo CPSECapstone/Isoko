@@ -9,6 +9,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { environment } from '../environment/environment';
+import NavbarComponent from '../components/NavbarComponent';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -426,6 +427,8 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                     ownerDesc,
                  }
                : {},
+         timestamp: new Date().getTime(),
+         verified: isOwner == 'true' ? true : false,
       };
       return businessInfo;
    };
@@ -438,6 +441,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
 
    return (
       <main>
+         <NavbarComponent />
          <FormContainer>
             <HeaderLabel>List a Business</HeaderLabel>
             <SectionLabel>Business Details</SectionLabel>

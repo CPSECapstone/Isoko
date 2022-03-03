@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NavbarComponent from '../../components/NavbarComponent';
 import {
    faHome,
    faEdit,
@@ -59,6 +60,7 @@ const BusinessDash: React.FC = () => {
    const [activeComponent, setActiveComponent] = React.useState('UpdateInfo');
    return (
       <main>
+         <NavbarComponent />
          <h1>Business Owner Dashboard</h1>
          <div>
             <Row>

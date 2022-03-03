@@ -27,9 +27,44 @@ const StyledTextField = styled(TextField)`
    border-radius: 0px 90px 90px 0px;
 `;
 
+const NavSearchBar = styled(Autocomplete)`
+   font-size: 0.75rem;
+   max-height: 32px;
+
+   .MuiOutlinedInput-root .MuiAutocomplete-input {
+      max-height: 32px;
+      padding: 6px;
+   }
+
+   .MuiOutlinedInput-input {
+      font-size: 0.9em;
+   }
+
+   .MuiOutlinedInput-root {
+      padding: 0px;
+   }
+
+   .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
+
+   .Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
+
+   hover .MuiOutlinedInput-notchedOutline {
+      border: none;
+   }
+`;
+
+const NavTextField = styled(TextField)`
+   background: transparent;
+`;
+
 interface LocationProps extends React.HTMLProps<HTMLDivElement> {
    input: string;
    changeLocationState: React.Dispatch<React.SetStateAction<string>>;
+   isHome: boolean;
 }
 
 const LocationSearchBar: React.FC<LocationProps> = (props) => {
@@ -61,17 +96,33 @@ const LocationSearchBar: React.FC<LocationProps> = (props) => {
    };
 
    return (
-      <StyledSearchBar
-         disablePortal
-         id="home-search-bar"
-         options={optionsState}
-         sx={{}}
-         value={props.input}
-         onInputChange={(e, value) => updatingLocState(value as string)}
-         renderInput={(params) => (
-            <StyledTextField {...params} placeholder="San Diego, CA" />
+      <div>
+         {props.isHome ? (
+            <StyledSearchBar
+               disablePortal
+               id="home-search-bar"
+               options={optionsState}
+               sx={{}}
+               value={props.input}
+               onInputChange={(e, value) => updatingLocState(value as string)}
+               renderInput={(params) => (
+                  <StyledTextField {...params} placeholder="San Diego, CA" />
+               )}
+            />
+         ) : (
+            <NavSearchBar
+               disablePortal
+               id="home-search-bar"
+               options={optionsState}
+               sx={{}}
+               value={props.input}
+               onInputChange={(e, value) => updatingLocState(value as string)}
+               renderInput={(params) => (
+                  <NavTextField {...params} placeholder="San Diego, CA" />
+               )}
+            />
          )}
-      />
+      </div>
    );
 };
 
