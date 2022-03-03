@@ -5,6 +5,7 @@ import Review from '../components/Review';
 import BusinessHeader from '../components/business/BusinessHeader';
 import AboutTheOwner from '../components/business/AboutTheOwner';
 import ImageCarousel from '../components/business/ImageCarousel';
+import NavbarComponent from '../components/NavbarComponent';
 import BusinessSidebar from '../components/business/BusinessSidebar';
 import { Row, Col } from 'react-bootstrap';
 
@@ -48,6 +49,7 @@ const ContainerDiv = styled.div`
 
 const Business: React.FC = () => (
    <main>
+      <NavbarComponent />
       <ContainerDiv>
          <StyledRow>
             <StyledCarousel
