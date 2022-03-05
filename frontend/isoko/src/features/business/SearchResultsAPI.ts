@@ -13,9 +13,7 @@ export const fetchSearchResults = async (
    params: SearchParams
 ): Promise<Array<BusinessPreview>> => {
    const response = await axios.post(`${environment.prodURL}/searchBusiness`, {
-      data: {
-         ...params,
-      },
+      ...params,
    });
    return response.data as Array<BusinessPreview>;
 };

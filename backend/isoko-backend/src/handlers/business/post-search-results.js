@@ -92,7 +92,8 @@ exports.postSearchResultsHandler = async (event) => {
 
       response = {
          statusCode: 200,
-         body: { results: searchResults },
+         body: JSON.stringify({ results: searchResults }),
+         headers: {"content-type": "json", "access-control-allow-origin": "*"},
       };
    } catch (e) {
       response = {
