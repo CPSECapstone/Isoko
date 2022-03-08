@@ -160,12 +160,10 @@ describe('searchResultsReducer tests', () => {
          expect(axios.post).toHaveBeenCalledWith(
             `${environment.prodURL}/searchBusiness`,
             {
-               data: {
-                  location: 'CA/San Luis Obispo',
-                  keyword: 'Burgers',
-                  tags: ['Black-Owned'],
-                  category: 'Restaurants',
-               },
+               location: 'CA/San Luis Obispo',
+               keyword: 'Burgers',
+               tags: ['Black-Owned'],
+               category: 'Restaurants',
             }
          );
       });
