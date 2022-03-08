@@ -1,7 +1,10 @@
 import React from 'react';
 import ListBusiness from '../ListBusiness';
 
-const UpdateInfo: React.FC = () => (
+interface updateInfoProps extends React.HTMLProps<HTMLDivElement> {
+   setActiveComponent: (text: string) => void;
+}
+const UpdateInfo: React.FC<updateInfoProps> = (props) => (
    <main>
       <h1>Business Dashboard Update Info</h1>
       <ListBusiness
@@ -36,6 +39,7 @@ const UpdateInfo: React.FC = () => (
          keywordTags={['Burgers']}
          verified={true}
          numReviews={80}
+         setActiveComponent={props.setActiveComponent}
       />
    </main>
 );

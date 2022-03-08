@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { environment } from '../environment/environment';
 import NavbarComponent from '../components/NavbarComponent';
+import { useNavigate } from 'react-router-dom';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -227,9 +228,11 @@ interface ListBusinessProps extends React.HTMLProps<HTMLDivElement> {
    numReviews: number;
    hours: Hours;
    links: Link[];
+   setActiveComponent: (text: string) => void;
 }
 
 const ListBusiness: React.FC<ListBusinessProps> = (props) => {
+   const navigate = useNavigate();
    const [err, setErr] = useState('');
    const [isOwner, setIsOwner] = useState(props.ownerDesc ? 'true' : '');
    const [isBrickAndMortar, setIsBrickAndMortar] = useState(
@@ -270,6 +273,8 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
       Fri: '',
       Sat: '',
    });
+
+   const [isListBusiness, setIsListBusiness] = useState(true);
 
    // This function parses hours input and makes it form ready
    const parseHours = () => {
@@ -312,6 +317,14 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          option.value = item;
          categoryDataList.appendChild(option);
       });
+
+      const base_url = window.location.origin + '/listBusiness';
+      const current_url = window.location.href;
+      if (base_url === current_url) {
+         setIsListBusiness(true);
+      } else {
+         setIsListBusiness(false);
+      }
    }, []);
 
    const listABusiness = () => {
@@ -320,6 +333,11 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          postBusinessInfo(businessInfo);
       } // no need for an else. Errors are set in isValid
       alert('Business details have been successfully saved!');
+      if (isListBusiness) {
+         navigate('/');
+      } else {
+         props.setActiveComponent('Preview');
+      }
    };
 
    // this function contains a lot of ifs for more accurate error reporting
@@ -441,7 +459,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
 
    return (
       <main>
-         <NavbarComponent />
+         {isListBusiness ? <NavbarComponent /> : null}
          <FormContainer>
             <HeaderLabel>List a Business</HeaderLabel>
             <SectionLabel>Business Details</SectionLabel>
