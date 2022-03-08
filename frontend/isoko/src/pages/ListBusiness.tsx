@@ -274,7 +274,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
       Sat: '',
    });
 
-   const [isListBusiness, setIsListBusiness] = useState(true);
+   const [isListBusiness, setIsListBusiness] = useState(false);
 
    // This function parses hours input and makes it form ready
    const parseHours = () => {
@@ -318,9 +318,9 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          categoryDataList.appendChild(option);
       });
 
-      const base_url = window.location.origin + '/listBusiness';
+      const base_url = window.location.origin + '/ListBusiness';
       const current_url = window.location.href;
-      if (base_url === current_url) {
+      if (base_url.toLowerCase() === current_url.toLowerCase()) {
          setIsListBusiness(true);
       } else {
          setIsListBusiness(false);
