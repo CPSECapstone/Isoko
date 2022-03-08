@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BusinessPreview from '../components/business/BusinessPreview';
 import MinorityTag from '../components/business/MinorityTag';
@@ -8,6 +8,8 @@ import AddTagModal from '../components/search/AddTagModal';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import minorityGroups from '../constants/minorityGroups';
+import { useAppSelector } from '../app/hooks';
+import { BusinessPreview as BusinessPreviewType } from '../types/GlobalTypes';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -72,6 +74,17 @@ interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
 const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
+   const businessResults: Array<BusinessPreviewType> = useAppSelector(
+      (store) => store.searchResults.businesses
+   );
+
+   // filtered business results stored separately so they can be reverted if user unchecks the box
+   const [filteredBusinesses, setFilteredBusinesses] =
+      useState<Array<BusinessPreviewType>>(businessResults);
+
+   useEffect(() => {
+      setFilteredBusinesses(businessResults);
+   }, [businessResults]);
 
    const tags = [];
    minorityGroups.forEach((t) => {
@@ -91,98 +104,6 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    });
 
    const [tagState, setTagState] = useState(tags);
-
-   // mock response from API
-   const businessResults = [
-      {
-         pk: '-348372930',
-         sk: 'INFO',
-         name: "Bob's Burgers",
-         city: 'New York',
-         state: 'NY',
-         street: '20 W 34th St',
-         zip: '10001',
-         type: 'B&M',
-         tags: ['LGBTQ+ Owned'],
-         category: 'Burgers',
-         keywords: ['Burger'],
-         shortDesc: 'We do our best',
-         businessId: '-348372930',
-         hours: {},
-         links: {
-            Menu: 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
-         },
-         aboutOwner: {
-            ownerName: 'Bob Belcher',
-            ownerPhone: '234-234-9482',
-         },
-         photos: [
-            'https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg',
-         ],
-         reviews: [],
-         lister: 'Linda Belcher',
-         verified: false,
-         timestamp: 1644963725,
-      },
-      {
-         pk: '-664125567',
-         sk: 'INFO',
-         name: "Bluth's Original Frozen Banana",
-         city: 'Newport Beach',
-         state: 'CA',
-         street: '70 Newport Pier',
-         zip: '92663',
-         type: 'B&M',
-         tags: ['Women Owned'],
-         category: 'Desserts',
-         keywords: ['Chocolate', 'Bananas'],
-         shortDesc: "There's always money in the banana stand.",
-         businessId: '-664125567',
-         hours: {
-            Mon: '11:00am - 11:00pm',
-            Tue: '11:00am - 11:00pm',
-            Wed: '11:00am - 11:00pm',
-            Thu: '11:00am - 11:00pm',
-            Fri: '11:00am - 11:00pm',
-            Sat: '12:00pm - 8:00pm',
-            Sun: 'Closed',
-         },
-         links: {
-            Menu: 'https://arresteddevelopment.fandom.com/wiki/Bluth%27s_Original_Frozen_Banana_Stand',
-         },
-         aboutOwner: {
-            owner: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-            ownerName: 'Maeby Funke',
-            ownerPhone: '123-456-7890',
-            ownerDesc: 'Marry me!',
-            ownerPhoto:
-               'https://static.wikia.nocookie.net/arresteddevelopment/images/c/c2/Season_1_Character_Promos_-_Maeby_F%C3%BCnke_02.jpeg/revision/latest/scale-to-width-down/300?cb=20120429230807',
-         },
-         photos: [
-            'https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg',
-         ],
-         reviews: [
-            {
-               reviewAuthor: '3bed9528-9d10-4f50-ab72-d19dad1b8698',
-               authorUserName: 'Lucille Bluth',
-               authorProfilePicture: '',
-               stars: 1.2,
-               reviewTitle: 'Not worth the money',
-               description:
-                  "It's one banana, Michael. What could it cost, $10?",
-               pictures: ['http://i.imgur.com/pq458qHh.jpg'],
-               ts: 2348769369,
-            },
-         ],
-         lister: 'George Michael Bluth',
-         verified: true,
-         timestamp: 1644963553,
-      },
-   ];
-
-   // filtered business results stored separately so they can be reverted if user unchecks the box
-   const [filteredBusinesses, setFilteredBusinesses] =
-      useState(businessResults);
 
    const dayOfWeek = () => {
       const dateComponents = time.split(',');
@@ -381,14 +302,14 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                         <StyledBusinessPreview
                            key={index}
                            name={business.name}
-                           imageUrl={business.photos[0]}
+                           imageUrl={business.photo}
                            description={business.shortDesc}
-                           stars={4.5}
+                           stars={business.stars}
                            minorityTags={business.tags}
                            keywordTags={business.keywords}
                            verified={business.verified}
                            path="/business"
-                           numReviews={business.reviews.length}
+                           numReviews={business.numReviews}
                         />
                      </Row>
                   ))}

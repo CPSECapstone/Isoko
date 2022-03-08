@@ -2,7 +2,7 @@ const {
    postSearchResultsHandler,
 } = require('../../../../src/handlers/business/post-search-results.js');
 const dynamodb = require('aws-sdk/clients/dynamodb');
-const { BUSINESS_TABLE } = require('../../../../src/constants');
+const { SEARCH_RESULTS_TABLE } = require('../../../../src/constants');
 
 jest.mock('aws-sdk/clients/dynamodb');
 
@@ -198,7 +198,7 @@ describe('PostSearchResultsHandler tests', () => {
          // assert
          expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
-            TableName: BUSINESS_TABLE,
+            TableName: SEARCH_RESULTS_TABLE,
             KeyConditionExpression: '#pk = :location',
             ExpressionAttributeNames: {
                '#pk': 'pk',
@@ -262,7 +262,7 @@ describe('PostSearchResultsHandler tests', () => {
          // assert
          expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
-            TableName: BUSINESS_TABLE,
+            TableName: SEARCH_RESULTS_TABLE,
             KeyConditionExpression:
                '#pk = :location AND begins_with(#sk, :cat)',
             ExpressionAttributeNames: {
@@ -373,7 +373,7 @@ describe('PostSearchResultsHandler tests', () => {
          // assert
          expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
-            TableName: BUSINESS_TABLE,
+            TableName: SEARCH_RESULTS_TABLE,
             KeyConditionExpression:
                '#pk = :location AND begins_with(#sk, :cat)',
             ExpressionAttributeNames: {
@@ -471,7 +471,7 @@ describe('PostSearchResultsHandler tests', () => {
          // assert
          expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
-            TableName: BUSINESS_TABLE,
+            TableName: SEARCH_RESULTS_TABLE,
             KeyConditionExpression:
                '#pk = :location AND begins_with(#sk, :cat)',
             ExpressionAttributeNames: {
@@ -570,7 +570,7 @@ describe('PostSearchResultsHandler tests', () => {
          // assert
          expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
-            TableName: BUSINESS_TABLE,
+            TableName: SEARCH_RESULTS_TABLE,
             KeyConditionExpression:
                '#pk = :location AND begins_with(#sk, :cat)',
             ExpressionAttributeNames: {

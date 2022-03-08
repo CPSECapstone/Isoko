@@ -15,5 +15,7 @@ export const fetchSearchResults = async (
    const response = await axios.post(`${environment.prodURL}/searchBusiness`, {
       ...params,
    });
-   return response.data as Array<BusinessPreview>;
+
+   const searchResults = response.data.results;
+   return searchResults as Array<BusinessPreview>;
 };

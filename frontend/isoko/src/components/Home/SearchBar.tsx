@@ -113,7 +113,7 @@ const SearchBar: React.FC = () => {
    const navigate = useNavigate();
 
    const getSearchParams = (locationState, minorityState, keywordState) => {
-      const locationSplit = locationState.split(',');
+      const locationSplit = locationState.split(', ');
 
       // Error checking for location without all the information
       if (locationSplit.length < 3) {

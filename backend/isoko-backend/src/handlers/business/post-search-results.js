@@ -1,7 +1,7 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
-const { BUSINESS_TABLE } = require('../../constants');
+const { SEARCH_RESULTS_TABLE } = require('../../constants');
 
 const validateLocationParam = (locationParam) => {
    const splitLocationParam = locationParam && locationParam.split('#');
@@ -12,7 +12,7 @@ const buildQueryParams = (location, category) => {
    // ...(category) && {...} is just syntatic sugar to say if category
    // is defined, then add the object property that follows
    return {
-      TableName: BUSINESS_TABLE,
+      TableName: SEARCH_RESULTS_TABLE,
       KeyConditionExpression: `#pk = :location${
          category ? ' AND begins_with(#sk, :cat)' : ''
       }`,
@@ -61,9 +61,10 @@ exports.postSearchResultsHandler = async (event) => {
    let response;
 
    try {
-      const dynamoResult = await docClient
-         .query(buildQueryParams(location, category))
-         .promise();
+      const params = buildQueryParams(location, category);
+      console.info(`Dynamo request with params: ${params}`);
+
+      const dynamoResult = await docClient.query(params).promise();
       let queryResults = dynamoResult.Items;
 
       if (tags && tags.length && keyword) {
@@ -93,7 +94,10 @@ exports.postSearchResultsHandler = async (event) => {
       response = {
          statusCode: 200,
          body: JSON.stringify({ results: searchResults }),
-         headers: {"content-type": "json", "access-control-allow-origin": "*"},
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
+         },
       };
    } catch (e) {
       response = {

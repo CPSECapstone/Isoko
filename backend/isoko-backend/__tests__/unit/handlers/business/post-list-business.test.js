@@ -155,7 +155,7 @@ describe('PostListBusinessHandler tests', () => {
             },
             lister: 'George Michael Bluth',
             timestamp: 1644963553,
-            verified: true, 
+            verified: true,
          };
 
          const event = {
