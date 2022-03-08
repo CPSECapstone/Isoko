@@ -117,8 +117,8 @@ const SearchBar: React.FC = () => {
 
       // Error checking for location without all the information
       if (locationSplit.length < 3) {
-         // TODO: Maybe display a modal saying the location is bad?
-         console.log('Bad location');
+         alert('Invalid search location, please try another location');
+         return null;
       }
 
       return {
@@ -131,12 +131,15 @@ const SearchBar: React.FC = () => {
    };
 
    const dispatchSearch = async () => {
-      await dispatch(
-         getSearchResultsAsync(
-            getSearchParams(locationState, minorityState, keywordState)
-         )
+      const searchParams = getSearchParams(
+         locationState,
+         minorityState,
+         keywordState
       );
-      navigate('/search');
+      if (searchParams) {
+         await dispatch(getSearchResultsAsync(searchParams));
+         navigate('/search');
+      }
    };
 
    return (

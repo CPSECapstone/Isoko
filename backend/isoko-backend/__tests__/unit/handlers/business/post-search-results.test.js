@@ -193,9 +193,10 @@ describe('PostSearchResultsHandler tests', () => {
 
          // act
          const result = await postSearchResultsHandler(event);
+         const resultBody = JSON.parse(result.body);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             KeyConditionExpression: '#pk = :location',
@@ -256,9 +257,10 @@ describe('PostSearchResultsHandler tests', () => {
 
          // act
          const result = await postSearchResultsHandler(event);
+         const resultBody = JSON.parse(result.body);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             KeyConditionExpression:
@@ -366,9 +368,10 @@ describe('PostSearchResultsHandler tests', () => {
 
          // act
          const result = await postSearchResultsHandler(event);
+         const resultBody = JSON.parse(result.body);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             KeyConditionExpression:
@@ -463,9 +466,10 @@ describe('PostSearchResultsHandler tests', () => {
 
          // act
          const result = await postSearchResultsHandler(event);
+         const resultBody = JSON.parse(result.body);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             KeyConditionExpression:
@@ -561,9 +565,10 @@ describe('PostSearchResultsHandler tests', () => {
 
          // act
          const result = await postSearchResultsHandler(event);
+         const resultBody = JSON.parse(result.body);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(resultBody.results).toEqual(expectedItems);
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             KeyConditionExpression:
