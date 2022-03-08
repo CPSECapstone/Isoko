@@ -130,6 +130,15 @@ const SearchBar: React.FC = () => {
       };
    };
 
+   const dispatchSearch = async () => {
+      await dispatch(
+         getSearchResultsAsync(
+            getSearchParams(locationState, minorityState, keywordState)
+         )
+      );
+      navigate('/search');
+   };
+
    return (
       <main>
          {isHome ? (
@@ -169,21 +178,7 @@ const SearchBar: React.FC = () => {
                      ></LocationSearchBar>
                   </StyledCol>
                   <StyledCol sm={1}>
-                     <SearchButton
-                        primary
-                        onClick={async () => {
-                           await dispatch(
-                              getSearchResultsAsync(
-                                 getSearchParams(
-                                    locationState,
-                                    minorityState,
-                                    keywordState
-                                 )
-                              )
-                           );
-                           navigate('/search');
-                        }}
-                     >
+                     <SearchButton primary onClick={dispatchSearch}>
                         <SearchIcon icon={faSearch} />
                      </SearchButton>
                   </StyledCol>
@@ -215,7 +210,7 @@ const SearchBar: React.FC = () => {
                         ></LocationSearchBar>
                      </NavBox>
                   </NavContainer>
-                  <NavStyledButton primary onClick={() => navigate('/search')}>
+                  <NavStyledButton primary onClick={dispatchSearch}>
                      <NavFontAwesomeIcon icon={faSearch} color="white" />
                   </NavStyledButton>
                </MiddleDiv>
