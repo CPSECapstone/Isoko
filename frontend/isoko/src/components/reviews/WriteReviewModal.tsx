@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
-import { Modal, Col, Form } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import { Rating } from 'react-simple-star-rating';
 
 const CONTENTMAXLENGTH = 300;
-
-const ModalTagCol = styled(Col)`
-   margin-bottom: 5px;
-`;
 
 const Required = styled.span`
    color: red;
@@ -62,13 +58,33 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
    const [subject, setSubject] = useState('');
    const [content, setContent] = useState('');
    const [rating, setRating] = useState(0);
+   // TODO: Add image upload and display
    const [listOfImages, setListOfImages] = useState([]);
    const [err, setErr] = useState('');
 
-   // note that rating value is out of 100 and needs to be divided by 20 to get
+   // NOTE: that rating value is out of 100 and needs to be divided by 20 to get
    // number of stars when sending to database
    const handleRating = (rate: number) => {
       setRating(rate);
+   };
+
+   const handleConfirm = () => {
+      // TODO: Replace this with a post request to send review to database
+      console.log('HANDLE CONFIRM IS REACHED');
+      return isValid();
+   };
+
+   const isValid = () => {
+      console.log('ISVALID IS REACHED');
+      if (subject.length === 0) {
+         setErr('Please fill out a subject line');
+         return false;
+      }
+      if (rating === 0) {
+         setErr('Please rate the business out of 5');
+         return false;
+      }
+      return true;
    };
 
    return (
@@ -120,7 +136,8 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
             </Form>
          </Modal.Body>
          <Modal.Footer>
-            <StyledButton onClick={props.handleClose}>Cancel</StyledButton>
+            {err === '' ? null : <Required>{err}</Required>}
+            <StyledButton onClick={handleConfirm}>Confirm</StyledButton>
          </Modal.Footer>
       </Modal>
    );
