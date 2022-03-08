@@ -1,9 +1,10 @@
 import React from 'react';
+import NavbarComponent from '../components/NavbarComponent';
 import SearchResults from './SearchResults';
-import moment from 'moment';
 
 const Search: React.FC = () => (
    <main>
+      <NavbarComponent />
       <h1>Search + Search Results</h1>
       <SearchResults
          category="Restaurants"

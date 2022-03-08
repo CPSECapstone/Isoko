@@ -74,7 +74,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const [showModal, setShowModal] = useState(false);
 
    const tags = [];
-   minorityGroups.forEach((t, i) => {
+   minorityGroups.forEach((t) => {
       let tagObject;
       if (props.minorityTags.includes(t)) {
          tagObject = {
@@ -321,7 +321,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            tag.selected === true ? (
                               <SelectedTagRow
                                  key={index}
-                                 onClick={(e) =>
+                                 onClick={() =>
                                     filterBusinessesRemoveTag(
                                        tag.text,
                                        filteredBusinesses
