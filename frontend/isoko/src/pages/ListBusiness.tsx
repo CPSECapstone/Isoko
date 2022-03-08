@@ -4,11 +4,13 @@ import StyledButton from '../styles/StyledButton';
 import { Form } from 'react-bootstrap';
 import categoryList from '../constants/categoryList';
 import minorityGroups from '../constants/minorityGroups';
+import keywordList from '../constants/keywordList';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { environment } from '../environment/environment';
 import NavbarComponent from '../components/NavbarComponent';
+import { useNavigate } from 'react-router-dom';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -77,6 +79,9 @@ const StyledControl = styled(Form.Control)`
    &:focus {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       border: 1px solid rgb(249, 125, 11);
+   }
+   ::placeholder {
+      color: #aaaaaa;
    }
 `;
 
@@ -179,24 +184,77 @@ const StyledCheck = styled(Form.Check)`
 const HourLabel = styled(Form.Label)`
    min-width: 70px;
 `;
-const ListBusiness: React.FC = () => {
+
+export enum Day {
+   Mon = 'Mon',
+   Tue = 'Tue',
+   Wed = 'Wed',
+   Thu = 'Thu',
+   Fri = 'Fri',
+   Sat = 'Sat',
+   Sun = 'Sun',
+}
+
+interface Hours {
+   [Day.Mon]?: string;
+   [Day.Tue]?: string;
+   [Day.Wed]?: string;
+   [Day.Thu]?: string;
+   [Day.Fri]?: string;
+   [Day.Sat]?: string;
+   [Day.Sun]?: string;
+}
+
+interface Link {
+   title: string;
+   link: string;
+}
+
+interface ListBusinessProps extends React.HTMLProps<HTMLDivElement> {
+   name: string;
+   city: string;
+   category: string;
+   state: string;
+   street: string;
+   zip: string;
+   ownerName: string;
+   ownerPhone: string;
+   ownerDesc: string;
+   description: string;
+   stars: number;
+   minorityTags: string[];
+   keywordTags: string[];
+   verified: boolean;
+   numReviews: number;
+   hours: Hours;
+   links: Link[];
+   setActiveComponent: (text: string) => void;
+}
+
+const ListBusiness: React.FC<ListBusinessProps> = (props) => {
+   const navigate = useNavigate();
    const [err, setErr] = useState('');
-
-   const [isOwner, setIsOwner] = useState('');
-   const [isBrickAndMortar, setIsBrickAndMortar] = useState('');
-
-   const [businessName, setBusinessName] = useState('');
-   const [street, setStreet] = useState('');
-   const [city, setCity] = useState('');
-   const [state, setState] = useState('');
-   const [zip, setZip] = useState('');
-   const [tags, setTags] = useState([]);
-   const [category, setCategory] = useState('');
-   const [businessURL, setBusinessURL] = useState('');
-   const [shortDesc, setShortDesc] = useState('');
-   const [ownerName, setOwnerName] = useState('');
-   const [ownerPhone, setOwnerPhone] = useState('');
-   const [ownerDesc, setOwnerDesc] = useState('');
+   const [isOwner, setIsOwner] = useState(props.ownerDesc ? 'true' : '');
+   const [isBrickAndMortar, setIsBrickAndMortar] = useState(
+      props.street ? 'true' : props.links ? 'false' : ''
+   );
+   const [businessName, setBusinessName] = useState(props.name || '');
+   const [street, setStreet] = useState(props.street || '');
+   const [city, setCity] = useState(props.city || '');
+   const [state, setState] = useState(props.state || '');
+   const [zip, setZip] = useState(props.zip || '');
+   const [tags, setTags] = useState<Array<string>>(props.minorityTags || []);
+   const [keywords, setKeywords] = useState<Array<string>>(
+      props.keywordTags || []
+   );
+   const [category, setCategory] = useState(props.category || '');
+   const [businessURL, setBusinessURL] = useState(
+      props.links ? props.links[0].link : ''
+   );
+   const [shortDesc, setShortDesc] = useState(props.description || '');
+   const [ownerName, setOwnerName] = useState(props.ownerName || '');
+   const [ownerPhone, setOwnerPhone] = useState(props.ownerPhone || '');
+   const [ownerDesc, setOwnerDesc] = useState(props.ownerDesc || '');
    const [openHours, setOpenHours] = useState({
       Sun: '',
       Mon: '',
@@ -216,15 +274,57 @@ const ListBusiness: React.FC = () => {
       Sat: '',
    });
 
+   const [isListBusiness, setIsListBusiness] = useState(true);
+
+   // This function parses hours input and makes it form ready
+   const parseHours = () => {
+      const x = {
+         Sun: '',
+         Mon: '',
+         Tue: '',
+         Wed: '',
+         Thu: '',
+         Fri: '',
+         Sat: '',
+      };
+      const y = {
+         Sun: '',
+         Mon: '',
+         Tue: '',
+         Wed: '',
+         Thu: '',
+         Fri: '',
+         Sat: '',
+      };
+      if (props.hours !== undefined) {
+         Object.entries(props.hours).forEach((entry) => {
+            const [key, value] = entry;
+            x[key] = value.split('-')[0];
+            y[key] = value.split('-')[1];
+         });
+         setOpenHours(x);
+         setCloseHours(y);
+      }
+   };
+
    // renders the data form the constants to the page,
    // useEffect needed to load fields before page loads
    useEffect(() => {
       const categoryDataList = document.getElementById('category-groups');
+      parseHours();
       categoryList.forEach((item) => {
          const option = document.createElement('option');
          option.value = item;
          categoryDataList.appendChild(option);
       });
+
+      const base_url = window.location.origin + '/listBusiness';
+      const current_url = window.location.href;
+      if (base_url === current_url) {
+         setIsListBusiness(true);
+      } else {
+         setIsListBusiness(false);
+      }
    }, []);
 
    const listABusiness = () => {
@@ -232,10 +332,15 @@ const ListBusiness: React.FC = () => {
          const businessInfo = gatherBusinessInfo();
          postBusinessInfo(businessInfo);
       } // no need for an else. Errors are set in isValid
+      alert('Business details have been successfully saved!');
+      if (isListBusiness) {
+         navigate('/');
+      } else {
+         props.setActiveComponent('Preview');
+      }
    };
 
    // this function contains a lot of ifs for more accurate error reporting
-   // This function could still prob be improved
    const isValid = () => {
       if (businessName.length === 0) {
          setErr('Please fill out Business Name');
@@ -354,7 +459,7 @@ const ListBusiness: React.FC = () => {
 
    return (
       <main>
-         <NavbarComponent />
+         {isListBusiness ? <NavbarComponent /> : null}
          <FormContainer>
             <HeaderLabel>List a Business</HeaderLabel>
             <SectionLabel>Business Details</SectionLabel>
@@ -373,7 +478,6 @@ const ListBusiness: React.FC = () => {
                      }}
                   />
                </Form.Group>
-
                <SplitContainer>
                   <SplitFormGroup
                      className="mb-3"
@@ -395,29 +499,25 @@ const ListBusiness: React.FC = () => {
                      <StyledDataList id="category-groups"></StyledDataList>
                   </SplitFormGroup>
                   <SplitFormGroup className="mb-3 ">
-                     <Form.Label>
-                        Minority Group <Required>*</Required>
-                     </Form.Label>
+                     <Form.Label>Business Tags</Form.Label>
                      <StyledSearchBar
                         multiple
-                        id="tags-outlined"
-                        options={minorityGroups}
-                        getOptionLabel={(option: string) => option}
-                        value={tags}
+                        id="keywords-outlined"
+                        options={keywordList}
+                        getOptionLabel={(option) =>
+                           typeof option === 'string' ? option : ''
+                        }
+                        value={keywords}
                         onChange={(e, value) => {
-                           setTags(value);
+                           setKeywords(Array.isArray(value) ? value : []);
                         }}
                         filterSelectedOptions
                         renderInput={(params) => (
-                           <StyledTextField
-                              {...params}
-                              placeholder="Viet-Owned"
-                           />
+                           <StyledTextField {...params} placeholder="Burgers" />
                         )}
                      />
                   </SplitFormGroup>
                </SplitContainer>
-
                <SectionLabel>Business Owner Details</SectionLabel>
                <SplitContainer>
                   <SplitFormGroup
@@ -449,6 +549,32 @@ const ListBusiness: React.FC = () => {
                            setOwnerPhone(e.target.value);
                            setErr('');
                         }}
+                     />
+                  </SplitFormGroup>
+               </SplitContainer>
+               <SplitContainer>
+                  <SplitFormGroup className="mb-3 ">
+                     <Form.Label>
+                        Business Owner Minority Group <Required>*</Required>
+                     </Form.Label>
+                     <StyledSearchBar
+                        multiple
+                        id="tags-outlined"
+                        options={minorityGroups}
+                        getOptionLabel={(option) =>
+                           typeof option === 'string' ? option : ''
+                        }
+                        value={tags}
+                        onChange={(e, value) => {
+                           setTags(Array.isArray(value) ? value : []);
+                        }}
+                        filterSelectedOptions
+                        renderInput={(params) => (
+                           <StyledTextField
+                              {...params}
+                              placeholder="Viet-Owned"
+                           />
+                        )}
                      />
                   </SplitFormGroup>
                </SplitContainer>
