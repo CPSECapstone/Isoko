@@ -1,62 +1,41 @@
-import React from 'react';
-import ImageUploading, { ImageListType } from 'react-images-uploading';
-import StyledButton from '../../styles/StyledButton';
+import React, { useState } from 'react';
+import Crop from './Crop';
 
 const MultiImageUpload: React.FC = () => {
-   const [images, setImages] = React.useState([]);
-   const maxNumber = 20;
+   const [imageURLs, setImageURLs] = useState([]);
+   console.log(imageURLs);
 
-   const onChange = (
-      imageList: ImageListType,
-      addUpdateIndex: number[] | undefined
-   ) => {
-      // data for submit
-      console.log(imageList, addUpdateIndex);
-      setImages(imageList as never[]);
+   const [showCrop, setShowCrop] = useState(false);
+
+   const onImageChange = (e) => {
+      setImageURLs([URL.createObjectURL(e.target.files[0]), ...imageURLs]);
+      // cropImg(URL.createObjectURL(e.target.files[0]))
+      setShowCrop(true);
    };
 
+   //once changes are saved from crop, add cropped img to another state list and map that
    return (
-      <div className="App">
-         <ImageUploading
+      <div>
+         <input
+            type="file"
             multiple
-            value={images}
-            onChange={onChange}
-            maxNumber={maxNumber}
-         >
-            {({
-               imageList,
-               onImageUpload,
-               onImageRemoveAll,
-               onImageUpdate,
-               onImageRemove,
-               isDragging,
-               dragProps,
-            }) => (
-               // write your building UI
-               <div className="upload__image-wrapper">
-                  <StyledButton onClick={onImageUpload}>
-                     Upload a Photo
-                  </StyledButton>
-                  &nbsp;
-                  <StyledButton onClick={onImageRemoveAll}>
-                     Remove all Photos
-                  </StyledButton>
-                  {imageList.map((image, index) => (
-                     <div key={index} className="image-item">
-                        <img src={image.dataURL} alt="" width="100" />
-                        <div className="image-item__btn-wrapper">
-                           <StyledButton onClick={() => onImageUpdate(index)}>
-                              Replace
-                           </StyledButton>
-                           <StyledButton onClick={() => onImageRemove(index)}>
-                              Remove
-                           </StyledButton>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-            )}
-         </ImageUploading>
+            accept="image/*"
+            onChange={onImageChange}
+         />
+
+         {imageURLs.map((imageSrc, index) => (
+            <div key={index} className="image-item">
+               <img src={imageSrc} width="200" />
+            </div>
+         ))}
+
+         <Crop
+            show={showCrop}
+            imgURL={imageURLs[0]}
+            handleClose={() => {
+               setShowCrop(false);
+            }}
+         />
       </div>
    );
 };
