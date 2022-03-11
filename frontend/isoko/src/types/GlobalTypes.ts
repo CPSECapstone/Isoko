@@ -11,4 +11,5 @@ export interface BusinessPreview {
    businessId: string;
    photo: string;
    zipCode: number;
+   timestamp: number;
 }

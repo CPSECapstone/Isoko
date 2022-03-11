@@ -139,7 +139,7 @@ const SearchBar: React.FC = () => {
          keywordState
       );
       if (searchParams) {
-         await dispatch(getSearchResultsAsync(searchParams));
+         dispatch(getSearchResultsAsync(searchParams));
          navigate('/search');
       }
    };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import BusinessPreview from '../components/business/BusinessPreview';
 import MinorityTag from '../components/business/MinorityTag';
 import AddTag from '../components/search/AddTag';
@@ -10,6 +10,7 @@ import moment from 'moment-timezone';
 import minorityGroups from '../constants/minorityGroups';
 import { useAppSelector } from '../app/hooks';
 import { BusinessPreview as BusinessPreviewType } from '../types/GlobalTypes';
+import { SpinnerCircularFixed } from 'spinners-react';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -32,6 +33,28 @@ const SidebarContainer = styled.div`
    flex-shrink: 1;
    align-self: left;
    margin-bottom: 10px;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const ResultsRow = styled(Row)`
+   animation: ${fadeIn} 0.5s linear;
+`;
+
+const StyledSpinner = styled(SpinnerCircularFixed)`
+   position: absolute;
+   top: 50%;
+   left: 50%;
+
+   animation: ${fadeIn} 0.5s linear;
 `;
 
 const ResultsContainer = styled.div`
@@ -74,17 +97,16 @@ interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
 const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
-   const businessResults: Array<BusinessPreviewType> = useAppSelector(
-      (store) => store.searchResults.businesses
-   );
+   const searchResultsStore = useAppSelector((store) => store.searchResults);
 
    // filtered business results stored separately so they can be reverted if user unchecks the box
-   const [filteredBusinesses, setFilteredBusinesses] =
-      useState<Array<BusinessPreviewType>>(businessResults);
+   const [filteredBusinesses, setFilteredBusinesses] = useState<
+      Array<BusinessPreviewType>
+   >(searchResultsStore.businesses);
 
    useEffect(() => {
-      setFilteredBusinesses(businessResults);
-   }, [businessResults]);
+      setFilteredBusinesses(searchResultsStore.businesses);
+   }, [searchResultsStore.businesses]);
 
    const tags = [];
    minorityGroups.forEach((t) => {
@@ -179,7 +201,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       if (e.target.checked) {
          setFilteredBusinesses(businesses.filter((b) => filterByTime(b, day)));
       } else {
-         setFilteredBusinesses(businessResults);
+         setFilteredBusinesses(searchResultsStore.businesses);
       }
    };
 
@@ -196,9 +218,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const sortBusinesses = (key) => {
       if (key === 'reviews') {
          setFilteredBusinesses([
-            ...filteredBusinesses.sort(
-               (a, b) => b.reviews.length - a.reviews.length
-            ),
+            ...filteredBusinesses.sort((a, b) => b.numReviews - a.numReviews),
          ]);
       } else if (key === 'recent') {
          setFilteredBusinesses([
@@ -293,26 +313,31 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                </Sidebar>
             </Col>
             <Col>
+               (
                <ResultsContainer>
                   <StyledH2>
                      {props.category} near {props.location}
                   </StyledH2>
-                  {filteredBusinesses.map((business, index) => (
-                     <Row key={index}>
-                        <StyledBusinessPreview
-                           key={index}
-                           name={business.name}
-                           imageUrl={business.photo}
-                           description={business.shortDesc}
-                           stars={business.stars}
-                           minorityTags={business.tags}
-                           keywordTags={business.keywords}
-                           verified={business.verified}
-                           path="/business"
-                           numReviews={business.numReviews}
-                        />
-                     </Row>
-                  ))}
+                  {searchResultsStore.status === 'loading' ? (
+                     <StyledSpinner thickness={125} color="#F97D0B" />
+                  ) : (
+                     filteredBusinesses.map((business, index) => (
+                        <ResultsRow key={index}>
+                           <StyledBusinessPreview
+                              key={index}
+                              name={business.name}
+                              imageUrl={business.photo}
+                              description={business.shortDesc}
+                              stars={business.rating}
+                              minorityTags={business.tags}
+                              keywordTags={business.keywords}
+                              verified={business.verified}
+                              path="/business"
+                              numReviews={business.numReviews}
+                           />
+                        </ResultsRow>
+                     ))
+                  )}
                </ResultsContainer>
             </Col>
          </Row>
