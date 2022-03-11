@@ -61,7 +61,6 @@ const BusinessDash: React.FC = () => {
    return (
       <main>
          <NavbarComponent />
-         <h1>Business Owner Dashboard</h1>
          <div>
             <Row>
                <StyledCol1>

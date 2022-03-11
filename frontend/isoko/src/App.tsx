@@ -42,7 +42,10 @@ const App: React.FC = () => {
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route path="resetSuccess" element={<PasswordResetSuccess />} />
-            <Route path="business" element={<Business />} />
+            <Route
+               path="business"
+               element={<Business showInPreview={true} />}
+            />
             <Route path="businessDash" element={<BusinessDash />} />
             <Route path="listBusiness" element={<ListBusiness />} />
             <Route path="moddash" element={<ModDash />} />
