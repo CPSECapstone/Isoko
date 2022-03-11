@@ -123,7 +123,9 @@ const SearchBar: React.FC = () => {
 
       return {
          location: `${locationSplit[1]}#${locationSplit[0]}`,
-         tags: minorityState,
+         tags: minorityState.includes('Any Minority Owned')
+            ? []
+            : minorityState,
          ...(categoryList.includes(keywordState)
             ? { category: keywordState }
             : { keyword: keywordState }),
