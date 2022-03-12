@@ -461,7 +461,9 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
       <main>
          {isListBusiness ? <NavbarComponent /> : null}
          <FormContainer>
-            <HeaderLabel>List a Business</HeaderLabel>
+            <HeaderLabel>
+               {isListBusiness ? 'List a Business' : 'Update Business Info'}
+            </HeaderLabel>
             <SectionLabel>Business Details</SectionLabel>
             <Form>
                <Form.Group className="mb-3">

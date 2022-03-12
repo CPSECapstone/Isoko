@@ -6,7 +6,6 @@ interface updateInfoProps extends React.HTMLProps<HTMLDivElement> {
 }
 const UpdateInfo: React.FC<updateInfoProps> = (props) => (
    <main>
-      <h1>Business Dashboard Update Info</h1>
       <ListBusiness
          name="Bob's Burgers"
          city="San Luis Obispo"
