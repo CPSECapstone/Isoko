@@ -70,12 +70,10 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
 
    const handleConfirm = () => {
       // TODO: Replace this with a post request to send review to database
-      console.log('HANDLE CONFIRM IS REACHED');
       return isValid();
    };
 
    const isValid = () => {
-      console.log('ISVALID IS REACHED');
       if (subject.length === 0) {
          setErr('Please fill out a subject line');
          return false;
@@ -142,7 +140,5 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
       </Modal>
    );
 };
-
-//Should hitting cancel clear their review state or keep it?
 
 export default WriteReviewModal;
