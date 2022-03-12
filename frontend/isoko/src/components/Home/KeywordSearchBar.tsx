@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import keywordList from '../../constants/keywordList';
+import categoryList from '../../constants/categoryList';
 
 const StyledSearchBar = styled(Autocomplete)`
    border-right: 2px solid lightgray;
@@ -73,7 +74,7 @@ const KeywordSearchBar: React.FC<KeywordProps> = (props) => {
             <StyledSearchBar
                disablePortal
                id="home-search-bar"
-               options={keywordList}
+               options={[...categoryList, ...keywordList]}
                sx={{}}
                value={props.input}
                onInputChange={(e, value) =>
@@ -87,7 +88,7 @@ const KeywordSearchBar: React.FC<KeywordProps> = (props) => {
             <NavSearchBar
                disablePortal
                id="home-search-bar"
-               options={keywordList}
+               options={[...categoryList, ...keywordList]}
                sx={{}}
                value={props.input}
                onInputChange={(e, value) =>
