@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
-import Review from '../../components/Review';
+import Review from '../../components/reviews/Review';
 import SortReviewsDropdown from '../../components/business_dashboard/SortReviewsDropdown';
 
 const ReviewsContainer = styled.div`
