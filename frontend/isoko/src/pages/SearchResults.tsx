@@ -71,7 +71,9 @@ const LeftDiv = styled.div`
    display: flex;
    justify-content: left;
 `;
-const SearchContainer = styled(Container)``;
+const SearchContainer = styled(Container)`
+   margin-top: 25px;
+`;
 
 const TagContainer = styled(Container)`
    padding: 5px;
@@ -313,7 +315,6 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                </Sidebar>
             </Col>
             <Col>
-               (
                <ResultsContainer>
                   <StyledH2>
                      {props.category} near {props.location}
