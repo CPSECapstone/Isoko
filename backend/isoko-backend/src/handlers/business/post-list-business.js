@@ -100,9 +100,6 @@ exports.postListBusinessHandler = async (event) => {
             timestamp: _.get(requestBody, 'timestamp'),
          },
       };
-      console.info(
-         `DynamoDB put params for SearchResults Table: ${searchResultsParams}`
-      );
 
       const businessParams = {
          TableName: BUSINESS_TABLE,
@@ -112,7 +109,6 @@ exports.postListBusinessHandler = async (event) => {
             ...requestBody,
          },
       };
-      console.info(`DynamoDB put params for Business Table: ${businessParams}`);
 
       // Put to DynamoDB in parallel.
       await Promise.all([
