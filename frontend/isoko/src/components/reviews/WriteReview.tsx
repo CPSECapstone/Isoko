@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-const AddTagContainer = styled.div`
+const WriteReviewContainer = styled.div`
    display: flex;
-   align-items: flex-row;
    padding: 4px 5px 4px 5px;
-   background-color: #fff;
-   color: black;
+   background-color: #f97d0b;
    text-align: center;
    border-radius: 4px;
    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.11);
    cursor: pointer;
+   width: 115px;
+   color: #fff;
 `;
 
 const StyledText = styled.p`
@@ -23,15 +23,15 @@ const StyledText = styled.p`
    font-size: 1em;
 `;
 
-const AddTag: React.FC = () => {
+const WriteReview: React.FC = (props) => {
    return (
-      <AddTagContainer>
+      <WriteReviewContainer className={props.className}>
          <div>
-            <FontAwesomeIcon icon={faPlus} color="#000" />
+            <FontAwesomeIcon icon={faPencilAlt} color="#fff" />
          </div>
-         <StyledText>Add Tags</StyledText>
-      </AddTagContainer>
+         <StyledText>Write a Review</StyledText>
+      </WriteReviewContainer>
    );
 };
 
-export default AddTag;
+export default WriteReview;

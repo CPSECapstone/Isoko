@@ -1,10 +1,10 @@
 import React from 'react';
+import NavbarComponent from '../components/NavbarComponent';
 import SearchResults from './SearchResults';
-import moment from 'moment';
 
 const Search: React.FC = () => (
    <main>
-      <h1>Search + Search Results</h1>
+      <NavbarComponent />
       <SearchResults
          category="Restaurants"
          minorityTags={['LGBTQ+ Owned', 'Women Owned']}

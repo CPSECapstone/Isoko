@@ -1,7 +1,12 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
-const { BUSINESS_TABLE } = require('../../constants');
+const {
+   BUSINESS_TABLE,
+   SEARCH_RESULTS_TABLE,
+   BRICK_AND_MORTAR,
+   ONLINE,
+} = require('../../constants');
 
 const hash = (name, street) => {
    var combo = name + street;
@@ -14,12 +19,19 @@ const hash = (name, street) => {
    return h.toString();
 };
 
+const get400Response = (message) => ({
+   statusCode: 400,
+   body: {
+      error: message,
+   },
+});
+
 /**
  * HTTP post method to allow a user to list a new business.
  */
 exports.postListBusinessHandler = async (event) => {
    if (event.httpMethod !== 'POST') {
-      throw new Error(
+      return get400Response(
          `postListBusiness only accept POST method, you tried: ${event.httpMethod}`
       );
    }
@@ -27,86 +39,92 @@ exports.postListBusinessHandler = async (event) => {
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
 
-   // add defaultVal param for attributes that are optional/don't appear on non-owner list a business page
-   const name = _.get(requestBody, 'name');
-   const city = _.get(requestBody, 'city', '');
-   const state = _.get(requestBody, 'state', '');
-   const street = _.get(requestBody, 'street', '');
-   const zip = _.get(requestBody, 'zip', '');
-   const type = _.get(requestBody, 'type', '');
-   const tags = _.get(requestBody, 'tags', '');
-   const category = _.get(requestBody, 'category', '');
-   const shortDesc = _.get(requestBody, 'shortDesc', '');
-   const hours = _.get(requestBody, 'hours', {});
-   const links = _.get(requestBody, 'links', {});
-   const aboutOwner = _.get(requestBody, 'aboutOwner');
-   const owner = _.get(aboutOwner, 'owner', '');
-   const ownerName = _.get(aboutOwner, 'ownerName');
-   const ownerPhone = _.get(aboutOwner, 'ownerPhone');
-   const ownerDesc = _.get(aboutOwner, 'ownerDesc', '');
-   const ownerPhoto = _.get(aboutOwner, 'ownerPhoto', '');
-   const photos = _.get(requestBody, 'photos', []);
-   const reviews = _.get(requestBody, 'reviews', []);
-   const lister = _.get(requestBody, 'lister');
-   const timestamp = _.get(requestBody, 'timestamp'); 
-   const verified = _.get(requestBody, 'verified'); 
+   const type = _.get(requestBody, 'type');
+   const category = _.get(requestBody, 'category');
 
-   const params = {
-      TableName: BUSINESS_TABLE,
-      Item: {
-         pk: hash(name, street),
-         sk: 'INFO',
-         name: name,
-         city: city,
-         street: street,
-         state: state,
-         zip: zip,
-         type: type,
-         tags: tags,
-         category: category,
-         shortDesc: shortDesc,
-         businessId: hash(name, street),
-         hours: hours,
-         links: links,
-         aboutOwner: {
-            owner: owner,
-            ownerName: ownerName,
-            ownerPhone: ownerPhone,
-            ownerDesc: ownerDesc,
-            ownerPhoto: ownerPhoto,
-         },
-         photos: photos,
-         reviews: reviews,
-         lister: lister,
-         timestamp: timestamp,
-         verified: verified, 
-      },
-   };
+   if (!type || !category) {
+      return get400Response('Required field type or category is missing');
+   }
+
+   let businessId;
+
+   // Required fields
+   const name = _.get(requestBody, 'name');
+   const street = _.get(requestBody, 'street');
+   const onlineUrl = _.get(requestBody, ['links', 'BusinessURL']);
+   const state = _.get(requestBody, 'state');
+   const city = _.get(requestBody, 'city');
+
+   // Check for required fields for hashing
+   if (type == BRICK_AND_MORTAR) {
+      if (name && street && state && city) {
+         businessId = hash(name, street);
+      } else {
+         return get400Response(
+            'Required field not present, ensure name, street, state, and city are present for Brick and Mortar Businesses.'
+         );
+      }
+   } else if (type == ONLINE) {
+      if (name && onlineUrl) {
+         businessId = hash(name, onlineUrl);
+      } else {
+         return get400Response(
+            'Required field not present, ensure name and links.BusinessURL are present for Online businesses.'
+         );
+      }
+   } else {
+      return get400Response(`Invalid business type: ${type}`);
+   }
 
    let response;
 
    try {
-      const dynamoResult = await docClient.put(params).promise();
+      const searchResultsParams = {
+         TableName: SEARCH_RESULTS_TABLE,
+         Item: {
+            pk: type == BRICK_AND_MORTAR ? `${state}#${city}` : ONLINE,
+            sk: `${category}#${businessId}`,
+            name,
+            city,
+            type,
+            category,
+            tags: _.get(requestBody, 'tags', []),
+            keywords: _.get(requestBody, 'keywords', []),
+            stars: 0,
+            numReviews: 0,
+            shortDesc: _.get(requestBody, 'shortDesc'),
+            verified: _.get(requestBody, 'verified', false),
+            businessId,
+            photo: _.get(requestBody, 'photoLink'),
+            hours: _.get(requestBody, 'hours', {}),
+            timestamp: _.get(requestBody, 'timestamp'),
+         },
+      };
 
-      let putResults = dynamoResult.Items;
-      delete putResults.pk;
-      delete putResults.sk;
+      const businessParams = {
+         TableName: BUSINESS_TABLE,
+         Item: {
+            pk: businessId,
+            sk: 'INFO',
+            ...requestBody,
+         },
+      };
+
+      // Put to DynamoDB in parallel.
+      await Promise.all([
+         docClient.put(searchResultsParams).promise(),
+         docClient.put(businessParams).promise(),
+      ]);
 
       response = {
          statusCode: 200,
-         body: { results: putResults },
+         body: { ...requestBody },
       };
    } catch (e) {
       response = {
          statusCode: 400,
-         body: { error: e },
+         body: { error: e.message },
       };
    }
-
-   console.info(
-      `response from: ${event.path} statusCode: ${
-         response.statusCode
-      } body: ${JSON.stringify(response.body)}`
-   );
    return response;
 };

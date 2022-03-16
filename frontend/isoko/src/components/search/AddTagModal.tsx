@@ -31,7 +31,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
    };
 
    const addNewTags = () => {
-      tagState.forEach((t, i) => {
+      tagState.forEach((t) => {
          if (t.selected) {
             newTags.push(t.text);
          }
