@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import Crop from './Crop';
 
 const MultiImageUpload: React.FC = () => {
-   const [imageURLs, setImageURLs] = useState([]);
-   console.log(imageURLs);
+   const [imageURL, setImageURL] = useState('');
+   console.log('image passed in:', imageURL);
 
    const [showCrop, setShowCrop] = useState(false);
+   const [croppedImgList, setCroppedImgList] = useState([]);
 
+   // console.log('croppedImgLis: ', croppedImgList);
    const onImageChange = (e) => {
-      setImageURLs([URL.createObjectURL(e.target.files[0]), ...imageURLs]);
-      // cropImg(URL.createObjectURL(e.target.files[0]))
+      setImageURL(URL.createObjectURL(e.target.files[0]));
       setShowCrop(true);
    };
 
-   //once changes are saved from crop, add cropped img to another state list and map that
+   const daList = [];
+   const croppedImageList = (croppedImage) => {
+      daList.push(croppedImage);
+      // setCroppedImgList([...croppedImgList, croppedImage])
+      setCroppedImgList(daList);
+   };
+
    return (
       <div>
          <input
@@ -22,20 +29,19 @@ const MultiImageUpload: React.FC = () => {
             accept="image/*"
             onChange={onImageChange}
          />
-
-         {imageURLs.map((imageSrc, index) => (
-            <div key={index} className="image-item">
-               <img src={imageSrc} width="200" />
-            </div>
-         ))}
-
          <Crop
             show={showCrop}
-            imgURL={imageURLs[0]}
+            imgURL={imageURL}
             handleClose={() => {
                setShowCrop(false);
             }}
+            cropped={croppedImageList}
          />
+         {croppedImgList.map((imageSrc, index) => (
+            <div key={index} className="image-item">
+               <img src={imageSrc} width="300" />
+            </div>
+         ))}
       </div>
    );
 };

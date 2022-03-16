@@ -3,9 +3,11 @@ import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
 import StButton from '../../styles/StyledButton';
 import { Button, Modal } from 'react-bootstrap';
+import getCroppedImg from './cropImage';
 import styled from 'styled-components';
 
 const StyledModal = styled(Modal)`
+   position: relative;
    width: 100%;
    height: 800px;
 `;
@@ -14,6 +16,7 @@ interface CropProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    imgURL: string;
    handleClose: () => void;
+   cropped: (string) => void;
 }
 
 const Crop: React.FC<CropProps> = (props) => {
@@ -22,13 +25,23 @@ const Crop: React.FC<CropProps> = (props) => {
    const [croppedArea, setCroppedAreaPixels] = useState();
 
    const cropComplete = (croppedArea) => {
-      setCroppedAreaPixels[croppedArea];
-      // console.log(croppedArea, croppedAreaPixels)
+      setCroppedAreaPixels(croppedArea);
    };
 
-   // const cropImg = async () => {
-
-   // }
+   const saveCroppedImg = useCallback(async () => {
+      try {
+         const croppedImage: any = await getCroppedImg(
+            props.imgURL,
+            croppedArea
+         );
+         // setCroppedImage(croppedImage)
+         console.log('IMAGE THAT WAS CROPPED', props.imgURL);
+         props.cropped(croppedImage.url);
+         props.handleClose();
+      } catch (e) {
+         console.error(e);
+      }
+   }, croppedArea);
 
    return (
       <StyledModal show={props.show} onHide={props.handleClose}>
@@ -45,14 +58,6 @@ const Crop: React.FC<CropProps> = (props) => {
                onCropComplete={cropComplete}
                onZoomChange={setZoom}
             />
-            {/* <Button
-                onClick={props.handleClose}>
-                    Cancel
-                </Button> */}
-            {/* <Button
-                onClick={cropImg}>
-                    Crop
-                </Button> */}
          </StyledModal.Body>
          <StyledModal.Footer>
             <Slider
@@ -68,7 +73,7 @@ const Crop: React.FC<CropProps> = (props) => {
             <Button variant="secondary" onClick={props.handleClose}>
                Close
             </Button>
-            <Button variant="primary" onClick={props.handleClose}>
+            <Button variant="primary" onClick={saveCroppedImg}>
                Save Changes
             </Button>
          </StyledModal.Footer>
