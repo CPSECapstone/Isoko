@@ -77,7 +77,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
             <StyledButton onClick={props.handleClose}>Cancel</StyledButton>
             <StyledButton
                primary
-               onClick={(e) => {
+               onClick={() => {
                   addNewTags();
                   props.applyNewTags(newTags);
                }}

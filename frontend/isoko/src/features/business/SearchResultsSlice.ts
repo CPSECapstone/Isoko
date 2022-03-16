@@ -51,6 +51,8 @@ export const searchResultsSlice = createSlice({
          state.minorityTags = state.minorityTags.map((tag) => {
             if (action.payload.minorityTags.includes(tag.text)) {
                tag.selected = true;
+            } else {
+               tag.selected = false;
             }
             return tag;
          });
