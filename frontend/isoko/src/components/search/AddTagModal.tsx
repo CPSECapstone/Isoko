@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
@@ -16,7 +16,7 @@ interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    tags: Tags[];
    handleClose: () => void;
-   applyNewTags: (e: MouseEvent, tags: string[]) => void;
+   applyNewTags: (tags: string[]) => void;
 }
 
 const AddTagModal: React.FC<AddTagModalProps> = (props) => {
@@ -24,9 +24,22 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
 
    const [tagState, setTagState] = useState(props.tags);
 
+   // When a tag is removed in SearchResults, update it here as well
+   useEffect(() => {
+      setTagState(props.tags);
+   }, [props.tags]);
+
    const onTagClicked = (idx) => {
-      const updatedTagState = [...tagState];
-      updatedTagState[idx].selected = !updatedTagState[idx].selected;
+      const updatedTagState = tagState.map((tag, index) => {
+         if (index === idx) {
+            return {
+               text: tag.text,
+               selected: !tag.selected,
+            };
+         }
+         return tag;
+      });
+
       setTagState(updatedTagState);
    };
 
@@ -66,7 +79,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
                primary
                onClick={(e) => {
                   addNewTags();
-                  props.applyNewTags(e, newTags);
+                  props.applyNewTags(newTags);
                }}
             >
                Confirm

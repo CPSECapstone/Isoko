@@ -11,6 +11,13 @@ import minorityGroups from '../constants/minorityGroups';
 import { useAppSelector } from '../app/hooks';
 import { BusinessPreview as BusinessPreviewType } from '../types/GlobalTypes';
 import { SpinnerCircularFixed } from 'spinners-react';
+import { useAppDispatch } from '../app/hooks';
+import {
+   removeMinorityTag,
+   setMinorityTags,
+   getSearchResultsAsync,
+} from '../features/business/SearchResultsSlice';
+import { getSearchParams } from '../features/business/SearchResultsAPI';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -101,6 +108,9 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const [showModal, setShowModal] = useState(false);
    const searchResultsStore = useAppSelector((store) => store.searchResults);
 
+   const dispatch = useAppDispatch();
+   console.log(searchResultsStore.minorityTags);
+
    // filtered business results stored separately so they can be reverted if user unchecks the box
    const [filteredBusinesses, setFilteredBusinesses] = useState<
       Array<BusinessPreviewType>
@@ -113,7 +123,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    const tags = [];
    minorityGroups.forEach((t) => {
       let tagObject;
-      if (props.minorityTags.includes(t)) {
+      if (searchResultsStore.minorityTags.includes(t)) {
          tagObject = {
             text: t,
             selected: true,
@@ -210,10 +220,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // filter business results when customer removes a tag
    const filterBusinessesRemoveTag = (key, businesses) => {
       setFilteredBusinesses(businesses.filter((b) => removeTag(b, key)));
-      const updatedTagState = [...tagState];
-      const idx = tagState.map((t) => t.text).indexOf(key);
-      updatedTagState[idx].selected = !updatedTagState[idx].selected;
-      setTagState(updatedTagState);
+      dispatch(removeMinorityTag(key));
    };
 
    // sort businesses by value of sort dropdown
@@ -229,21 +236,17 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       }
    };
 
-   // this function will requery with new tags
-   // already added to props.minorityTags
-   const applyNewTags = (e, newTags) => {
-      // toggle tags if previously selected and were deleted from modal, or if not selected and added through the modal
-      tagState.forEach((t, i) => {
-         if (
-            (t.selected && !newTags.includes(t.text)) ||
-            (!t.selected && newTags.includes(t.text))
-         ) {
-            const updatedTagState = [...tagState];
-            updatedTagState[i].selected = !updatedTagState[i].selected;
-            setTagState(updatedTagState);
-         }
-      });
-
+   const applyNewTags = (newTags) => {
+      dispatch(
+         getSearchResultsAsync(
+            getSearchParams(
+               searchResultsStore.location,
+               newTags,
+               searchResultsStore.searchTerm
+            )
+         )
+      );
+      dispatch(setMinorityTags(newTags));
       setShowModal(false);
    };
 
@@ -260,7 +263,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                   <StyledH3>Tags</StyledH3>
                   <TagContainer>
                      <Row>
-                        {tagState.map((tag, index) =>
+                        {searchResultsStore.minorityTags.map((tag, index) =>
                            tag.selected === true ? (
                               <SelectedTagRow
                                  key={index}
@@ -291,7 +294,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            </div>
                            <AddTagModal
                               show={showModal}
-                              tags={[...tagState]}
+                              tags={[...searchResultsStore.minorityTags]}
                               handleClose={() => {
                                  setShowModal(false);
                               }}
@@ -317,7 +320,8 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
             <Col>
                <ResultsContainer>
                   <StyledH2>
-                     {props.category} near {props.location}
+                     {searchResultsStore.searchTerm} near{' '}
+                     {searchResultsStore.location}
                   </StyledH2>
                   {searchResultsStore.status === 'loading' ? (
                      <StyledSpinner thickness={125} color="#F97D0B" />
