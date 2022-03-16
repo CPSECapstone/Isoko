@@ -5,7 +5,6 @@ import SearchResults from './SearchResults';
 const Search: React.FC = () => (
    <main>
       <NavbarComponent />
-      <h1>Search + Search Results</h1>
       <SearchResults
          category="Restaurants"
          minorityTags={['LGBTQ+ Owned', 'Women Owned']}
