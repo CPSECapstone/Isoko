@@ -66,7 +66,11 @@ const WriteReviewContainer = styled(WriteReview)`
    margin: 1em 0em 1em 1.5em;
 `;
 
-const Business: React.FC = () => {
+interface PreviewProps extends React.HTMLProps<HTMLDivElement> {
+   showInPreview: boolean;
+}
+
+const Business: React.FC<PreviewProps> = (props) => {
    const [showWriteReviewsModal, setShowWriteReviewsModal] = useState(false);
 
    const reviewsList = [
@@ -137,7 +141,7 @@ const Business: React.FC = () => {
 
    return (
       <main>
-         <NavbarComponent />
+         {props.showInPreview ? <NavbarComponent /> : null}
          <ContainerDiv>
             <StyledRow>
                <StyledCarousel
@@ -173,39 +177,43 @@ const Business: React.FC = () => {
          Come on down to Bill’s Diner and don’t be afraid to say hi if 
          you see me there!"
                   />
-                  <Title>Ratings & Reviews</Title>
-                  <div
-                     onClick={() => {
-                        setShowWriteReviewsModal(true);
-                     }}
-                  >
-                     <WriteReviewContainer />
-                  </div>
-                  <SortByContainer>
-                     <SortByText>Sort By: </SortByText>
-                     <SortReviewsDropdown
-                        sortFunction={sortReviews}
-                     ></SortReviewsDropdown>
-                  </SortByContainer>
+                  {props.showInPreview ? (
+                     <>
+                        <Title>Ratings & Reviews</Title>
+                        <div
+                           onClick={() => {
+                              setShowWriteReviewsModal(true);
+                           }}
+                        >
+                           <WriteReviewContainer />
+                        </div>
+                        <SortByContainer>
+                           <SortByText>Sort By: </SortByText>
+                           <SortReviewsDropdown
+                              sortFunction={sortReviews}
+                           ></SortReviewsDropdown>
+                        </SortByContainer>
 
-                  <WriteReviewModal
-                     show={showWriteReviewsModal}
-                     handleClose={() => {
-                        setShowWriteReviewsModal(false);
-                     }}
-                  />
-                  {sortedReviews.map((review, index) => (
-                     <Review
-                        key={index}
-                        reviewerName={review.reviewAuthor}
-                        reviewerImageUrl={review.authorProfilePicture}
-                        stars={review.stars}
-                        subject={review.reviewTitle}
-                        content={review.description}
-                        imageUrls={review.pictures}
-                        ts={review.ts}
-                     />
-                  ))}
+                        <WriteReviewModal
+                           show={showWriteReviewsModal}
+                           handleClose={() => {
+                              setShowWriteReviewsModal(false);
+                           }}
+                        />
+                        {sortedReviews.map((review, index) => (
+                           <Review
+                              key={index}
+                              reviewerName={review.reviewAuthor}
+                              reviewerImageUrl={review.authorProfilePicture}
+                              stars={review.stars}
+                              subject={review.reviewTitle}
+                              content={review.description}
+                              imageUrls={review.pictures}
+                              ts={review.ts}
+                           />
+                        ))}
+                     </>
+                  ) : null}
                </StyledCol>
                <StyledCol md={4} xs={12}>
                   <PositionedSidebar
