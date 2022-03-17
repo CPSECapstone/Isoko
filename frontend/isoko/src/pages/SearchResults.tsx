@@ -7,10 +7,16 @@ import SortResultsDropdown from '../components/search/SortResultsDropdown';
 import AddTagModal from '../components/search/AddTagModal';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import moment from 'moment-timezone';
-import minorityGroups from '../constants/minorityGroups';
 import { useAppSelector } from '../app/hooks';
 import { BusinessPreview as BusinessPreviewType } from '../types/GlobalTypes';
 import { SpinnerCircularFixed } from 'spinners-react';
+import { useAppDispatch } from '../app/hooks';
+import {
+   removeMinorityTag,
+   setMinorityTags,
+   getSearchResultsAsync,
+} from '../features/business/SearchResultsSlice';
+import { getSearchParams } from '../features/business/SearchResultsAPI';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -89,17 +95,12 @@ const AddTagCol = styled(Col)`
    padding-left: 0px;
 `;
 
-interface SearchResultsProps extends React.HTMLProps<HTMLDivElement> {
-   category: string;
-   minorityTags: string[];
-   keywordTags: string[];
-   location: string;
-}
-
-const SearchResults: React.FC<SearchResultsProps> = (props) => {
+const SearchResults: React.FC = () => {
    const time = moment().format('llll');
    const [showModal, setShowModal] = useState(false);
    const searchResultsStore = useAppSelector((store) => store.searchResults);
+
+   const dispatch = useAppDispatch();
 
    // filtered business results stored separately so they can be reverted if user unchecks the box
    const [filteredBusinesses, setFilteredBusinesses] = useState<
@@ -109,25 +110,6 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    useEffect(() => {
       setFilteredBusinesses(searchResultsStore.businesses);
    }, [searchResultsStore.businesses]);
-
-   const tags = [];
-   minorityGroups.forEach((t) => {
-      let tagObject;
-      if (props.minorityTags.includes(t)) {
-         tagObject = {
-            text: t,
-            selected: true,
-         };
-      } else {
-         tagObject = {
-            text: t,
-            selected: false,
-         };
-      }
-      tags.push(tagObject);
-   });
-
-   const [tagState, setTagState] = useState(tags);
 
    const dayOfWeek = () => {
       const dateComponents = time.split(',');
@@ -175,7 +157,9 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
    // when a user clicks on one of the minority tags on the left, it will be remove the tag from the search
    const removeTag = (business, tag) => {
       const tags = business.tags;
-      const selectedTags = tagState.filter((t) => t.selected == true);
+      const selectedTags = searchResultsStore.minorityTags.filter(
+         (t) => t.selected == true
+      );
 
       const index = selectedTags.map((t) => t.text).indexOf(tag);
       selectedTags.splice(index, 1);
@@ -209,11 +193,10 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
 
    // filter business results when customer removes a tag
    const filterBusinessesRemoveTag = (key, businesses) => {
-      setFilteredBusinesses(businesses.filter((b) => removeTag(b, key)));
-      const updatedTagState = [...tagState];
-      const idx = tagState.map((t) => t.text).indexOf(key);
-      updatedTagState[idx].selected = !updatedTagState[idx].selected;
-      setTagState(updatedTagState);
+      dispatch(removeMinorityTag(key));
+      setFilteredBusinesses(
+         businesses.filter((business) => removeTag(business, key))
+      );
    };
 
    // sort businesses by value of sort dropdown
@@ -229,21 +212,19 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
       }
    };
 
-   // this function will requery with new tags
-   // already added to props.minorityTags
-   const applyNewTags = (e, newTags) => {
-      // toggle tags if previously selected and were deleted from modal, or if not selected and added through the modal
-      tagState.forEach((t, i) => {
-         if (
-            (t.selected && !newTags.includes(t.text)) ||
-            (!t.selected && newTags.includes(t.text))
-         ) {
-            const updatedTagState = [...tagState];
-            updatedTagState[i].selected = !updatedTagState[i].selected;
-            setTagState(updatedTagState);
-         }
-      });
-
+   // Called when a user clicks confirm on Add Tag Modal
+   // Requeries with new selected tags and updates store with newly selected tags
+   const applyNewTags = (newTags) => {
+      dispatch(
+         getSearchResultsAsync(
+            getSearchParams(
+               searchResultsStore.location,
+               newTags,
+               searchResultsStore.searchTerm
+            )
+         )
+      );
+      dispatch(setMinorityTags(newTags));
       setShowModal(false);
    };
 
@@ -260,7 +241,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                   <StyledH3>Tags</StyledH3>
                   <TagContainer>
                      <Row>
-                        {tagState.map((tag, index) =>
+                        {searchResultsStore.minorityTags.map((tag, index) =>
                            tag.selected === true ? (
                               <SelectedTagRow
                                  key={index}
@@ -291,7 +272,7 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
                            </div>
                            <AddTagModal
                               show={showModal}
-                              tags={[...tagState]}
+                              tags={[...searchResultsStore.minorityTags]}
                               handleClose={() => {
                                  setShowModal(false);
                               }}
@@ -317,7 +298,8 @@ const SearchResults: React.FC<SearchResultsProps> = (props) => {
             <Col>
                <ResultsContainer>
                   <StyledH2>
-                     {props.category} near {props.location}
+                     {searchResultsStore.searchTerm} near{' '}
+                     {searchResultsStore.location}
                   </StyledH2>
                   {searchResultsStore.status === 'loading' ? (
                      <StyledSpinner thickness={125} color="#F97D0B" />

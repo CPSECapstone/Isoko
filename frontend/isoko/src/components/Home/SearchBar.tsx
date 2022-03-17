@@ -6,12 +6,15 @@ import MinoritySearchBar from './MinoritySearchBar';
 import LocationSearchBar from './LocationSearchBar';
 import { Row, Col } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
-import { getSearchResultsAsync } from '../../features/business/SearchResultsSlice';
-import categoryList from '../../constants/categoryList';
+import {
+   getSearchResultsAsync,
+   setSearchFeatures,
+} from '../../features/business/SearchResultsSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import StyledButton from '../../styles/StyledButton';
 import { useNavigate } from 'react-router-dom';
+import { getSearchParams } from '../../features/business/SearchResultsAPI';
 
 const Container = styled.div`
    display: flex;
@@ -112,26 +115,6 @@ const SearchBar: React.FC = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
-   const getSearchParams = (locationState, minorityState, keywordState) => {
-      const locationSplit = locationState.split(', ');
-
-      // Error checking for location without all the information
-      if (locationSplit.length < 3) {
-         alert('Invalid search location, please try another location');
-         return null;
-      }
-
-      return {
-         location: `${locationSplit[1]}#${locationSplit[0]}`,
-         tags: minorityState.includes('Any Minority Owned')
-            ? []
-            : minorityState,
-         ...(categoryList.includes(keywordState)
-            ? { category: keywordState }
-            : { keyword: keywordState }),
-      };
-   };
-
    const dispatchSearch = async () => {
       const searchParams = getSearchParams(
          locationState,
@@ -140,6 +123,14 @@ const SearchBar: React.FC = () => {
       );
       if (searchParams) {
          dispatch(getSearchResultsAsync(searchParams));
+         dispatch(
+            setSearchFeatures({
+               // Default to "Anything" if they don't specify a keyword
+               searchTerm: keywordState || 'Anything',
+               location: locationState,
+               minorityTags: searchParams.tags,
+            })
+         );
          navigate('/search');
       }
    };
