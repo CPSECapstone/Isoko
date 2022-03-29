@@ -33,25 +33,28 @@ const {
           };
  
           // act
+          const result = await putUserObjectHandler(event);
  
           // assert
-          await expect(async () => {
-             await putUserObjectHandler(event);
-          }).rejects.toThrowError();
+          expect(result.statusCode).toBe(400);
+          expect(result.body.error).toBe(`putUserObject only accept PUT method, you tried: ${event.httpMethod}`);
+
        });
  
        it('Should throw an error when path parameter is missing', async () => {
           // arrange
           const event = {
              httpMethod: 'PUT',
+            //  pathParameters: null,
           };
  
           // act
- 
+          const result = await putUserObjectHandler(event);
+          
           // assert
-          await expect(async () => {
-             await putUserObjectHandler(event);
-          }).rejects.toThrowError();
+          expect(result.statusCode).toBe(400);
+          expect(result.body.error).toBe(`Missing query parameter 'pk'. Request URL format: PUT/user/{pk}`);
+
        });
  
        it('Should return a 400 response when target field is restricted', async () => {
@@ -79,7 +82,8 @@ const {
           const result = await putUserObjectHandler(event);
  
           // assert
-          expect(result).toEqual(expectedItem);
+          expect(result.statusCode).toBe(400);
+          expect(result.body.error.message).toBe('Cannot update restricted field: pk');
        });
  
     });
@@ -110,7 +114,9 @@ const {
         const result = await putUserObjectHandler(event);
 
         // assert
-        expect(result).toEqual(expectedItem);
+        expect(result.statusCode).toBe(400);
+        expect(result.body.error.message).toBe('Cannot update restricted field: pk');
+        
      });
  
     describe('Failed update test', () => {
@@ -138,7 +144,8 @@ const {
           const result = await putUserObjectHandler(event);
  
           // assert
-          expect(result).toEqual(expectedItem);
+          expect(result.statusCode).toBe(400);
+          expect(result.body.error.message).toBe('Update failed');
        });
     });
  

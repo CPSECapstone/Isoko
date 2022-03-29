@@ -34,18 +34,21 @@ const { USER_TABLE } = require('../../constants');
 
 exports.putUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'PUT') {
-      throw new Error(
-         `putUserObject only accept PUT method, you tried: ${event.httpMethod}`
-      );
+      return {
+         statusCode: 400,
+         body: { error: `putUserObject only accept PUT method, you tried: ${event.httpMethod}` },
+      };
    }
 
    console.info('received:', event);
-   const { pk } = event.pathParameters;
+
+   const pk = _.get(event.pathParameters, 'pk', null);
 
    if (pk == null) {
-      throw new Error(
-         `Missing query parameter 'pk'. Request URL format: PUT/user/{pk}`
-      );
+      return {
+         statusCode: 400,
+         body: { error: `Missing query parameter 'pk'. Request URL format: PUT/user/{pk}` },
+      };
    }
 
    const requestBody = event.body && JSON.parse(event.body);

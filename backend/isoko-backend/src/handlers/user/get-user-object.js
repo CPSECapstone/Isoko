@@ -1,23 +1,26 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const docClient = new dynamodb.DocumentClient();
+const _ = require('lodash');
 const { USER_TABLE } = require('../../constants');
 /**
  * HTTP get method to geta user object based off of the userSub specified in the request.
  */
 exports.getUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
-      throw new Error(
-         `getUserObject only accept GET method, you tried: ${event.httpMethod}`
-      );
+      return {
+         statusCode: 400,
+         body: { error: `getUserObject only accept GET method, you tried: ${event.httpMethod}` },
+      };
    }
 
    console.info('received:', event);
-   const { pk } = event.pathParameters;
+   const pk = _.get(event.pathParameters, 'pk', null);
 
    if (pk == null) {
-      throw new Error(
-         `Missing query parameter 'pk'. Request URL format: GET/user/{pk}`
-      );
+      return {
+         statusCode: 400,
+         body: { error: `Missing query parameter 'pk'. Request URL format: GET/user/{pk}` },
+      };
    }
 
    const params = {

@@ -32,11 +32,11 @@ const {
            };
   
            // act
-  
+           const result = await getUserObjectHandler(event);
+
            // assert
-           await expect(async () => {
-              await getUserObjectHandler(event);
-           }).rejects.toThrowError();
+           expect(result.statusCode).toBe(400);
+           expect(result.body.error).toBe(`getUserObject only accept GET method, you tried: ${event.httpMethod}`);
         });
   
         it('Should throw an error when path parameter is missing', async () => {
@@ -46,12 +46,11 @@ const {
            };
   
            // act
-  
+           const result = await getUserObjectHandler(event);
+
            // assert
-           await expect(async () => {
-              await getUserObjectHandler(event);
-           }).rejects.toThrowError();
-        });
+           expect(result.statusCode).toBe(400);
+           expect(result.body.error).toBe(`Missing query parameter 'pk'. Request URL format: GET/user/{pk}`);
      });
   
      describe('Failed get test', () => {
@@ -76,7 +75,8 @@ const {
            const result = await getUserObjectHandler(event);
   
            // assert
-           expect(result).toEqual(expectedItem);
+           expect(result.statusCode).toBe(400);
+           expect(result.body.error.message).toBe('Get failed');
         });
      });
   
@@ -124,5 +124,5 @@ const {
            });
         });
      });
-  });
-  
+   });
+ });
