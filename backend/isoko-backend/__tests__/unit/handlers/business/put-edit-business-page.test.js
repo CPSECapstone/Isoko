@@ -22,7 +22,7 @@ describe('PutEditBusinessPageHandler tests', () => {
    });
 
    describe('Invalid query param tests', () => {
-      it('Should throw an error when wrong HTTP method is used', async () => {
+      it('Should send 400 response when wrong HTTP method is used', async () => {
          // arrange
          const event = {
             httpMethod: 'GET',
@@ -32,34 +32,27 @@ describe('PutEditBusinessPageHandler tests', () => {
          };
 
          // act
+         const response = await putEditBusinessPageHandler(event);
 
          // assert
-         await expect(async () => {
-            await putEditBusinessPageHandler(event);
-         }).rejects.toThrowError();
+         expect(response.statusCode).toBe(400);
       });
 
-      it('Should throw an error when path parameter is missing', async () => {
+      it('Should send 400 response when path parameter is missing', async () => {
          // arrange
          const event = {
             httpMethod: 'PUT',
          };
 
          // act
+         const response = await putEditBusinessPageHandler(event);
 
          // assert
-         await expect(async () => {
-            await putEditBusinessPageHandler(event);
-         }).rejects.toThrowError();
+         expect(response.statusCode).toBe(400);
       });
 
       it('Should return a 400 response when target field is restricted', async () => {
          // arrange
-         expectedItem = {
-            statusCode: 400,
-            body: { error: Error('Cannot update restricted field: pk') },
-         };
-
          updateSpy.mockImplementation(() => {
             throw new Error('Cannot update restricted field: pk');
          });
@@ -78,16 +71,12 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result).toEqual(expectedItem);
+         expect(result.statusCode).toBe(400);
+         expect(result.body.error).toBe('Cannot update restricted field: pk');
       });
 
       it('Should return a 400 response when one of target fields is restricted', async () => {
          // arrange
-         expectedItem = {
-            statusCode: 400,
-            body: { error: Error('Cannot update restricted field: rating') },
-         };
-
          updateSpy.mockImplementation(() => {
             throw new Error('Cannot update restricted field: rating');
          });
@@ -107,20 +96,14 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result).toEqual(expectedItem);
+         expect(result.statusCode).toBe(400);
+         expect(result.body.error).toBe(
+            'Cannot update restricted field: rating'
+         );
       });
 
       it('Should return a 400 response when all target fields are restricted', async () => {
          // arrange
-         expectedItem = {
-            statusCode: 400,
-            body: {
-               error: Error(
-                  'Cannot update restricted field: rating,numReviews'
-               ),
-            },
-         };
-
          updateSpy.mockImplementation(() => {
             throw new Error(
                'Cannot update restricted field: rating,numReviews'
@@ -142,17 +125,16 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result).toEqual(expectedItem);
+         expect(result.statusCode).toBe(400);
+         expect(result.body.error).toBe(
+            'Cannot update restricted field: rating,numReviews'
+         );
       });
    });
 
    describe('Failed update test', () => {
       it('Should return a 400 response when update throws an error', async () => {
          // arrange
-         expectedItem = {
-            statusCode: 400,
-            body: { error: Error('Update failed') },
-         };
          updateSpy.mockImplementation(() => {
             throw new Error('Update failed');
          });
@@ -171,7 +153,8 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result).toEqual(expectedItem);
+         expect(result.statusCode).toBe(400);
+         expect(result.body).toEqual({ error: 'Update failed' });
       });
    });
 
@@ -206,7 +189,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          };
 
          updateSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockUpdateResults }),
+            promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
          });
 
          const event = {
@@ -219,7 +202,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             }),
          };
 
-         const expectedItems = {
+         const expectedItem = {
             name: "Bluth's Original Frozen Banana",
             city: 'Venice Beach',
             state: 'CA',
@@ -248,17 +231,18 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItem));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             Key: {
-               businessId: '-664125567',
+               pk: '-664125567',
+               sk: 'INFO',
             },
             UpdateExpression: `set city = :a`,
             ExpressionAttributeValues: {
                ':a': 'Venice Beach',
             },
-            ReturnValues: 'UPDATED_NEW',
+            ReturnValues: 'ALL_NEW',
          });
       });
 
@@ -292,7 +276,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          };
 
          updateSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockUpdateResults }),
+            promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
          });
 
          const event = {
@@ -307,7 +291,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             }),
          };
 
-         const expectedItems = {
+         const expectedItem = {
             name: "Bluth's Original Frozen Banana",
             city: 'Venice Beach',
             state: 'CA',
@@ -336,17 +320,18 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItem));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             Key: {
-               businessId: '-664125567',
+               pk: '-664125567',
+               sk: 'INFO',
             },
             UpdateExpression: `set aboutOwner.ownerName = :a`,
             ExpressionAttributeValues: {
                ':a': 'Lindsay Bluth',
             },
-            ReturnValues: 'UPDATED_NEW',
+            ReturnValues: 'ALL_NEW',
          });
       });
 
@@ -380,7 +365,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          };
 
          updateSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockUpdateResults }),
+            promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
          });
 
          const event = {
@@ -397,7 +382,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             }),
          };
 
-         const expectedItems = {
+         const expectedItem = {
             name: "Lindsay Bluth's Original Frozen Banana",
             city: 'Venice Beach',
             state: 'CA',
@@ -426,11 +411,12 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItem));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             Key: {
-               businessId: '-664125567',
+               pk: '-664125567',
+               sk: 'INFO',
             },
             UpdateExpression: `set name = :a, aboutOwner.ownerName = :b, shortDesc = :c`,
             ExpressionAttributeValues: {
@@ -438,7 +424,7 @@ describe('PutEditBusinessPageHandler tests', () => {
                ':b': 'Lindsay Bluth',
                ':c': "There's always money in the banana stand.",
             },
-            ReturnValues: 'UPDATED_NEW',
+            ReturnValues: 'ALL_NEW',
          });
       });
 
@@ -472,7 +458,7 @@ describe('PutEditBusinessPageHandler tests', () => {
          };
 
          updateSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockUpdateResults }),
+            promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
          });
 
          const event = {
@@ -486,7 +472,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             }),
          };
 
-         const expectedItems = {
+         const expectedItem = {
             name: "Lindsay Bluth's Original Frozen Banana",
             city: 'Venice Beach',
             state: 'CA',
@@ -515,18 +501,19 @@ describe('PutEditBusinessPageHandler tests', () => {
          const result = await putEditBusinessPageHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItem));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             Key: {
-               businessId: '-664125567',
+               pk: '-664125567',
+               sk: 'INFO',
             },
             UpdateExpression: `set name = :a, type = :b`,
             ExpressionAttributeValues: {
                ':a': "Lindsay Bluth's Original Frozen Banana",
                ':b': 'Online',
             },
-            ReturnValues: 'UPDATED_NEW',
+            ReturnValues: 'ALL_NEW',
          });
       });
    });
