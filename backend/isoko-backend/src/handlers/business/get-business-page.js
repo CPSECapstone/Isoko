@@ -42,6 +42,10 @@ exports.getBusinessPageHandler = async (event) => {
       response = {
          statusCode: 200,
          body: JSON.stringify(businessDetails),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
+         },
       };
    } catch (e) {
       response = get400Response(e.message);
