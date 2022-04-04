@@ -84,10 +84,6 @@ exports.putUserObjectHandler = async (event) => {
 
       const updateResult = dynamoResult.Attributes;
 
-      // delete DynamoDB specific items
-      // delete updateResult.pk;
-      // delete updateResult.sk;
-
       response = {
          statusCode: 200,
          body: {
