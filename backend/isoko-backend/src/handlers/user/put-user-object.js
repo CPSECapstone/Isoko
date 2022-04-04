@@ -68,7 +68,7 @@ exports.putUserObjectHandler = async (event) => {
       },
       UpdateExpression: updateExpr,
       ExpressionAttributeValues: exprAttrVals,
-      ReturnValues: 'UPDATED_NEW',
+      ReturnValues: 'ALL_NEW',
    };
 
    let response;
