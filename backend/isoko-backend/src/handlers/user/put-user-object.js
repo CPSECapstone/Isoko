@@ -82,7 +82,7 @@ exports.putUserObjectHandler = async (event) => {
 
       const dynamoResult = await docClient.update(params).promise();
 
-      const updateResult = dynamoResult.Item;
+      const updateResult = dynamoResult.Attributes;
 
       // delete DynamoDB specific items
       // delete updateResult.pk;
