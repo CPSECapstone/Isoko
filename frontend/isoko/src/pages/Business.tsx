@@ -11,6 +11,7 @@ import { Row, Col } from 'react-bootstrap';
 import WriteReview from '../components/reviews/WriteReview';
 import WriteReviewModal from '../components/reviews/WriteReviewModal';
 import SortReviewsDropdown from '../components/business_dashboard/SortReviewsDropdown';
+import RestrictedModal from './RestrictedModal';
 
 const PositionedSidebar = styled(BusinessSidebar)`
    position: absolute;
@@ -72,6 +73,10 @@ interface PreviewProps extends React.HTMLProps<HTMLDivElement> {
 
 const Business: React.FC<PreviewProps> = (props) => {
    const [showWriteReviewsModal, setShowWriteReviewsModal] = useState(false);
+   const [showRestrictedModal, setShowRestrictedModal] = useState(false);
+
+   //TODO: progrmatically define isLoggedIn
+   const isLoggedIn = false;
 
    const reviewsList = [
       {
@@ -182,7 +187,11 @@ const Business: React.FC<PreviewProps> = (props) => {
                         <Title>Ratings & Reviews</Title>
                         <div
                            onClick={() => {
-                              setShowWriteReviewsModal(true);
+                              if (isLoggedIn) {
+                                 setShowWriteReviewsModal(true);
+                              } else {
+                                 setShowRestrictedModal(true);
+                              }
                            }}
                         >
                            <WriteReviewContainer />
@@ -194,12 +203,21 @@ const Business: React.FC<PreviewProps> = (props) => {
                            ></SortReviewsDropdown>
                         </SortByContainer>
 
-                        <WriteReviewModal
-                           show={showWriteReviewsModal}
-                           handleClose={() => {
-                              setShowWriteReviewsModal(false);
-                           }}
-                        />
+                        {isLoggedIn ? (
+                           <WriteReviewModal
+                              show={showWriteReviewsModal}
+                              handleClose={() => {
+                                 setShowWriteReviewsModal(false);
+                              }}
+                           />
+                        ) : (
+                           <RestrictedModal
+                              show={showRestrictedModal}
+                              handleClose={() => {
+                                 setShowRestrictedModal(false);
+                              }}
+                           />
+                        )}
                         {sortedReviews.map((review, index) => (
                            <Review
                               key={index}

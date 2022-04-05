@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import RestrictedModal from '../pages/RestrictedModal';
 
 const Position = styled.div`
    position: absolute;
@@ -66,9 +67,18 @@ const StyledLink = styled(Nav.Link)`
 
 const HamburgerComponent: React.FC = () => {
    const navigate = useNavigate();
+   //TODO: progrmatically define isLoggedIn
+   const isLoggedIn = false;
+   const [showRestrictedModal, setShowRestrictedModal] = useState(false);
 
    return (
       <Position>
+         <RestrictedModal
+            show={showRestrictedModal}
+            handleClose={() => {
+               setShowRestrictedModal(false);
+            }}
+         />
          <StyledNavbar expand={false}>
             <StyledContainer fluid>
                <StyledToggle aria-controls="offcanvasNavbar" />
@@ -82,13 +92,37 @@ const HamburgerComponent: React.FC = () => {
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                      <Nav className="justify-content-end flex-grow-1 pe-3">
-                        <StyledLink onClick={() => navigate('/listBusiness')}>
+                        <StyledLink
+                           onClick={() => {
+                              if (isLoggedIn) {
+                                 navigate('/listBusiness');
+                              } else {
+                                 setShowRestrictedModal(true);
+                              }
+                           }}
+                        >
                            List A Business
                         </StyledLink>
-                        <StyledLink onClick={() => navigate('/businessDash')}>
+                        <StyledLink
+                           onClick={() => {
+                              if (isLoggedIn) {
+                                 navigate('/businessDash');
+                              } else {
+                                 setShowRestrictedModal(true);
+                              }
+                           }}
+                        >
                            Business Dashboard
                         </StyledLink>
-                        <StyledLink onClick={() => navigate('/profile')}>
+                        <StyledLink
+                           onClick={() => {
+                              if (isLoggedIn) {
+                                 navigate('/profile');
+                              } else {
+                                 setShowRestrictedModal(true);
+                              }
+                           }}
+                        >
                            Profile
                         </StyledLink>
                         <StyledLink onClick={() => navigate('/login')}>
