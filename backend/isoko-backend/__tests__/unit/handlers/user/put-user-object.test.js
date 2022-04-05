@@ -162,7 +162,7 @@ const {
        };
  
           updateSpy.mockReturnValue({
-             promise: () => Promise.resolve({ Item: mockUpdateResults }),
+             promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
           });
  
           const event = {
@@ -198,7 +198,7 @@ const {
              ExpressionAttributeValues: {
                 ':a': 'yomama@gmail.com',
              },
-             ReturnValues: 'UPDATED_NEW',
+             ReturnValues: 'ALL_NEW',
           });
        });
  
@@ -214,7 +214,7 @@ const {
                 };
 
             updateSpy.mockReturnValue({
-                promise: () => Promise.resolve({ Item: mockUpdateResults }),
+                promise: () => Promise.resolve({ Attributes: mockUpdateResults }),
             });
 
             const event = {
@@ -252,7 +252,7 @@ const {
                 ':a': "Rohith Dara",
                 ':b': true,
              },
-             ReturnValues: 'UPDATED_NEW',
+             ReturnValues: 'ALL_NEW',
           });
        });
     });

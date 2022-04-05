@@ -22,7 +22,7 @@ describe('GetBusinessPageHandler tests', () => {
    });
 
    describe('Invalid query param tests', () => {
-      it('Should throw an error when wrong HTTP method is used', async () => {
+      it('Should return 400 response when wrong HTTP method is used', async () => {
          // arrange
          const event = {
             httpMethod: 'POST',
@@ -32,11 +32,10 @@ describe('GetBusinessPageHandler tests', () => {
          };
 
          // act
+         const response = await getBusinessPageHandler(event);
 
          // assert
-         await expect(async () => {
-            await getBusinessPageHandler(event);
-         }).rejects.toThrowError();
+         expect(response.statusCode).toBe(400);
       });
 
       it('Should throw an error when path parameter is missing', async () => {
@@ -59,7 +58,7 @@ describe('GetBusinessPageHandler tests', () => {
          // arrange
          expectedItem = {
             statusCode: 400,
-            body: { error: Error('Get failed') },
+            body: { error: 'Get failed' },
          };
          getSpy.mockImplementation(() => {
             throw new Error('Get failed');
@@ -136,7 +135,7 @@ describe('GetBusinessPageHandler tests', () => {
             ],
          };
          getSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockGetResults }),
+            promise: () => Promise.resolve({ Item: mockGetResults }),
          });
          const event = {
             httpMethod: 'GET',
@@ -199,11 +198,12 @@ describe('GetBusinessPageHandler tests', () => {
          const result = await getBusinessPageHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItems));
          expect(getSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
             Key: {
-               businessId: '-664125567',
+               pk: '-664125567',
+               sk: 'INFO',
             },
          });
       });

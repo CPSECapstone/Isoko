@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
-import ImageCarousel from './business/ImageCarousel';
+import ImageCarousel from '../business/ImageCarousel';
 import moment from 'moment';
 
 const ReviewContainer = styled.div`
