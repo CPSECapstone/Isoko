@@ -149,9 +149,8 @@ const Business: React.FC<PreviewProps> = (props) => {
                      'https://www.thebossykitchen.com/wp-content/uploads/2021/05/French-fries-720x720.jpg',
                      'https://www.thecookierookie.com/wp-content/uploads/2018/04/how-to-broil-hamburgers-broiled-hamburger-recipe-7-of-9.compressed-copy.jpg',
                      'https://www.drinkstuff.com/productimg/104599_large.jpg',
-                     'https://www.thebossykitchen.com/wp-content/uploads/2021/05/French-fries-720x720.jpg',
-                     'https://www.thecookierookie.com/wp-content/uploads/2018/04/how-to-broil-hamburgers-broiled-hamburger-recipe-7-of-9.compressed-copy.jpg',
-                     'https://www.drinkstuff.com/productimg/104599_large.jpg',
+                     'https://thecozycook.com/wp-content/uploads/2020/07/Onion-Rings-Recipe-f.jpg',
+                     'https://www.sanluisobispo.com/news/business/yurkxw/picture227356354/alternates/FREE_1140/Screen%20Shot%202019-03-09%20at%2010.04.23%20AM.png',
                   ]}
                />
             </StyledRow>

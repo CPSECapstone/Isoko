@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlobalStyle from './styles/globalStyles';
 import Business from './pages/Business';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
@@ -7,6 +7,7 @@ import ListBusiness from './pages/ListBusiness';
 import Login from './pages/Authentication/Login';
 import ForgotPassword from './pages/Authentication/ForgotPassword';
 import PasswordResetSuccess from './pages/Authentication/PasswordResetSuccess';
+import ProtectedPage from './pages/ProtectedPage';
 import ModDash from './pages/ModDash';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
@@ -25,6 +26,13 @@ const App: React.FC = () => {
       }),
       region: 'us-west-2',
    });
+
+   const [isOwner, setIsOwner] = useState(false);
+
+   useEffect(() => {
+      // Need to get currentUser somehow using get-user-object
+      // setIsOwner(currentUser.businessOwner);
+   }, []);
 
    return (
       <div className="App">
@@ -46,7 +54,13 @@ const App: React.FC = () => {
                path="business"
                element={<Business showInPreview={true} />}
             />
-            <Route path="businessDash" element={<BusinessDash />} />
+            {isOwner ? (
+               <Route path="businessDash" element={<BusinessDash />} />
+            ) : (
+               <Route path="businessDash" element={<ProtectedPage />}>
+                  {' '}
+               </Route>
+            )}
             <Route path="listBusiness" element={<ListBusiness />} />
             <Route path="moddash" element={<ModDash />} />
             <Route path="profile" element={<Profile />} />
