@@ -14,12 +14,13 @@ const MultiImageUpload: React.FC = () => {
       setShowCrop(true);
    };
 
-   const daList = [];
-   const croppedImageList = (croppedImage) => {
-      daList.push(croppedImage);
-      // setCroppedImgList([...croppedImgList, croppedImage])
-      setCroppedImgList(daList);
-   };
+   // const daList = [];
+   // const croppedImageList = (croppedImage) => {
+   //    // daList.push(croppedImage);
+   //    // setCroppedImgList([...croppedImgList, croppedImage])
+   //    // setCroppedImgList(daList);
+
+   // };
 
    return (
       <div>
@@ -35,7 +36,9 @@ const MultiImageUpload: React.FC = () => {
             handleClose={() => {
                setShowCrop(false);
             }}
-            cropped={croppedImageList}
+            updateCroppedList={(croppedImg) => {
+               setCroppedImgList([...croppedImgList, croppedImg]);
+            }}
          />
          {croppedImgList.map((imageSrc, index) => (
             <div key={index} className="image-item">
