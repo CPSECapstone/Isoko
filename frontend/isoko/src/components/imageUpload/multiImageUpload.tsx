@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Crop from './Crop';
+import CropModal from './Crop';
 
 const MultiImageUpload: React.FC = () => {
    const [imageURL, setImageURL] = useState('');
@@ -29,7 +29,7 @@ const MultiImageUpload: React.FC = () => {
             accept="image/*"
             onChange={onImageChange}
          />
-         <Crop
+         <CropModal
             show={showCrop}
             imgURL={imageURL}
             handleClose={() => {

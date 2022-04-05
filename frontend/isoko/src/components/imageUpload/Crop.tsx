@@ -23,6 +23,7 @@ const Crop: React.FC<CropProps> = (props) => {
    const [crop, setCrop] = useState({ x: 0, y: 0 });
    const [zoom, setZoom] = useState(1);
    const [croppedArea, setCroppedAreaPixels] = useState();
+   const [croppedImage, setCroppedImage] = useState(null);
 
    const cropComplete = (croppedArea) => {
       setCroppedAreaPixels(croppedArea);
@@ -34,8 +35,8 @@ const Crop: React.FC<CropProps> = (props) => {
             props.imgURL,
             croppedArea
          );
-         // setCroppedImage(croppedImage)
-         console.log('IMAGE THAT WAS CROPPED', props.imgURL);
+         setCroppedImage(croppedImage);
+         // console.log('IMAGE THAT WAS CROPPED', props.imgURL);
          props.cropped(croppedImage.url);
          props.handleClose();
       } catch (e) {
