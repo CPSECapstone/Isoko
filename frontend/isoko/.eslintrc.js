@@ -18,4 +18,12 @@ module.exports = {
    },
    plugins: ['react', '@typescript-eslint'],
    rules: {},
+   overrides: [
+      {
+         files: ['**/*.spec.js', '**/*.spec.jsx'],
+         env: {
+            jest: true,
+         },
+      },
+   ],
 };

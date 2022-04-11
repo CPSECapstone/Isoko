@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
 import StButton from '../../styles/StyledButton';
 import { Button, Modal } from 'react-bootstrap';
-import getCroppedImg from './cropImage';
+import getCroppedImg from './cropImage.js';
 import styled from 'styled-components';
 
 const StyledModal = styled(Modal)`
@@ -20,29 +20,30 @@ interface CropProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const Crop: React.FC<CropProps> = (props) => {
+   console.log(props);
    const [crop, setCrop] = useState({ x: 0, y: 0 });
    const [zoom, setZoom] = useState(1);
    const [croppedArea, setCroppedAreaPixels] = useState();
-   const [croppedImage, setCroppedImage] = useState(null);
 
    const cropComplete = (croppedArea) => {
       setCroppedAreaPixels(croppedArea);
    };
 
-   const saveCroppedImg = useCallback(async () => {
+   const saveCroppedImg = async () => {
       try {
          const croppedImage: any = await getCroppedImg(
             props.imgURL,
             croppedArea
          );
-         setCroppedImage(croppedImage);
-         // console.log('IMAGE THAT WAS CROPPED', props.imgURL);
+
+         console.log(croppedImage);
+
          props.cropped(croppedImage.url);
          props.handleClose();
       } catch (e) {
          console.error(e);
       }
-   }, croppedArea);
+   };
 
    return (
       <StyledModal show={props.show} onHide={props.handleClose}>
