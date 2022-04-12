@@ -25,7 +25,7 @@ const RestrictedModal: React.FC<RestrictedModalProps> = (props) => {
                Thank you for using ISOKO! To prevent against spam and malicious
                users, you will need to create an account to perform this action.
                To create an account, head on over to our{' '}
-               <Link to="/signup">Signup</Link> page and create an account. If
+               <Link to="/signup">Sign-Up</Link> page and create an account. If
                you already have an account, you can{' '}
                <Link to="/login">Login</Link>.
             </StyledText>

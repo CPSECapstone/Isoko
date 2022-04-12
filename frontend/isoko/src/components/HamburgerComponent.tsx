@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import RestrictedModal from '../pages/RestrictedModal';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { environment } from '../environment/environment';
 
 const Position = styled.div`
    position: absolute;
@@ -67,9 +69,24 @@ const StyledLink = styled(Nav.Link)`
 
 const HamburgerComponent: React.FC = () => {
    const navigate = useNavigate();
-   //TODO: progrmatically define isLoggedIn
-   const isLoggedIn = false;
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [showRestrictedModal, setShowRestrictedModal] = useState(false);
+
+   useEffect(() => {
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
+      // checks if user is logged in
+      const cognitoUser = userPool.getCurrentUser();
+      if (cognitoUser != null) {
+         cognitoUser.getSession(function (err, result) {
+            if (result) {
+               setIsLoggedIn(true);
+            }
+         });
+      }
+   }, []);
 
    return (
       <Position>
