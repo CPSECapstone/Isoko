@@ -34,33 +34,31 @@ describe('searchResultsReducer tests', () => {
          // Arrange
          axios.get.mockResolvedValue({
             data: {
-               results: {
-                  name: 'Lincoln Deli',
-                  city: 'San Luis Obispo',
-                  type: 'B&M',
-                  tags: ['Black Owned'],
-                  keywords: ['Sandwiches', 'Drinks'],
-                  rating: 100,
-                  shortDesc: 'We sell sandwiches',
-                  numReviews: 20,
-                  claimed: false,
-                  businessId: 'lincolndeli123',
-                  hours: {
-                     mon: '11:00am - 11:00pm',
-                  },
-                  links: {
-                     Menu: 'www.lincolndeli.com/menu',
-                  },
-                  address: '123 Sesame St.',
-                  aboutOwner: {
-                     owner: 'ownerSub123',
-                     ownerName: 'Billiam Jones',
-                     ownerPhone: '123-123-1111',
-                     ownerDesc: 'Big Chiller',
-                     photo: 'tests3',
-                  },
-                  reviews: [],
+               name: 'Lincoln Deli',
+               city: 'San Luis Obispo',
+               type: 'B&M',
+               tags: ['Black Owned'],
+               keywords: ['Sandwiches', 'Drinks'],
+               rating: 100,
+               shortDesc: 'We sell sandwiches',
+               numReviews: 20,
+               claimed: false,
+               businessId: 'lincolndeli123',
+               hours: {
+                  mon: '11:00am - 11:00pm',
                },
+               links: {
+                  Menu: 'www.lincolndeli.com/menu',
+               },
+               address: '123 Sesame St.',
+               aboutOwner: {
+                  owner: 'ownerSub123',
+                  ownerName: 'Billiam Jones',
+                  ownerPhone: '123-123-1111',
+                  ownerDesc: 'Big Chiller',
+                  photo: 'tests3',
+               },
+               reviews: [],
             },
          });
 
@@ -106,33 +104,31 @@ describe('searchResultsReducer tests', () => {
          // Arrange
          axios.get.mockResolvedValue({
             data: {
-               results: {
-                  name: 'Taqueria',
-                  city: 'San Luis Obispo',
-                  type: 'B&M',
-                  tags: ['Black Owned'],
-                  keywords: ['Sandwiches', 'Drinks'],
-                  rating: 100,
-                  shortDesc: 'We sell sandwiches',
-                  numReviews: 20,
-                  claimed: false,
-                  businessId: 'taqueria123',
-                  hours: {
-                     mon: '11:00am - 11:00pm',
-                  },
-                  links: {
-                     Menu: 'www.taqueria.com/menu',
-                  },
-                  address: '123 Sesame St.',
-                  aboutOwner: {
-                     owner: 'ownerSub123',
-                     ownerName: 'Billiam Jones',
-                     ownerPhone: '123-123-1111',
-                     ownerDesc: 'Big Chiller',
-                     photo: 'tests3',
-                  },
-                  reviews: [],
+               name: 'Taqueria',
+               city: 'San Luis Obispo',
+               type: 'B&M',
+               tags: ['Black Owned'],
+               keywords: ['Sandwiches', 'Drinks'],
+               rating: 100,
+               shortDesc: 'We sell sandwiches',
+               numReviews: 20,
+               claimed: false,
+               businessId: 'taqueria123',
+               hours: {
+                  mon: '11:00am - 11:00pm',
                },
+               links: {
+                  Menu: 'www.taqueria.com/menu',
+               },
+               address: '123 Sesame St.',
+               aboutOwner: {
+                  owner: 'ownerSub123',
+                  ownerName: 'Billiam Jones',
+                  ownerPhone: '123-123-1111',
+                  ownerDesc: 'Big Chiller',
+                  photo: 'tests3',
+               },
+               reviews: [],
             },
          });
 
@@ -236,33 +232,31 @@ describe('searchResultsReducer tests', () => {
          // Arrange
          axios.get.mockResolvedValue({
             data: {
-               results: {
-                  name: 'Lincoln Deli',
-                  city: 'San Luis Obispo',
-                  type: 'B&M',
-                  tags: ['Black Owned'],
-                  keywords: ['Sandwiches', 'Drinks'],
-                  rating: 100,
-                  shortDesc: 'We sell sandwiches',
-                  numReviews: 20,
-                  claimed: false,
-                  businessId: 'lincolndeli123',
-                  hours: {
-                     mon: '11:00am - 11:00pm',
-                  },
-                  links: {
-                     Menu: 'www.lincolndeli.com/menu',
-                  },
-                  address: '123 Sesame St.',
-                  aboutOwner: {
-                     owner: 'ownerSub123',
-                     ownerName: 'Billiam Jones',
-                     ownerPhone: '123-123-1111',
-                     ownerDesc: 'Big Chiller',
-                     photo: 'tests3',
-                  },
-                  reviews: [],
+               name: 'Lincoln Deli',
+               city: 'San Luis Obispo',
+               type: 'B&M',
+               tags: ['Black Owned'],
+               keywords: ['Sandwiches', 'Drinks'],
+               rating: 100,
+               shortDesc: 'We sell sandwiches',
+               numReviews: 20,
+               claimed: false,
+               businessId: 'lincolndeli123',
+               hours: {
+                  mon: '11:00am - 11:00pm',
                },
+               links: {
+                  Menu: 'www.lincolndeli.com/menu',
+               },
+               address: '123 Sesame St.',
+               aboutOwner: {
+                  owner: 'ownerSub123',
+                  ownerName: 'Billiam Jones',
+                  ownerPhone: '123-123-1111',
+                  ownerDesc: 'Big Chiller',
+                  photo: 'tests3',
+               },
+               reviews: [],
             },
          });
 

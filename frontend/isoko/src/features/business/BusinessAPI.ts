@@ -7,6 +7,6 @@ export const fetchBusiness = async (businessId: string): Promise<Business> => {
       `${environment.prodURL}/business/${businessId}`
    );
 
-   const business = response.data.results;
+   const business = response.data;
    return business as Business;
 };
