@@ -32,7 +32,7 @@ export const businessSlice = createSlice({
             getBusinessAsync.fulfilled,
             (state, action: PayloadAction<Business>) => {
                state.status = 'idle';
-               state.businesses[action.payload.businessId] = action.payload; // CHECKCEHICEJCKEC
+               state.businesses[action.payload.businessId] = action.payload;
             }
          );
    },
