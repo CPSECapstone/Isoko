@@ -22,7 +22,8 @@ exports.getBusinessPageHandler = async (event) => {
       );
    }
 
-   const params = {
+   // params to get business info 
+   const businessParams = {
       TableName: BUSINESS_TABLE,
       Key: {
          pk: `${businessId}`,
@@ -30,14 +31,29 @@ exports.getBusinessPageHandler = async (event) => {
       },
    };
 
+   // params to get reviews for business 
+   const reviewParams = {
+      TableName: BUSINESS_TABLE, 
+      KeyConditionExpression: "pk = :id and begins_with(sk, :r)", 
+      ExpressionAttributeValues: {
+         ":id": `${businessId}`,
+         ":r": 'REVIEW'
+      }
+   }
+
    let response;
 
    try {
-      const dynamoResult = await docClient.get(params).promise();
+      const businessResult = await docClient.get(businessParams).promise();
 
-      let businessDetails = dynamoResult.Item;
+      let businessDetails = businessResult.Item;
       delete businessDetails.pk;
       delete businessDetails.sk;
+
+      const reviewResult = await docClient.query(reviewParams).promise(); 
+
+      let reviews = reviewResult.Items; 
+      businessDetails['reviews'] = reviews; 
 
       response = {
          statusCode: 200,
