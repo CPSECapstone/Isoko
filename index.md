@@ -1,37 +1,14 @@
-## Welcome to GitHub Pages
+## Welcome to Isoko!
 
-You can use the [editor on GitHub](https://github.com/CPSECapstone/Isoko/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Despite making up 32% of the population, ethnic minorities own only 18% of businesses in the United States, and 99% of these businesses are small businesses. Additionally, women make up more than half of the population and represent only 19% of business owners, and members of the LGBTQIA+ community represent less than 1% of business owners. In order to help these minority business owners gain more traction and create an easy and accessible way for people to invest in individuals and their communities, we are creating a web application that allows users to search for businesses in their area that offer specific products and are owned by members of specific minority groups.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+You can access a deployed version of Isoko [here!](https://master.db75ilqlzlmt4.amplifyapp.com/)
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/CPSECapstone/Isoko/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### How to Install
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### EULA
+
+### Privacy Policy
+
