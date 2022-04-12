@@ -1,12 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import searchResultsReducer from '../features/business/SearchResultsSlice';
+import profileReducer from '../features/profile/ProfileSlice';
 import businessReducer from '../features/business/BusinessSlice';
 
 export const store = configureStore({
    reducer: {
-      counter: counterReducer,
       searchResults: searchResultsReducer,
+      profile: profileReducer,
       business: businessReducer,
    },
 });
