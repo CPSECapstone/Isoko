@@ -17,6 +17,7 @@ import { Routes, Route } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './App.css';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import ReactGA from 'react-ga';
 
 const App: React.FC = () => {
    AWS.config.update({
@@ -25,6 +26,9 @@ const App: React.FC = () => {
       }),
       region: 'us-west-2',
    });
+
+   const TRACKING_ID = 'UA-225585021-1';
+   ReactGA.initialize(TRACKING_ID);
 
    return (
       <div className="App">
