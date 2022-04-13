@@ -59,7 +59,6 @@ const BusinessDash: React.FC = () => {
    const [activeComponent, setActiveComponent] = React.useState('Preview');
    return (
       <main>
-         <h1>Business Owner Dashboard</h1>
          <div>
             <Row>
                <StyledCol1>

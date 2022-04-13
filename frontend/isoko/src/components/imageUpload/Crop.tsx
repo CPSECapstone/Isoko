@@ -7,38 +7,40 @@ import getCroppedImg from './cropImage.js';
 import styled from 'styled-components';
 
 const StyledModal = styled(Modal)`
-   position: relative;
-   width: 100%;
-   height: 800px;
+   // position: center;
+   padding-top: 170px;
+
+   .modal-content {
+      width: 100%;
+      height: 500px;
+   }
 `;
 
 interface CropProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    imgURL: string;
    handleClose: () => void;
-   cropped: (string) => void;
+   updateCroppedList: (string) => void;
 }
 
 const Crop: React.FC<CropProps> = (props) => {
-   console.log(props);
    const [crop, setCrop] = useState({ x: 0, y: 0 });
    const [zoom, setZoom] = useState(1);
-   const [croppedArea, setCroppedAreaPixels] = useState();
+   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-   const cropComplete = (croppedArea) => {
-      setCroppedAreaPixels(croppedArea);
+   const onCropComplete = (croppedArea, croppedAreaPixels) => {
+      setCroppedAreaPixels(croppedAreaPixels);
    };
 
    const saveCroppedImg = async () => {
       try {
          const croppedImage: any = await getCroppedImg(
             props.imgURL,
-            croppedArea
+            croppedAreaPixels
          );
+         // console.log(croppedImage);
 
-         console.log(croppedImage);
-
-         props.cropped(croppedImage.url);
+         props.updateCroppedList(croppedImage.url);
          props.handleClose();
       } catch (e) {
          console.error(e);
@@ -57,7 +59,7 @@ const Crop: React.FC<CropProps> = (props) => {
                zoom={zoom}
                aspect={1}
                onCropChange={setCrop}
-               onCropComplete={cropComplete}
+               onCropComplete={onCropComplete}
                onZoomChange={setZoom}
             />
          </StyledModal.Body>
