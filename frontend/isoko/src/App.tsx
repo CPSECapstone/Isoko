@@ -18,6 +18,11 @@ import { Routes, Route } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './App.css';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import { useAppDispatch } from './app/hooks';
+import { fetchProfileAsync } from '../src/features/profile/ProfileSlice';
+import { store } from './app/store';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { environment } from './environment/environment';
 
 const App: React.FC = () => {
    AWS.config.update({
@@ -27,11 +32,20 @@ const App: React.FC = () => {
       region: 'us-west-2',
    });
 
+   const userPool = new CognitoUserPool({
+      UserPoolId: environment.cognitoUserPoolId,
+      ClientId: environment.cognitoAppClientId,
+   });
+
    const [isOwner, setIsOwner] = useState(false);
+   const dispatch = useAppDispatch();
 
    useEffect(() => {
-      // Need to get currentUser somehow using get-user-object
-      // setIsOwner(currentUser.businessOwner);
+      // checks if user is a business owner
+      const userSub = userPool.getCurrentUser().getUsername();
+      dispatch(fetchProfileAsync(userSub));
+      // TODO: this wont work until IS-73 is merged
+      setIsOwner(store.getState().profile.businessOwner);
    }, []);
 
    return (
