@@ -1,7 +1,12 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
-const { BUSINESS_TABLE } = require('../../constants');
+const {
+   BUSINESS_TABLE,
+   SEARCH_RESULTS_TABLE,
+   BRICK_AND_MORTAR,
+   ONLINE,
+} = require('../../constants');
 
 const hash = (name, street) => {
    var combo = name + street;
@@ -14,83 +19,102 @@ const hash = (name, street) => {
    return h.toString();
 };
 
+const get400Response = (message) => ({
+   statusCode: 400,
+   body: {
+      error: message,
+   },
+});
+
 /**
  * HTTP post method to allow a user to list a new business.
  */
 exports.postListBusinessHandler = async (event) => {
    if (event.httpMethod !== 'POST') {
-      return {
-         statusCode: 400,
-         body: {
-            error: `postListBusiness only accept POST method, you tried: ${event.httpMethod}`,
-         },
-      };
+      return get400Response(
+         `postListBusiness only accept POST method, you tried: ${event.httpMethod}`
+      );
    }
 
    console.info('received:', event);
    const requestBody = event.body && JSON.parse(event.body);
 
    const type = _.get(requestBody, 'type');
+   const category = _.get(requestBody, 'category');
 
-   if (!type) {
-      return {
-         statusCode: 400,
-         body: {
-            error: 'type is a required field.',
-         },
-      };
+   if (!type || !category) {
+      return get400Response('Required field type or category is missing');
    }
 
-   let params;
+   let businessId;
 
+   // Required fields
    const name = _.get(requestBody, 'name');
    const street = _.get(requestBody, 'street');
    const onlineUrl = _.get(requestBody, ['links', 'BusinessURL']);
+   const state = _.get(requestBody, 'state');
+   const city = _.get(requestBody, 'city');
 
    // Check for required fields for hashing
-   if (type == 'B&M') {
-      if (name && street) {
-         params = {
-            TableName: BUSINESS_TABLE,
-            Item: {
-               pk: hash(name, street),
-               sk: 'INFO',
-               ...requestBody,
-            },
-         };
+   if (type == BRICK_AND_MORTAR) {
+      if (name && street && state && city) {
+         businessId = hash(name, street);
       } else {
-         return {
-            statusCode: 400,
-            body: {
-               error: 'name and street are required fields for Brick and Mortar Businesses.',
-            },
-         };
+         return get400Response(
+            'Required field not present, ensure name, street, state, and city are present for Brick and Mortar Businesses.'
+         );
       }
-   } else if (type == 'Online') {
+   } else if (type == ONLINE) {
       if (name && onlineUrl) {
-         params = {
-            TableName: BUSINESS_TABLE,
-            Item: {
-               pk: hash(name, onlineUrl),
-               sk: 'INFO',
-               ...requestBody,
-            },
-         };
+         businessId = hash(name, onlineUrl);
       } else {
-         return {
-            statusCode: 400,
-            body: {
-               error: 'name and links.BusinessURL are required fields for Online businesses.',
-            },
-         };
+         return get400Response(
+            'Required field not present, ensure name and links.BusinessURL are present for Online businesses.'
+         );
       }
+   } else {
+      return get400Response(`Invalid business type: ${type}`);
    }
 
    let response;
 
    try {
-      console.info(`DynamoDB put params: ${params}`);
-      await docClient.put(params).promise();
+      const searchResultsParams = {
+         TableName: SEARCH_RESULTS_TABLE,
+         Item: {
+            pk: type == BRICK_AND_MORTAR ? `${state}#${city}` : ONLINE,
+            sk: `${category}#${businessId}`,
+            name,
+            city,
+            type,
+            category,
+            tags: _.get(requestBody, 'tags', []),
+            keywords: _.get(requestBody, 'keywords', []),
+            stars: 0,
+            numReviews: 0,
+            shortDesc: _.get(requestBody, 'shortDesc'),
+            verified: _.get(requestBody, 'verified', false),
+            businessId,
+            photo: _.get(requestBody, 'photoLink'),
+            hours: _.get(requestBody, 'hours', {}),
+            timestamp: _.get(requestBody, 'timestamp'),
+         },
+      };
+
+      const businessParams = {
+         TableName: BUSINESS_TABLE,
+         Item: {
+            pk: businessId,
+            sk: 'INFO',
+            ...requestBody,
+         },
+      };
+
+      // Put to DynamoDB in parallel.
+      await Promise.all([
+         docClient.put(searchResultsParams).promise(),
+         docClient.put(businessParams).promise(),
+      ]);
 
       response = {
          statusCode: 200,

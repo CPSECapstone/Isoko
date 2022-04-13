@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NavbarComponent from '../../components/NavbarComponent';
 import {
    faHome,
    faEdit,
@@ -56,9 +57,10 @@ const StyledLink = styled.p`
 `;
 
 const BusinessDash: React.FC = () => {
-   const [activeComponent, setActiveComponent] = React.useState('Preview');
+   const [activeComponent, setActiveComponent] = React.useState('UpdateInfo');
    return (
       <main>
+         <NavbarComponent />
          <div>
             <Row>
                <StyledCol1>
@@ -146,7 +148,9 @@ const BusinessDash: React.FC = () => {
                </StyledCol1>
                <Col>
                   {activeComponent === 'Preview' ? <Preview /> : null}
-                  {activeComponent === 'UpdateInfo' ? <UpdateInfo /> : null}
+                  {activeComponent === 'UpdateInfo' ? (
+                     <UpdateInfo setActiveComponent={setActiveComponent} />
+                  ) : null}
                   {activeComponent === 'Reviews' ? <Reviews /> : null}
                   {activeComponent === 'Photos' ? <Photos /> : null}
                   {activeComponent === 'Analytics' ? <Analytics /> : null}

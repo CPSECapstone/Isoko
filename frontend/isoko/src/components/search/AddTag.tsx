@@ -23,7 +23,7 @@ const StyledText = styled.p`
    font-size: 1em;
 `;
 
-const AddTag = () => {
+const AddTag: React.FC = () => {
    return (
       <AddTagContainer>
          <div>

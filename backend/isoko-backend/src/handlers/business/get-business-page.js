@@ -1,13 +1,14 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
+const { get400Response } = require('../util/response-utils');
 
 /**
  * HTTP get method to get business page with details and reviews for specific businessId.
  */
 exports.getBusinessPageHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
-      throw new Error(
+      return get400Response(
          `getBusinessPage only accept GET method, you tried: ${event.httpMethod}`
       );
    }
@@ -16,36 +17,54 @@ exports.getBusinessPageHandler = async (event) => {
    const { businessId } = event.pathParameters;
 
    if (businessId == null) {
-      throw new Error(
+      return get400Response(
          `Missing query parameter 'businessId'. Request URL format: GET/business/{businessId}`
       );
    }
 
-   const params = {
+   // params to get business info 
+   const businessParams = {
       TableName: BUSINESS_TABLE,
       Key: {
-         businessId: businessId,
+         pk: `${businessId}`,
+         sk: 'INFO',
       },
    };
+
+   // params to get reviews for business 
+   const reviewParams = {
+      TableName: BUSINESS_TABLE, 
+      KeyConditionExpression: "pk = :id and begins_with(sk, :r)", 
+      ExpressionAttributeValues: {
+         ":id": `${businessId}`,
+         ":r": 'REVIEW'
+      }
+   }
 
    let response;
 
    try {
-      const dynamoResult = await docClient.get(params).promise();
+      const businessResult = await docClient.get(businessParams).promise();
 
-      let getResults = dynamoResult.Items;
-      delete getResults.pk;
-      delete getResults.sk;
+      let businessDetails = businessResult.Item;
+      delete businessDetails.pk;
+      delete businessDetails.sk;
+
+      const reviewResult = await docClient.query(reviewParams).promise(); 
+
+      let reviews = reviewResult.Items; 
+      businessDetails['reviews'] = reviews; 
 
       response = {
          statusCode: 200,
-         body: { results: getResults },
+         body: JSON.stringify(businessDetails),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
+         },
       };
    } catch (e) {
-      response = {
-         statusCode: 400,
-         body: { error: e },
-      };
+      response = get400Response(e.message);
    }
 
    console.info(

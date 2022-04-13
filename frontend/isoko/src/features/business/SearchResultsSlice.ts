@@ -81,10 +81,13 @@ export const searchResultsSlice = createSlice({
          .addCase(getSearchResultsAsync.pending, (state) => {
             state.status = 'loading';
          })
-         .addCase(getSearchResultsAsync.fulfilled, (state, action) => {
-            state.status = 'idle';
-            state.businesses = action.payload;
-         });
+         .addCase(
+            getSearchResultsAsync.fulfilled,
+            (state, action: PayloadAction<Array<BusinessPreview>>) => {
+               state.status = 'idle';
+               state.businesses = action.payload;
+            }
+         );
    },
 });
 
