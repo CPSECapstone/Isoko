@@ -2,6 +2,7 @@ const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
+const { get400Response } = require('../util/response-utils');
 
 /**
  *
@@ -69,17 +70,16 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
  */
 exports.putEditBusinessPageHandler = async (event) => {
    if (event.httpMethod !== 'PUT') {
-      throw new Error(
+      return get400Response(
          `putEditBusinessPage only accept PUT method, you tried: ${event.httpMethod}`
       );
    }
 
    console.info('received:', event);
-   const { businessId } = event.pathParameters;
+   const businessId = _.get(event, ['pathParameters', 'businessId']);
 
-   if (businessId == null) {
-      console.log('error');
-      throw new Error(
+   if (!businessId) {
+      return get400Response(
          `Missing query parameter 'businessId'. Request URL format: PUT/business/{businessId}`
       );
    }
@@ -108,11 +108,12 @@ exports.putEditBusinessPageHandler = async (event) => {
    const params = {
       TableName: BUSINESS_TABLE,
       Key: {
-         businessId: businessId,
+         pk: businessId,
+         sk: 'INFO',
       },
       UpdateExpression: updateExpr,
       ExpressionAttributeValues: exprAttrVals,
-      ReturnValues: 'UPDATED_NEW',
+      ReturnValues: 'ALL_NEW',
    };
 
    let response;
@@ -121,13 +122,12 @@ exports.putEditBusinessPageHandler = async (event) => {
       // if any keys are restricted fields, entire request fails
       if (restrictedFields.some((i) => fieldNames.includes(i))) {
          const fields = fieldNames.filter((i) => restrictedFields.includes(i));
-         console.log('this is restricted');
          throw new Error(`Cannot update restricted field: ${fields}`);
       }
 
       const dynamoResult = await docClient.update(params).promise();
 
-      const updateResult = dynamoResult.Items;
+      const updateResult = dynamoResult.Attributes;
 
       // delete DynamoDB specific items
       delete updateResult.pk;
@@ -135,15 +135,14 @@ exports.putEditBusinessPageHandler = async (event) => {
 
       response = {
          statusCode: 200,
-         body: {
-            results: updateResult,
+         body: JSON.stringify(updateResult),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
          },
       };
    } catch (e) {
-      response = {
-         statusCode: 400,
-         body: { error: e },
-      };
+      response = get400Response(e.message);
    }
 
    console.info(
