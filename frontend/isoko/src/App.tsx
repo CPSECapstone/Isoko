@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import GlobalStyle from './styles/globalStyles';
 import Business from './pages/Business';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
