@@ -70,3 +70,12 @@ export interface Business {
    };
    reviews: Array<Review>;
 }
+
+export interface User {
+   userSub: string;
+   name: string;
+   email: string;
+   profilePicture: string;
+   businessOwner: boolean;
+   businessId?: string;
+}
