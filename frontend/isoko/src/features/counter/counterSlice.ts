@@ -59,7 +59,7 @@ export const counterSlice = createSlice({
          });
    },
 });
-
+/*
 export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -79,3 +79,4 @@ export const incrementIfOdd =
    };
 
 export default counterSlice.reducer;
+*/
