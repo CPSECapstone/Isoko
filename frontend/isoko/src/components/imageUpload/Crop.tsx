@@ -1,13 +1,11 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
-import StButton from '../../styles/StyledButton';
 import { Button, Modal } from 'react-bootstrap';
 import getCroppedImg from './cropImage.js';
 import styled from 'styled-components';
 
 const StyledModal = styled(Modal)`
-   // position: center;
    padding-top: 170px;
 
    .modal-content {
@@ -38,7 +36,6 @@ const Crop: React.FC<CropProps> = (props) => {
             props.imgURL,
             croppedAreaPixels
          );
-         // console.log(croppedImage);
 
          props.updateCroppedList(croppedImage.url);
          props.handleClose();

@@ -11,17 +11,22 @@ const Container = styled.div`
    justify-content: center;
 `;
 
-const Photo = styled.img`
+const PhotoContainer = styled.div`
    position: relative;
+   width: 200px;
+`;
+
+const Photo = styled.img`
+   display: block;
    height: 200px;
    margin-top: 50px;
 `;
 
 const StyledButton = styled(Button)`
    position: absolute;
+   top: -15px;
+   right: -15px;
    border-radius: 200px;
-   margin-top: 30px;
-   margin-left: -15px;
 `;
 
 const Input = styled.input`
@@ -75,21 +80,23 @@ const MultiImageUpload: React.FC = () => {
          <Container>
             <Row>
                {croppedImgList.map((imageSrc, index) => (
-                  <Col key={index}>
-                     <div key={imageSrc} className="image">
-                        <Photo src={imageSrc} />
-                        <StyledButton
-                           variant="secondary"
-                           size="sm"
-                           onClick={() =>
-                              setCroppedImgList(
-                                 croppedImgList.filter((e) => e !== imageSrc)
-                              )
-                           }
-                        >
-                           <FontAwesomeIcon icon={faTimesCircle} />
-                        </StyledButton>
-                     </div>
+                  <Col key={index} sm={6} md={4} lg={3}>
+                     <PhotoContainer>
+                        <div key={imageSrc} className="image">
+                           <Photo src={imageSrc} />
+                           <StyledButton
+                              variant="secondary"
+                              size="sm"
+                              onClick={() =>
+                                 setCroppedImgList(
+                                    croppedImgList.filter((e) => e !== imageSrc)
+                                 )
+                              }
+                           >
+                              <FontAwesomeIcon icon={faTimesCircle} />
+                           </StyledButton>
+                        </div>
+                     </PhotoContainer>
                   </Col>
                ))}
             </Row>
