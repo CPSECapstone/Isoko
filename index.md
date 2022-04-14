@@ -50,7 +50,8 @@ If you find any issues with Isoko or have any other feedback you'd like to give 
 
 <a name="priv"></a>
 ## Privacy Policy
+You can find a copy of our privacy policy [here](https://docs.google.com/document/d/1s7X3RoyZlAvLHV8iioeLD02X9ABX0JPIvkqtjg1Q0nw/edit#heading=h.6em5crii2xa5)
 
 <a name="eula"></a>
 ## EULA
-
+You can find a copy of our EULA [here](https://docs.google.com/document/d/1hkDCsVs3QGVFL09-KrcQuTd95lgcsPDHu3u404QGbRE/edit)
