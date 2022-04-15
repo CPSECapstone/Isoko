@@ -13,20 +13,20 @@ const Container = styled.div`
 
 const PhotoContainer = styled.div`
    position: relative;
-   width: 200px;
+   max-width: 400px;
 `;
 
 const Photo = styled.img`
-   display: block;
+   position: relative;
    height: 200px;
    margin-top: 50px;
 `;
 
 const StyledButton = styled(Button)`
    position: absolute;
-   top: -15px;
-   right: -15px;
    border-radius: 200px;
+   margin-top: 30px;
+   margin-left: -15px;
 `;
 
 const Input = styled.input`
@@ -80,7 +80,7 @@ const MultiImageUpload: React.FC = () => {
          <Container>
             <Row>
                {croppedImgList.map((imageSrc, index) => (
-                  <Col key={index} sm={6} md={4} lg={3}>
+                  <Col key={index}>
                      <PhotoContainer>
                         <div key={imageSrc} className="image">
                            <Photo src={imageSrc} />
