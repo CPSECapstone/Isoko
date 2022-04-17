@@ -135,10 +135,17 @@ const SearchBar: React.FC = () => {
       }
    };
 
+   const handleEnterPress = (event) => {
+      // keyCode 13 is Enter
+      if (event.keyCode === 13) {
+         dispatchSearch();
+      }
+   };
+
    return (
       <main>
          {isHome ? (
-            <Container>
+            <Container onKeyDown={handleEnterPress}>
                <StyledRow>
                   <StyledCol sm={3}>
                      <SearchLabel>I&apos;m looking for</SearchLabel>
@@ -181,7 +188,7 @@ const SearchBar: React.FC = () => {
                </StyledRow>
             </Container>
          ) : (
-            <OuterContainer>
+            <OuterContainer onKeyDown={handleEnterPress}>
                <MiddleDiv>
                   <NavContainer>
                      <NavBox>
