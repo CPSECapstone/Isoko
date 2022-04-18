@@ -1,9 +1,13 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
-const { SEARCH_RESULTS_TABLE } = require('../../constants');
+const { SEARCH_RESULTS_TABLE, ONLINE } = require('../../constants');
 
 const validateLocationParam = (locationParam) => {
+   if (locationParam === ONLINE) {
+      return ONLINE;
+   }
+
    const splitLocationParam = locationParam && locationParam.split('#');
    return splitLocationParam && splitLocationParam.length === 2;
 };
@@ -25,6 +29,33 @@ const buildQueryParams = (location, category) => {
          ...(category && { ':cat': category }),
       },
    };
+};
+
+const filterQueryResults = (queryResults, tags, keyword) => {
+   let filteredResults = queryResults;
+   if (tags && tags.length && keyword) {
+      filteredResults = queryResults.filter(
+         (busPreview) =>
+            busPreview.tags.some((tag) => _.includes(tags, tag)) &&
+            _.includes(busPreview.keywords, keyword)
+      );
+   } else if (tags && tags.length) {
+      filteredResults = queryResults.filter((busPreview) =>
+         busPreview.tags.some((tag) => _.includes(tags, tag))
+      );
+   } else if (keyword) {
+      filteredResults = queryResults.filter((busPreview) =>
+         _.includes(busPreview.keywords, keyword)
+      );
+   }
+
+   // Remove db specific fields from results
+   return filteredResults.map((busPreview) => {
+      delete busPreview.pk;
+      delete busPreview.sk;
+
+      return busPreview;
+   });
 };
 
 /**
@@ -61,39 +92,58 @@ exports.postSearchResultsHandler = async (event) => {
    let response;
 
    try {
-      const params = buildQueryParams(location, category);
-      console.info(`Dynamo request with params: ${params}`);
+      let onlineSearchResults = [];
+      let brickMortarSearchResults = [];
 
-      const dynamoResult = await docClient.query(params).promise();
-      let queryResults = dynamoResult.Items;
+      // We always want to send the online request, but only send the brick
+      // and mortar request when the location param is not ONLINE
+      if (location === ONLINE) {
+         console.info('Online only flow');
 
-      if (tags && tags.length && keyword) {
-         queryResults = queryResults.filter(
-            (busPreview) =>
-               busPreview.tags.some((tag) => _.includes(tags, tag)) &&
-               _.includes(busPreview.keywords, keyword)
+         const onlineParams = buildQueryParams(location, category);
+         console.info(`Dynamo request with onlineParams: ${onlineParams}`);
+
+         const onlineResults = await docClient.query(onlineParams).promise();
+         onlineSearchResults = filterQueryResults(
+            onlineResults.Items,
+            tags,
+            keyword
          );
-      } else if (tags && tags.length) {
-         queryResults = queryResults.filter((busPreview) =>
-            busPreview.tags.some((tag) => _.includes(tags, tag))
+      } else {
+         console.info('Both flow');
+
+         const onlineParams = buildQueryParams(ONLINE, category);
+         const brickMortarParams = buildQueryParams(location, category);
+         console.info(`Dynamo request with onlineParams: ${onlineParams}`);
+         console.info(
+            `Dynamo request with brickMortarParams: ${brickMortarParams}`
          );
-      } else if (keyword) {
-         queryResults = queryResults.filter((busPreview) =>
-            _.includes(busPreview.keywords, keyword)
+
+         // fetch both online and B&M results in parallel
+         const [onlineResults, brickMortarResults] = await Promise.all([
+            docClient.query(onlineParams).promise(),
+            docClient.query(brickMortarParams).promise(),
+         ]);
+
+         onlineSearchResults = filterQueryResults(
+            onlineResults.Items,
+            tags,
+            keyword
+         );
+         brickMortarSearchResults = filterQueryResults(
+            brickMortarResults.Items,
+            tags,
+            keyword
          );
       }
 
-      // Remove DB specific fields from results
-      const searchResults = queryResults.map((busPreview) => {
-         delete busPreview.pk;
-         delete busPreview.sk;
-
-         return busPreview;
-      });
-
       response = {
          statusCode: 200,
-         body: JSON.stringify({ results: searchResults }),
+         body: JSON.stringify({
+            results: brickMortarSearchResults,
+            online: onlineSearchResults,
+            brickMortar: brickMortarSearchResults,
+         }),
          headers: {
             'content-type': 'json',
             'access-control-allow-origin': '*',
