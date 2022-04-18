@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Business } from '../../types/GlobalTypes';
-import { fetchBusinessDetails, updateBusinessDetails } from './DashboardAPI';
+import { fetchBusiness, updateBusinessDetails } from '../business/BusinessAPI';
 
 export interface DashboardState {
    business: Business | null;
@@ -17,7 +17,7 @@ const initialState: DashboardState = {
 export const initializeBusinessDetailsAsync = createAsyncThunk(
    'dashboard/initializeBusinessDetails',
    async (businessId: string) => {
-      return await fetchBusinessDetails(businessId);
+      return await fetchBusiness(businessId);
    }
 );
 
