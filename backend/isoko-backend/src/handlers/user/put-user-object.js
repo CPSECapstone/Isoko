@@ -2,6 +2,7 @@ const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
 const { USER_TABLE } = require('../../constants');
+const { get400Response } = require('../util/response-utils');
 
 /**
  * HTTP put method t that allows the user object specified to be updated according to the request body.
@@ -32,25 +33,19 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
 
 exports.putUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'PUT') {
-      return {
-         statusCode: 400,
-         body: {
-            error: `putUserObject only accept PUT method, you tried: ${event.httpMethod}`,
-         },
-      };
+      return get400Response(
+         `putUserObject only accept PUT method, you tried: ${event.httpMethod}`
+      );
    }
 
    console.info('received:', event);
 
-   const pk = _.get(event.pathParameters, 'pk');
+   const userSub = _.get(event.pathParameters, 'userSub');
 
-   if (!pk) {
-      return {
-         statusCode: 400,
-         body: {
-            error: `Missing query parameter 'pk'. Request URL format: PUT/user/{pk}`,
-         },
-      };
+   if (!userSub) {
+      return get400Response(
+         `Missing path parameter 'userSub'. Request URL format: PUT/user/{userSub}`
+      );
    }
 
    const requestBody = event.body && JSON.parse(event.body);
@@ -66,7 +61,7 @@ exports.putUserObjectHandler = async (event) => {
    const params = {
       TableName: USER_TABLE,
       Key: {
-         pk: pk,
+         pk: userSub,
       },
       UpdateExpression: updateExpr,
       ExpressionAttributeValues: exprAttrVals,
@@ -83,19 +78,20 @@ exports.putUserObjectHandler = async (event) => {
 
       const dynamoResult = await docClient.update(params).promise();
 
-      const updateResult = dynamoResult.Attributes;
+      const user = dynamoResult.Attributes;
+      user.userSub = user.pk;
+      delete user.pk;
 
       response = {
          statusCode: 200,
-         body: {
-            results: updateResult,
+         body: JSON.stringify(user),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
          },
       };
    } catch (e) {
-      response = {
-         statusCode: 400,
-         body: { error: e },
-      };
+      response = get400Response(e.message);
    }
 
    console.info(

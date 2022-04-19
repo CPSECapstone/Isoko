@@ -21,13 +21,13 @@ describe('putUserObjectHandler tests', () => {
       updateSpy.mockReset();
    });
 
-   describe('Invalid query param tests', () => {
+   describe('Invalid path param tests', () => {
       it('Should throw an error when wrong HTTP method is used', async () => {
          // arrange
          const event = {
             httpMethod: 'GET',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
          };
 
@@ -53,7 +53,7 @@ describe('putUserObjectHandler tests', () => {
          // assert
          expect(result.statusCode).toBe(400);
          expect(result.body.error).toBe(
-            `Missing query parameter 'pk'. Request URL format: PUT/user/{pk}`
+            `Missing path parameter 'userSub'. Request URL format: PUT/user/{userSub}`
          );
       });
 
@@ -71,7 +71,7 @@ describe('putUserObjectHandler tests', () => {
          const event = {
             httpMethod: 'PUT',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
             body: JSON.stringify({
                pk: '7786665654',
@@ -83,9 +83,7 @@ describe('putUserObjectHandler tests', () => {
 
          // assert
          expect(result.statusCode).toBe(400);
-         expect(result.body.error.message).toBe(
-            'Cannot update restricted field: pk'
-         );
+         expect(result.body.error).toBe('Cannot update restricted field: pk');
       });
    });
 
@@ -103,7 +101,7 @@ describe('putUserObjectHandler tests', () => {
       const event = {
          httpMethod: 'PUT',
          pathParameters: {
-            pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+            userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
          },
          body: JSON.stringify({
             pk: 'lalala',
@@ -116,9 +114,7 @@ describe('putUserObjectHandler tests', () => {
 
       // assert
       expect(result.statusCode).toBe(400);
-      expect(result.body.error.message).toBe(
-         'Cannot update restricted field: pk'
-      );
+      expect(result.body.error).toBe('Cannot update restricted field: pk');
    });
 
    describe('Failed update test', () => {
@@ -135,7 +131,7 @@ describe('putUserObjectHandler tests', () => {
          const event = {
             httpMethod: 'PUT',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
             body: JSON.stringify({
                randomField: 'lala',
@@ -147,7 +143,7 @@ describe('putUserObjectHandler tests', () => {
 
          // assert
          expect(result.statusCode).toBe(400);
-         expect(result.body.error.message).toBe('Update failed');
+         expect(result.body.error).toBe('Update failed');
       });
    });
 
@@ -170,7 +166,7 @@ describe('putUserObjectHandler tests', () => {
          const event = {
             httpMethod: 'PUT',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
             body: JSON.stringify({
                email: 'yomama@gmail.com',
@@ -178,19 +174,19 @@ describe('putUserObjectHandler tests', () => {
          };
 
          const expectedItems = {
-            pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             businessId: 'lala',
             profilePicture: 'lala',
             businessOwner: true,
             email: 'yomama@gmail.com',
             name: 'Rohith Dara',
+            userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
          };
 
          // act
          const result = await putUserObjectHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItems));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: USER_TABLE,
             Key: {
@@ -222,7 +218,7 @@ describe('putUserObjectHandler tests', () => {
          const event = {
             httpMethod: 'PUT',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
             body: JSON.stringify({
                name: 'Rohith Dara',
@@ -231,19 +227,19 @@ describe('putUserObjectHandler tests', () => {
          };
 
          const expectedItems = {
-            pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             businessId: 'lala',
             profilePicture: 'lala',
             businessOwner: true,
             email: 'yomama@gmail.com',
             name: 'Rohith Dara',
+            userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
          };
 
          // act
          const result = await putUserObjectHandler(event);
 
          // assert
-         expect(result.body.results).toEqual(expectedItems);
+         expect(result.body).toEqual(JSON.stringify(expectedItems));
          expect(updateSpy).toHaveBeenCalledWith({
             TableName: USER_TABLE,
             Key: {

@@ -2,35 +2,31 @@ const dynamodb = require('aws-sdk/clients/dynamodb');
 const docClient = new dynamodb.DocumentClient();
 const _ = require('lodash');
 const { USER_TABLE } = require('../../constants');
+const { get400Response } = require('../util/response-utils');
+
 /**
  * HTTP get method to geta user object based off of the userSub specified in the request.
  */
 exports.getUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
-      return {
-         statusCode: 400,
-         body: {
-            error: `getUserObject only accept GET method, you tried: ${event.httpMethod}`,
-         },
-      };
+      return get400Response(
+         `getUserObject only accept GET method, you tried: ${event.httpMethod}`
+      );
    }
 
    console.info('received:', event);
-   const pk = _.get(event.pathParameters, 'pk');
+   const userSub = _.get(event.pathParameters, 'userSub');
 
-   if (!pk) {
-      return {
-         statusCode: 400,
-         body: {
-            error: `Missing query parameter 'pk'. Request URL format: GET/user/{pk}`,
-         },
-      };
+   if (!userSub) {
+      return get400Response(
+         `Missing path parameter 'userSub'. Request URL format: GET/user/{userSub}`
+      );
    }
 
    const params = {
       TableName: USER_TABLE,
       Key: {
-         pk: pk,
+         pk: userSub,
       },
    };
 
@@ -39,17 +35,20 @@ exports.getUserObjectHandler = async (event) => {
    try {
       const dynamoResult = await docClient.get(params).promise();
 
-      let getResults = dynamoResult.Item;
+      const user = dynamoResult.Item;
+      user.userSub = user.pk;
+      delete user.pk;
 
       response = {
          statusCode: 200,
-         body: { results: getResults },
+         body: JSON.stringify(user),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
+         },
       };
    } catch (e) {
-      response = {
-         statusCode: 400,
-         body: { error: e },
-      };
+      response = get400Response(e.message);
    }
 
    console.info(

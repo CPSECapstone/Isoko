@@ -27,7 +27,7 @@ describe('GetUserObjectHandler tests', () => {
          const event = {
             httpMethod: 'POST',
             pathParameters: {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             },
          };
 
@@ -53,7 +53,7 @@ describe('GetUserObjectHandler tests', () => {
          // assert
          expect(result.statusCode).toBe(400);
          expect(result.body.error).toBe(
-            `Missing query parameter 'pk'. Request URL format: GET/user/{pk}`
+            `Missing path parameter 'userSub'. Request URL format: GET/user/{userSub}`
          );
       });
 
@@ -71,7 +71,7 @@ describe('GetUserObjectHandler tests', () => {
             const event = {
                httpMethod: 'GET',
                pathParameters: {
-                  pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+                  userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
                },
             };
 
@@ -80,7 +80,7 @@ describe('GetUserObjectHandler tests', () => {
 
             // assert
             expect(result.statusCode).toBe(400);
-            expect(result.body.error.message).toBe('Get failed');
+            expect(result.body.error).toBe('Get failed');
          });
       });
 
@@ -103,23 +103,23 @@ describe('GetUserObjectHandler tests', () => {
             const event = {
                httpMethod: 'GET',
                pathParameters: {
-                  pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
+                  userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
                },
             };
             const expectedItems = {
-               pk: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
                businessId: 'lala',
                profilePicture: 'lala',
                businessOwner: true,
                email: 'rohith.dara2000@gmail.com',
                name: 'Rohith Dara',
+               userSub: 'dd9ee02f-bc3e-45a5-b4ba-b0e2ef536573',
             };
 
             // act
             const result = await getUserObjectHandler(event);
 
             // assert
-            expect(result.body.results).toEqual(expectedItems);
+            expect(result.body).toEqual(JSON.stringify(expectedItems));
             expect(getSpy).toHaveBeenCalledWith({
                TableName: USER_TABLE,
                Key: {
