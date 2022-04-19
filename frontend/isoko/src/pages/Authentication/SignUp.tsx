@@ -227,6 +227,13 @@ const SignUp: React.FC = () => {
       );
    };
 
+   const handleEnterPress = (event) => {
+      // keyCode 13 is Enter
+      if (event.keyCode === 13) {
+         checkAllFieldsEnteredProperly();
+      }
+   };
+
    return (
       <main>
          <Container>
@@ -238,7 +245,7 @@ const SignUp: React.FC = () => {
                   owners in your very own community!{' '}
                </Description>
             </LeftDiv>
-            <RightDiv>
+            <RightDiv onKeyDown={handleEnterPress}>
                <MainContent>
                   <RowDiv>
                      <Title>ISOKO</Title>
