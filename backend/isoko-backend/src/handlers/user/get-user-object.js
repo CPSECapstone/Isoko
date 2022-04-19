@@ -9,17 +9,21 @@ exports.getUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'GET') {
       return {
          statusCode: 400,
-         body: { error: `getUserObject only accept GET method, you tried: ${event.httpMethod}` },
+         body: {
+            error: `getUserObject only accept GET method, you tried: ${event.httpMethod}`,
+         },
       };
    }
 
    console.info('received:', event);
-   const pk = _.get(event.pathParameters, 'pk', null);
+   const pk = _.get(event.pathParameters, 'pk');
 
-   if (pk == null) {
+   if (!pk) {
       return {
          statusCode: 400,
-         body: { error: `Missing query parameter 'pk'. Request URL format: GET/user/{pk}` },
+         body: {
+            error: `Missing query parameter 'pk'. Request URL format: GET/user/{pk}`,
+         },
       };
    }
 
