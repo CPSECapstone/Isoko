@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from '../environment/environment';
 import styled from 'styled-components';
-import device from '../../src/styles/devices';
 import Review from '../components/reviews/Review';
 import BusinessHeader from '../components/business/BusinessHeader';
 import AboutTheOwner from '../components/business/AboutTheOwner';
@@ -20,7 +19,7 @@ const PositionedSidebar = styled(BusinessSidebar)`
    right: 30px;
    margin-top: 10px;
 
-   @media ${device.tablet} {
+   @media (max-width: 1200px) {
       position: relative;
       left: 10px;
       bottom: 5px;
@@ -177,7 +176,7 @@ const Business: React.FC<PreviewProps> = (props) => {
                />
             </StyledRow>
             <StyledRow>
-               <StyledCol lg={8} md={7} xs={12}>
+               <StyledCol lg={12} xl={7}>
                   <BusinessHeader
                      name="Bob's Burgers"
                      description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long this is long this is long this is long this is long this is long this is long this is long this is long"
@@ -249,7 +248,7 @@ const Business: React.FC<PreviewProps> = (props) => {
                      </>
                   ) : null}
                </StyledCol>
-               <StyledCol md={4} xs={12}>
+               <StyledCol lg={4} md={12}>
                   <PositionedSidebar
                      id="sidebar"
                      claimed={false}
