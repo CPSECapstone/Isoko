@@ -94,7 +94,7 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
                ts: `${moment.now()}`,
             }
          );
-         hanldeClose();
+         props.handleClose();
       }
    };
 
