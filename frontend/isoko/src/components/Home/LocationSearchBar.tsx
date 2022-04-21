@@ -92,7 +92,10 @@ const LocationSearchBar: React.FC<LocationProps> = (props) => {
          .promise();
 
       const options = rsp.Results.map((value) => value.Text);
-      setOptionsState(options);
+      const filteredOptions = options.filter((value) =>
+         value.includes(', USA')
+      );
+      setOptionsState(filteredOptions);
    };
 
    return (
