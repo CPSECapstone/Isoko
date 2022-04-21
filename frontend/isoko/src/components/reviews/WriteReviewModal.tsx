@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
 import { Modal, Form } from 'react-bootstrap';
 import { Rating } from 'react-simple-star-rating';
+import axios from 'axios';
+import { environment } from '../../environment/environment';
+import { useLocation } from 'react-router-dom';
+import moment from 'moment';
+import { useAppSelector } from '../../app/hooks';
 
 const CONTENTMAXLENGTH = 300;
 
@@ -62,6 +67,9 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
    const [listOfImages, setListOfImages] = useState([]);
    const [err, setErr] = useState('');
 
+   const location = useLocation();
+   const profile = useAppSelector((store) => store.profile);
+
    // NOTE: that rating value is out of 100 and needs to be divided by 20 to get
    // number of stars when sending to database
    const handleRating = (rate: number) => {
@@ -70,7 +78,23 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
 
    const handleConfirm = () => {
       // TODO: Replace this with a post request to send review to database
-      return isValid();
+      if (isValid()) {
+         // NOTE: This will not work until IS-122 is merged in bc we need to get
+         // the businessId from the URL.
+         axios.post(
+            `${environment.prodURL}/business/${location.pathname}/review`,
+            {
+               reviewAuthor: profile.userSub,
+               authorUserName: profile.name,
+               authorProfilePicture: profile.profilePicture,
+               stars: rating / 20,
+               reviewTitle: subject,
+               description: content,
+               pictures: listOfImages,
+               ts: `${moment.now()}`,
+            }
+         );
+      }
    };
 
    const isValid = () => {
