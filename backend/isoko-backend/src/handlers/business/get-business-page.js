@@ -22,7 +22,7 @@ exports.getBusinessPageHandler = async (event) => {
       );
    }
 
-   // params to get business info 
+   // params to get business info
    const businessParams = {
       TableName: BUSINESS_TABLE,
       Key: {
@@ -31,15 +31,15 @@ exports.getBusinessPageHandler = async (event) => {
       },
    };
 
-   // params to get reviews for business 
+   // params to get reviews for business
    const reviewParams = {
-      TableName: BUSINESS_TABLE, 
-      KeyConditionExpression: "pk = :id and begins_with(sk, :r)", 
+      TableName: BUSINESS_TABLE,
+      KeyConditionExpression: 'pk = :id and begins_with(sk, :r)',
       ExpressionAttributeValues: {
-         ":id": `${businessId}`,
-         ":r": 'REVIEW'
-      }
-   }
+         ':id': `${businessId}`,
+         ':r': 'REVIEW',
+      },
+   };
 
    let response;
 
@@ -50,10 +50,10 @@ exports.getBusinessPageHandler = async (event) => {
       delete businessDetails.pk;
       delete businessDetails.sk;
 
-      const reviewResult = await docClient.query(reviewParams).promise(); 
+      const reviewResult = await docClient.query(reviewParams).promise();
 
-      let reviews = reviewResult.Items; 
-      businessDetails['reviews'] = reviews; 
+      let reviews = reviewResult.Items;
+      businessDetails['reviews'] = reviews;
 
       response = {
          statusCode: 200,
