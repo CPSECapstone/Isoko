@@ -11,6 +11,7 @@ import axios from 'axios';
 import { environment } from '../environment/environment';
 import NavbarComponent from '../components/NavbarComponent';
 import { useNavigate } from 'react-router-dom';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -393,6 +394,12 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    };
 
    const gatherBusinessInfo = () => {
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
+      const userSub = userPool.getCurrentUser().getUsername();
+
       const businessInfo = {
          name: businessName,
          city,
@@ -446,6 +453,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                  }
                : {},
          timestamp: new Date().getTime(),
+         lister: userSub,
          verified: isOwner == 'true' ? true : false,
       };
       return businessInfo;
