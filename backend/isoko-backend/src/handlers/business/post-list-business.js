@@ -112,7 +112,7 @@ exports.postListBusinessHandler = async (event) => {
 
       response = {
          statusCode: 200,
-         body: JSON.stringify({...requestBody}),
+         body: JSON.stringify({ ...requestBody }),
          headers: {
             'content-type': 'json',
             'access-control-allow-origin': '*',

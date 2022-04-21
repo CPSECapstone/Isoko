@@ -8,21 +8,21 @@ jest.mock('aws-sdk/clients/dynamodb');
 
 describe('GetBusinessPageHandler tests', () => {
    let getSpy;
-   let querySpy; 
+   let querySpy;
 
    beforeAll(() => {
       getSpy = jest.spyOn(dynamodb.DocumentClient.prototype, 'get');
-      querySpy = jest.spyOn(dynamodb.DocumentClient.prototype, 'query'); 
+      querySpy = jest.spyOn(dynamodb.DocumentClient.prototype, 'query');
    });
 
    afterAll(() => {
       getSpy.mockRestore();
-      querySpy.mockRestore(); 
+      querySpy.mockRestore();
    });
 
    afterEach(() => {
       getSpy.mockReset();
-      querySpy.mockReset(); 
+      querySpy.mockReset();
    });
 
    describe('Invalid query param tests', () => {
@@ -124,7 +124,7 @@ describe('GetBusinessPageHandler tests', () => {
             ],
          };
 
-         mockQueryResults = [
+         (mockQueryResults = [
             {
                reviewAuthor: '594830c0-45b1-4b79-aad4-4bea4428d783',
                authorUserName: 'Lindsay Bluth',
@@ -138,13 +138,13 @@ describe('GetBusinessPageHandler tests', () => {
                ],
                ts: 1642649369,
             },
-         ],
-         getSpy.mockReturnValue({
-            promise: () => Promise.resolve({ Item: mockGetResults }),
-         });
+         ]),
+            getSpy.mockReturnValue({
+               promise: () => Promise.resolve({ Item: mockGetResults }),
+            });
          querySpy.mockReturnValue({
-            promise: () => Promise.resolve({ Items: mockQueryResults })
-         })
+            promise: () => Promise.resolve({ Items: mockQueryResults }),
+         });
          const event = {
             httpMethod: 'GET',
             pathParameters: {
@@ -199,7 +199,7 @@ describe('GetBusinessPageHandler tests', () => {
                   ],
                   ts: 1642649369,
                },
-            ]
+            ],
          };
 
          // act
@@ -216,11 +216,11 @@ describe('GetBusinessPageHandler tests', () => {
          });
          expect(querySpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
-            KeyConditionExpression: "pk = :id and begins_with(sk, :r)", 
+            KeyConditionExpression: 'pk = :id and begins_with(sk, :r)',
             ExpressionAttributeValues: {
-               ":id": '-664125567',
-               ":r": 'REVIEW'
-            }, 
+               ':id': '-664125567',
+               ':r': 'REVIEW',
+            },
          });
       });
    });
