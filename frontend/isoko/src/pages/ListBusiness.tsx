@@ -12,7 +12,7 @@ import { environment } from '../environment/environment';
 import NavbarComponent from '../components/NavbarComponent';
 import { useNavigate } from 'react-router-dom';
 
-const SHORTDESCMAXLENGTH = 100;
+const SHORTDESCMAXLENGTH = 600;
 
 const StyledDataList = styled.datalist`
    background-color: red;
