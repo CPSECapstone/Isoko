@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarComponent from '../../components/NavbarComponent';
@@ -17,6 +17,7 @@ import Photos from './Photos';
 import Analytics from './Analytics';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { initializeBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
+import { SpinnerCircularFixed } from 'spinners-react';
 
 const StyledCol1 = styled(Col)`
    max-width: 225px;
@@ -56,6 +57,28 @@ const StyledLink = styled.p`
    margin: 3px;
    margin-left: 10px;
    font-size: 1.25em;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const Content = styled(Col)`
+   animation: ${fadeIn} 0.5s linear;
+`;
+
+const StyledSpinner = styled(SpinnerCircularFixed)`
+   position: absolute;
+   top: 50%;
+   left: 50%;
+
+   animation: ${fadeIn} 0.5s linear;
 `;
 
 const BusinessDash: React.FC = () => {
@@ -159,11 +182,11 @@ const BusinessDash: React.FC = () => {
                      </NavDiv>
                   </NavBarContainer>
                </StyledCol1>
-               {dashboardStore.status !== 'idle' ||
+               {dashboardStore.status === 'loading' ||
                dashboardStore.business === null ? (
-                  <div>loading...</div>
+                  <StyledSpinner thickness={125} color="#F97D0B" />
                ) : (
-                  <Col>
+                  <Content>
                      {activeComponent === 'Preview' ? (
                         <Preview businessDetails={dashboardStore.business} />
                      ) : null}
@@ -183,7 +206,7 @@ const BusinessDash: React.FC = () => {
                         />
                      ) : null}
                      {activeComponent === 'Analytics' ? <Analytics /> : null}
-                  </Col>
+                  </Content>
                )}
             </Row>
          </div>
