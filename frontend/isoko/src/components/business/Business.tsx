@@ -69,12 +69,12 @@ const WriteReviewContainer = styled(WriteReview)`
    margin: 1em 0em 1em 1.5em;
 `;
 
-interface PreviewProps extends React.HTMLProps<HTMLDivElement> {
+interface BusinessProps extends React.HTMLProps<HTMLDivElement> {
    showInPreview: boolean;
    businessDetails: BusinessType;
 }
 
-const Business: React.FC<PreviewProps> = (props) => {
+const Business: React.FC<BusinessProps> = (props) => {
    const [showWriteReviewsModal, setShowWriteReviewsModal] = useState(false);
    const [showRestrictedModal, setShowRestrictedModal] = useState(false);
    const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -201,7 +201,7 @@ const Business: React.FC<PreviewProps> = (props) => {
                      id="sidebar"
                      claimed={businessDetails.claimed}
                      hours={businessDetails.hours}
-                     address={businessDetails.address}
+                     address={`${businessDetails.street} ${businessDetails.city}, ${businessDetails.state}`}
                      links={Object.keys(businessDetails.links).map(
                         (linkName) => ({
                            title: linkName,

@@ -1,46 +1,41 @@
 import React from 'react';
+import { Business } from '../../types/GlobalTypes';
 import ListBusiness from '../ListBusiness';
 
 interface updateInfoProps extends React.HTMLProps<HTMLDivElement> {
    setActiveComponent: (text: string) => void;
+   businessDetails: Business;
 }
-const UpdateInfo: React.FC<updateInfoProps> = (props) => (
-   <main>
-      <ListBusiness
-         name="Bob's Burgers"
-         city="San Luis Obispo"
-         state="CA"
-         street="1 Grand Ave"
-         zip="93405"
-         ownerName="Bob Belcher"
-         ownerDesc="My name is Bob, idrk much about myself, as I've never seen this show but oh well!!"
-         ownerPhone="805-222-3333"
-         hours={{
-            Mon: '9:00am-5:00pm',
-            Tue: '9:00am-5:00pm',
-            Fri: '9:00am-5:00pm',
-            Sat: '8:00am-10:00pm',
-         }}
-         links={[
-            {
-               title: 'Website',
-               link: 'https://isoko.com/',
-            },
-            {
-               title: 'Menu',
-               link: 'https://isoko.com/menu',
-            },
-         ]}
-         description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long this is long this is long this is long this is long this is long this is long this is long this is long"
-         stars={3}
-         minorityTags={['Black Owned']}
-         category="Food"
-         keywordTags={['Burgers']}
-         verified={true}
-         numReviews={80}
-         setActiveComponent={props.setActiveComponent}
-      />
-   </main>
-);
+const UpdateInfo: React.FC<updateInfoProps> = (props) => {
+   const { businessDetails } = props;
+
+   return (
+      <main>
+         <ListBusiness
+            name={businessDetails.name}
+            city={businessDetails.city}
+            state={businessDetails.state}
+            street={businessDetails.street}
+            zip={businessDetails.zip}
+            ownerName={businessDetails.aboutOwner.ownerName}
+            ownerDesc={businessDetails.aboutOwner.ownerDesc}
+            ownerPhone={businessDetails.aboutOwner.ownerPhone}
+            hours={businessDetails.hours}
+            links={Object.keys(businessDetails.links || {}).map((linkName) => ({
+               title: linkName,
+               link: businessDetails.links[linkName],
+            }))}
+            description={businessDetails.shortDesc}
+            stars={businessDetails.rating}
+            minorityTags={businessDetails.tags}
+            category={businessDetails.category}
+            keywordTags={businessDetails.keywords}
+            verified={businessDetails.claimed}
+            numReviews={businessDetails.numReviews}
+            setActiveComponent={props.setActiveComponent}
+         />
+      </main>
+   );
+};
 
 export default UpdateInfo;

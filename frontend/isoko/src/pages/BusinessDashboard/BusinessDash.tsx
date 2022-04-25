@@ -62,6 +62,7 @@ const BusinessDash: React.FC = () => {
    const [activeComponent, setActiveComponent] = React.useState('Preview');
 
    const ownedBusinessId = useAppSelector((store) => store.profile.businessId);
+   const dashboardStore = useAppSelector((store) => store.dashboard);
 
    const dispatch = useAppDispatch();
    useEffect(() => {
@@ -158,15 +159,32 @@ const BusinessDash: React.FC = () => {
                      </NavDiv>
                   </NavBarContainer>
                </StyledCol1>
-               <Col>
-                  {activeComponent === 'Preview' ? <Preview /> : null}
-                  {activeComponent === 'UpdateInfo' ? (
-                     <UpdateInfo setActiveComponent={setActiveComponent} />
-                  ) : null}
-                  {activeComponent === 'Reviews' ? <Reviews /> : null}
-                  {activeComponent === 'Photos' ? <Photos /> : null}
-                  {activeComponent === 'Analytics' ? <Analytics /> : null}
-               </Col>
+               {dashboardStore.status !== 'idle' ||
+               dashboardStore.business === null ? (
+                  <div>loading...</div>
+               ) : (
+                  <Col>
+                     {activeComponent === 'Preview' ? (
+                        <Preview businessDetails={dashboardStore.business} />
+                     ) : null}
+                     {activeComponent === 'UpdateInfo' ? (
+                        <UpdateInfo
+                           setActiveComponent={setActiveComponent}
+                           businessDetails={dashboardStore.business}
+                        />
+                     ) : null}
+                     {activeComponent === 'Reviews' ? (
+                        <Reviews reviews={dashboardStore.business.reviews} />
+                     ) : null}
+                     {activeComponent === 'Photos' ? (
+                        <Photos
+                           ownerPhoto={dashboardStore.business.photos[0]}
+                           photos={dashboardStore.business.photos}
+                        />
+                     ) : null}
+                     {activeComponent === 'Analytics' ? <Analytics /> : null}
+                  </Col>
+               )}
             </Row>
          </div>
       </main>

@@ -249,7 +249,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    );
    const [category, setCategory] = useState(props.category || '');
    const [businessURL, setBusinessURL] = useState(
-      props.links ? props.links[0].link : ''
+      props.links.length ? props.links[0].link : ''
    );
    const [shortDesc, setShortDesc] = useState(props.description || '');
    const [ownerName, setOwnerName] = useState(props.ownerName || '');
@@ -447,6 +447,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                : {},
          timestamp: new Date().getTime(),
          verified: isOwner == 'true' ? true : false,
+         photos: [],
       };
       return businessInfo;
    };

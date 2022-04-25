@@ -1,7 +1,7 @@
 import React from 'react';
 import Business from '../components/business/Business';
 
-const BusinessPage = () => {
+const BusinessPage: React.FC = () => {
    return (
       <main>
          <Business
@@ -32,7 +32,10 @@ const BusinessPage = () => {
                   Tue: '9:00am-5:00pm',
                   Fri: '9:00am-5:00pm',
                },
-               address: '626 Broad St. San Luis Obispo, CA',
+               street: '626 Broad St.',
+               city: 'San Luis Obispo',
+               zip: '93405',
+               state: 'CA',
                links: {
                   Website: 'https://isoko.com/',
                   Menu: 'https://isoko.com/menu',

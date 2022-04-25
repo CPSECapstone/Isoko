@@ -2,10 +2,15 @@ import React from 'react';
 import MultiImageUpload from '../../components/imageUpload/multiImageUpload';
 import SingleImageUpload from '../../components/imageUpload/singleImageUpoad';
 
-const Photos: React.FC = () => (
+interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
+   ownerPhoto?: string;
+   photos: Array<string>;
+}
+
+const Photos: React.FC<PhotoProps> = (props) => (
    <main>
-      <SingleImageUpload></SingleImageUpload>
-      <MultiImageUpload></MultiImageUpload>
+      <SingleImageUpload initialImage={props.ownerPhoto}></SingleImageUpload>
+      <MultiImageUpload photos={props.photos}></MultiImageUpload>
    </main>
 );
 
