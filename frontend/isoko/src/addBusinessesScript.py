@@ -47,7 +47,6 @@ def searchParams(keywords, latitude, longitude):
             'keywords': keywords,
             'category': bus['categories'][0]['title'],
             'shortDesc': sDesc[i],
-            'businessId': bus['id'],
             'hours': {
                 'Mon': '9:00am - 11:00pm',
                 'Tue': '9:00am - 11:00pm',
