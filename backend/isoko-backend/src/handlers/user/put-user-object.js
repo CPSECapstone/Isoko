@@ -5,11 +5,6 @@ const { USER_TABLE } = require('../../constants');
 const { get400Response } = require('../util/response-utils');
 
 /**
- * HTTP put method t that allows the user object specified to be updated according to the request body.
-
- */
-
-/**
  *
  * @param {*} names is a list of names representing attribute names to be updated
  * @param {*} requestBody is an object containing attribute names and new values
@@ -31,6 +26,9 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
    return exp;
 };
 
+/**
+ * HTTP put method t that allows the user object specified to be updated according to the request body.
+ */
 exports.putUserObjectHandler = async (event) => {
    if (event.httpMethod !== 'PUT') {
       return get400Response(

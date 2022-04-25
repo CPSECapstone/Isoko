@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SearchBar from '../components/Home/SearchBar';
 import coffee from '../components/Home/BackgroundPics/coffee.png';
 import sculptures from '../components/Home/BackgroundPics/sculptures.png';
-import flowers from '../components/Home/BackgroundPics/flowers.png';
+import breakfast from '../components/Home/BackgroundPics/breakfast.jpeg';
 import BusinessPreview from '../components/business/BusinessPreview';
 import HamburgerComponent from '../components/HamburgerComponent';
 
@@ -43,7 +43,7 @@ const LeftImg = styled.div`
    position: absolute;
    left: 0;
    z-index: -1;
-   background-image: url(${flowers});
+   background-image: url(${breakfast});
    background-size: cover;
    background-position: top left;
    background-repeat: no-repeat;

@@ -7,6 +7,7 @@ const {
    BRICK_AND_MORTAR,
    ONLINE,
 } = require('../../constants');
+const { get400Response } = require('../util/response-utils');
 
 const hash = (name, street) => {
    var combo = name + street;
@@ -18,13 +19,6 @@ const hash = (name, street) => {
    }
    return h.toString();
 };
-
-const get400Response = (message) => ({
-   statusCode: 400,
-   body: {
-      error: message,
-   },
-});
 
 /**
  * HTTP post method to allow a user to list a new business.
@@ -118,13 +112,14 @@ exports.postListBusinessHandler = async (event) => {
 
       response = {
          statusCode: 200,
-         body: { ...requestBody },
+         body: JSON.stringify({ ...requestBody }),
+         headers: {
+            'content-type': 'json',
+            'access-control-allow-origin': '*',
+         },
       };
    } catch (e) {
-      response = {
-         statusCode: 400,
-         body: { error: e.message },
-      };
+      response = get400Response(e.message);
    }
    return response;
 };
