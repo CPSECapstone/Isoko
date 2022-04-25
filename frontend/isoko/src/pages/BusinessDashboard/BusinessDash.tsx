@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,6 +15,8 @@ import UpdateInfo from './UpdateInfo';
 import Reviews from './Reviews';
 import Photos from './Photos';
 import Analytics from './Analytics';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { initializeBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
 
 const StyledCol1 = styled(Col)`
    max-width: 225px;
@@ -57,7 +59,17 @@ const StyledLink = styled.p`
 `;
 
 const BusinessDash: React.FC = () => {
-   const [activeComponent, setActiveComponent] = React.useState('UpdateInfo');
+   const [activeComponent, setActiveComponent] = React.useState('Preview');
+
+   const ownedBusinessId = useAppSelector((store) => store.profile.businessId);
+
+   const dispatch = useAppDispatch();
+   useEffect(() => {
+      // Don't need to worry about ownedBusinessId being undefined bc auth protections
+      // Should handle that case
+      dispatch(initializeBusinessDetailsAsync(ownedBusinessId));
+   }, []);
+
    return (
       <main>
          <NavbarComponent />

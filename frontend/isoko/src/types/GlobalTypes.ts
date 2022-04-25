@@ -62,13 +62,14 @@ export interface Business {
    };
    address: string;
    aboutOwner?: {
-      owner: string;
-      ownerName: string;
-      ownerPhone: string;
+      owner?: string;
+      ownerName?: string;
+      ownerPhone?: string;
       ownerDesc: string;
       photo: string;
    };
    reviews: Array<Review>;
+   photos: Array<string>;
 }
 
 export interface User {

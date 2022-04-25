@@ -1,5 +1,5 @@
 import React from 'react';
-import Business from '../Business';
+import Business from '../../components/business/Business';
 import styled from 'styled-components';
 
 const Container = styled.div`

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GlobalStyle from './styles/globalStyles';
-import Business from './pages/Business';
+import BusinessPage from './pages/BusinessPage';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
 import Home from './pages/Home';
 import ListBusiness from './pages/ListBusiness';
@@ -46,10 +46,7 @@ const App: React.FC = () => {
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route path="resetSuccess" element={<PasswordResetSuccess />} />
-            <Route
-               path="business"
-               element={<Business showInPreview={true} />}
-            />
+            <Route path="business" element={<BusinessPage />} />
             <Route path="businessDash" element={<BusinessDash />} />
             <Route path="listBusiness" element={<ListBusiness />} />
             <Route path="moddash" element={<ModDash />} />

@@ -9,6 +9,8 @@ import {
    CognitoUserPool,
 } from 'amazon-cognito-identity-js';
 import { environment } from '../../environment/environment';
+import { fetchProfileAsync } from '../../features/profile/ProfileSlice';
+import { useAppDispatch } from '../../app/hooks';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -142,6 +144,7 @@ const Login: React.FC = () => {
    const [err, setErr] = useState('');
 
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
 
    const login = () => {
       const authDetails = new AuthenticationDetails({
@@ -161,6 +164,9 @@ const Login: React.FC = () => {
 
       cognitoUser.authenticateUser(authDetails, {
          onSuccess: () => {
+            dispatch(
+               fetchProfileAsync(userPool.getCurrentUser().getUsername())
+            );
             navigate('/');
          },
          onFailure: (err) => {
