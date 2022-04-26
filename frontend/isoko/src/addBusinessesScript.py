@@ -38,7 +38,7 @@ def searchParams(keywords, latitude, longitude):
     URL = "https://api.yelp.com/v3/businesses/search" + '?' + 'latitude=' + str(latitude) + '&longitude=' + str(longitude) + '&term=' + str(keywords[0])
     r = requests.get(url = URL, headers=header)
     data = r.json()
-    for i in range(2):
+    for i in range(5):
         bus = data['businesses'][i]
         busId = bus['id']
         busDetailUrl = "https://api.yelp.com/v3/businesses/" + busId
@@ -83,7 +83,7 @@ def searchParams(keywords, latitude, longitude):
 
 
 # Businesses Already Added:
-searchParams(["Pizza"], 35.2930541, -120.68159042)
+# searchParams(["Pizza"], 35.2930541, -120.68159042)
 # searchParams(["Burgers"], 35.2930541, -120.68159042)
 # searchParams(["Nail Salon"], 35.2930541, -120.68159042)
 # searchParams(["Bar"], 35.2930541, -120.68159042)
