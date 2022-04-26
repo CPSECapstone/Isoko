@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GlobalStyle from './styles/globalStyles';
 import BusinessPage from './pages/BusinessPage';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
@@ -19,8 +19,8 @@ import AWS from 'aws-sdk';
 import './App.css';
 import ResetPassword from './pages/Authentication/ResetPassword';
 import { useAppDispatch } from './app/hooks';
+import { useAppSelector } from './app/hooks';
 import { fetchProfileAsync } from '../src/features/profile/ProfileSlice';
-import { store } from './app/store';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from './environment/environment';
 import ReactGA from 'react-ga';
@@ -38,15 +38,15 @@ const App: React.FC = () => {
       ClientId: environment.cognitoAppClientId,
    });
 
-   const [isOwner, setIsOwner] = useState(false);
    const dispatch = useAppDispatch();
+   const businessOwner = useAppSelector((store) => store.profile.businessOwner);
 
    useEffect(() => {
-      // checks if user is a business owner
-      const userSub = userPool.getCurrentUser().getUsername();
-      dispatch(fetchProfileAsync(userSub));
-      setIsOwner(store.getState().profile.businessOwner);
-   }, []);
+      const cognitoUser = userPool.getCurrentUser();
+      if (cognitoUser != null) {
+         dispatch(fetchProfileAsync(cognitoUser.getUsername()));
+      }
+   });
    const TRACKING_ID = 'UA-225585021-1';
    ReactGA.initialize(TRACKING_ID);
 
@@ -67,7 +67,7 @@ const App: React.FC = () => {
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route path="resetSuccess" element={<PasswordResetSuccess />} />
             <Route path="business" element={<BusinessPage />} />
-            {isOwner ? (
+            {businessOwner ? (
                <Route path="businessDash" element={<BusinessDash />} />
             ) : (
                <Route path="businessDash" element={<ProtectedPage />}>
