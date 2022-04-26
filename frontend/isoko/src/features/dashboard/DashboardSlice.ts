@@ -23,6 +23,7 @@ export const initializeBusinessDetailsAsync = createAsyncThunk(
 
 export interface UpdateParams {
    businessId: string;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    [key: string]: any;
 }
 
@@ -52,7 +53,11 @@ export const dashboardSlice = createSlice({
          })
          .addCase(updateBusinessDetailsAsync.fulfilled, (state, action) => {
             state.status = 'idle';
-            state.business = action.payload;
+            // Need to keep any fields in store that we did not overwrite (I.E. Reviews)
+            state.business = {
+               ...state.business,
+               ...action.payload,
+            };
          });
    },
 });

@@ -48,9 +48,13 @@ export interface Review {
 export interface Business {
    name: string;
    city?: string;
+   state?: string;
+   street?: string;
+   zip?: string;
    type: 'B&M' | 'Online';
    tags: Array<string>;
    keywords: Array<string>;
+   category: string;
    rating: number;
    shortDesc: string;
    numReviews: number;
@@ -60,15 +64,15 @@ export interface Business {
    links: {
       [key: string]: string;
    };
-   address: string;
    aboutOwner?: {
-      owner: string;
-      ownerName: string;
-      ownerPhone: string;
+      owner?: string;
+      ownerName?: string;
+      ownerPhone?: string;
       ownerDesc: string;
       photo: string;
    };
    reviews: Array<Review>;
+   photos: Array<string>;
 }
 
 export interface User {
