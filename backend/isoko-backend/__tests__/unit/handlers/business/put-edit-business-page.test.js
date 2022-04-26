@@ -428,6 +428,40 @@ describe('PutEditBusinessPageHandler tests', () => {
          });
       });
 
+      it('Generates correct Update expression for Arrays', async () => {
+         // arrange
+         updateSpy.mockReturnValue({
+            promise: () => Promise.resolve({ Attributes: {} }),
+         });
+
+         const event = {
+            httpMethod: 'PUT',
+            pathParameters: {
+               businessId: '-664125567',
+            },
+            body: JSON.stringify({
+               tags: ['Asian-Owned'],
+            }),
+         };
+
+         // act
+         const result = await putEditBusinessPageHandler(event);
+
+         // assert
+         expect(updateSpy).toHaveBeenCalledWith({
+            TableName: BUSINESS_TABLE,
+            Key: {
+               pk: '-664125567',
+               sk: 'INFO',
+            },
+            UpdateExpression: `set tags = :a`,
+            ExpressionAttributeValues: {
+               ':a': ['Asian-Owned'],
+            },
+            ReturnValues: 'ALL_NEW',
+         });
+      });
+
       it('Should update value of multiple simple target fields', async () => {
          // arrange
          mockUpdateResults = {

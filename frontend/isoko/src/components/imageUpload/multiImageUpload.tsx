@@ -43,10 +43,14 @@ const Label = styled.label`
    font-size: 15px;
 `;
 
-const MultiImageUpload: React.FC = () => {
+interface MultiImageUploadProps extends React.HTMLProps<HTMLDivElement> {
+   photos: Array<string>;
+}
+
+const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [croppedImgList, setCroppedImgList] = useState([]);
+   const [croppedImgList, setCroppedImgList] = useState(props.photos);
 
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));

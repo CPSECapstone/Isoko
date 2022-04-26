@@ -30,10 +30,14 @@ const Label = styled.label`
    font-size: 15px;
 `;
 
-const SingleImageUpload: React.FC = () => {
+interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {
+   initialImage?: string;
+}
+
+const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [croppedImgList, setCroppedImgList] = useState('');
+   const [displayImage, setdisplayImage] = useState(props.initialImage || '');
 
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
@@ -61,11 +65,11 @@ const SingleImageUpload: React.FC = () => {
                   setShowCrop(false);
                }}
                updateCroppedList={(croppedImg) => {
-                  setCroppedImgList(croppedImg);
+                  setdisplayImage(croppedImg);
                }}
             />
             <Col>
-               <Photo src={croppedImgList} />
+               <Photo src={displayImage} />
             </Col>
          </Row>
       </Container>

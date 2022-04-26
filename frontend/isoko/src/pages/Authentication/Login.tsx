@@ -9,6 +9,9 @@ import {
    CognitoUserPool,
 } from 'amazon-cognito-identity-js';
 import { environment } from '../../environment/environment';
+import { fetchProfileAsync } from '../../features/profile/ProfileSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { Form } from 'react-bootstrap';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -70,13 +73,23 @@ const InputContainer = styled.div`
    width: 70%;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled(Form.Control)`
    width: 100%;
+   font-size: 1.0625em;
+   padding: 0px 12px 0px 4px;
    border-radius: 10px;
    border: none;
    height: 32px;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    text-indent: 10px;
+
+   &:focus {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgb(249, 125, 11);
+   }
+   ::placeholder {
+      color: #aaaaaa;
+   }
 `;
 
 const StyledLabel = styled.label`
@@ -142,6 +155,7 @@ const Login: React.FC = () => {
    const [err, setErr] = useState('');
 
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
 
    const login = () => {
       const authDetails = new AuthenticationDetails({
@@ -161,6 +175,9 @@ const Login: React.FC = () => {
 
       cognitoUser.authenticateUser(authDetails, {
          onSuccess: () => {
+            dispatch(
+               fetchProfileAsync(userPool.getCurrentUser().getUsername())
+            );
             navigate('/');
          },
          onFailure: (err) => {
