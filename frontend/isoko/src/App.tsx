@@ -45,7 +45,6 @@ const App: React.FC = () => {
       // checks if user is a business owner
       const userSub = userPool.getCurrentUser().getUsername();
       dispatch(fetchProfileAsync(userSub));
-      // TODO: this wont work until IS-73 is merged
       setIsOwner(store.getState().profile.businessOwner);
    }, []);
    const TRACKING_ID = 'UA-225585021-1';
