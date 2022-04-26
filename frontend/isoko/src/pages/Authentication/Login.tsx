@@ -169,9 +169,16 @@ const Login: React.FC = () => {
       });
    };
 
+   const handleEnterPress = (event) => {
+      // keyCode 13 is Enter
+      if (event.keyCode === 13) {
+         login();
+      }
+   };
+
    return (
       <main>
-         <Container>
+         <Container onKeyDown={handleEnterPress}>
             <LeftDiv>
                <Description>
                   {' '}

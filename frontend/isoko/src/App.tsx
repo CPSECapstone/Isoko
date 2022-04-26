@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import GlobalStyle from './styles/globalStyles';
 import Business from './pages/Business';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
@@ -23,6 +23,8 @@ import { fetchProfileAsync } from '../src/features/profile/ProfileSlice';
 import { store } from './app/store';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from './environment/environment';
+import ReactGA from 'react-ga';
+import { compose } from '@mui/system';
 
 const App: React.FC = () => {
    AWS.config.update({
@@ -47,6 +49,8 @@ const App: React.FC = () => {
       // TODO: this wont work until IS-73 is merged
       setIsOwner(store.getState().profile.businessOwner);
    }, []);
+   const TRACKING_ID = 'UA-225585021-1';
+   ReactGA.initialize(TRACKING_ID);
 
    return (
       <div className="App">
