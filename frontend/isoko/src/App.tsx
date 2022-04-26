@@ -24,7 +24,6 @@ import { store } from './app/store';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from './environment/environment';
 import ReactGA from 'react-ga';
-import { compose } from '@mui/system';
 
 const App: React.FC = () => {
    AWS.config.update({
