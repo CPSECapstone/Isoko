@@ -95,6 +95,7 @@ exports.putEditBusinessPageHandler = async (event) => {
       'reviews',
       'rating',
       'numReviews',
+      'claimed',
    ];
 
    let exprAttrVals = {};

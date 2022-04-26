@@ -440,7 +440,7 @@ describe('PutEditBusinessPageHandler tests', () => {
                businessId: '-664125567',
             },
             body: JSON.stringify({
-               tags: ["Asian-Owned"],
+               tags: ['Asian-Owned'],
             }),
          };
 
@@ -456,7 +456,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             },
             UpdateExpression: `set tags = :a`,
             ExpressionAttributeValues: {
-               ':a': ["Asian-Owned"],
+               ':a': ['Asian-Owned'],
             },
             ReturnValues: 'ALL_NEW',
          });
