@@ -88,6 +88,7 @@ const BusinessDash: React.FC = () => {
    const dashboardStore = useAppSelector((store) => store.dashboard);
 
    const dispatch = useAppDispatch();
+
    useEffect(() => {
       // Don't need to worry about ownedBusinessId being undefined bc auth protections
       // Should handle that case

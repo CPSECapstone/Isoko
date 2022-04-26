@@ -11,6 +11,8 @@ import axios from 'axios';
 import { environment } from '../environment/environment';
 import NavbarComponent from '../components/NavbarComponent';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../app/hooks';
+import { updateBusinessDetailsAsync } from '../features/dashboard/DashboardSlice';
 
 const SHORTDESCMAXLENGTH = 100;
 
@@ -228,11 +230,14 @@ interface ListBusinessProps extends React.HTMLProps<HTMLDivElement> {
    numReviews: number;
    hours: Hours;
    links: Link[];
+   businessId?: string;
    setActiveComponent: (text: string) => void;
 }
 
 const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
+
    const [err, setErr] = useState('');
    const [isOwner, setIsOwner] = useState(props.ownerDesc ? 'true' : '');
    const [isBrickAndMortar, setIsBrickAndMortar] = useState(
@@ -328,10 +333,24 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    }, []);
 
    const listABusiness = () => {
-      if (isValid()) {
+      if (isValid() && isListBusiness) {
          const businessInfo = gatherBusinessInfo();
-         postBusinessInfo(businessInfo);
+         postBusinessInfo({
+            ...businessInfo,
+            timestamp: new Date().getTime(),
+            photos: [],
+            links: isBrickAndMortar === 'true' ? {} : { Website: businessURL },
+         });
+      } else if (isValid() && !isListBusiness) {
+         const businessInfo = gatherBusinessInfo();
+         dispatch(
+            updateBusinessDetailsAsync({
+               ...businessInfo,
+               businessId: props.businessId,
+            })
+         );
       } // no need for an else. Errors are set in isValid
+
       alert('Business details have been successfully saved!');
       if (isListBusiness) {
          navigate('/');
@@ -403,7 +422,6 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          tags: tags,
          category,
          shortDesc,
-         links: isBrickAndMortar === 'true' ? {} : { BusinessURL: businessURL },
          hours:
             isBrickAndMortar === 'true'
                ? {
@@ -445,9 +463,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                     ownerDesc,
                  }
                : {},
-         timestamp: new Date().getTime(),
          verified: isOwner == 'true' ? true : false,
-         photos: [],
       };
       return businessInfo;
    };

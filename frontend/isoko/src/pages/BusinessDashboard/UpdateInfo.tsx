@@ -6,6 +6,7 @@ interface updateInfoProps extends React.HTMLProps<HTMLDivElement> {
    setActiveComponent: (text: string) => void;
    businessDetails: Business;
 }
+
 const UpdateInfo: React.FC<updateInfoProps> = (props) => {
    const { businessDetails } = props;
 
@@ -33,6 +34,7 @@ const UpdateInfo: React.FC<updateInfoProps> = (props) => {
             verified={businessDetails.claimed}
             numReviews={businessDetails.numReviews}
             setActiveComponent={props.setActiveComponent}
+            businessId={businessDetails.businessId}
          />
       </main>
    );
