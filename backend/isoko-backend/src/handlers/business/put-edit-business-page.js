@@ -45,7 +45,7 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
    let count = 97;
    names.forEach((n) => {
       const val = _.get(requestBody, n);
-      if (typeof val == 'object') {
+      if (typeof val == 'object' && !Array.isArray(val)) {
          count += buildComplexObjectExpression(
             n,
             val,
