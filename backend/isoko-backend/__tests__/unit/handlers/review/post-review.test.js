@@ -83,137 +83,57 @@ describe('PostReviewHandler tests', () => {
       });
    });
 
-   // describe('Valid input tests', () => {
-   //    it('Should post review with all parameters and return review details', async () => {
-   //       // arrange
-   //       mockPutResults = {
-   //          pk: 'testBusiness',
-   //          sk: 'REVIEW#1637019432#testUser',
-   //          reviewAuthor: 'Tester',
-   //          authorUserName: 'testUser',
-   //          authorProfilePicture: 's3bucket.com',
-   //          stars: 4,
-   //          reviewTitle: 'Great food!',
-   //          description: 'Great food, great place!',
-   //          pictures: ['image1.com'],
-   //          ts: 1637019432,
-   //       };
+   describe('Valid input tests', () => {
+      it('Should post review with all parameters and return review details', async () => {
+         putSpy.mockReturnValue({
+            promise: () => Promise.resolve({}),
+         });
 
-   //       putSpy.mockReturnValue({
-   //          promise: () => Promise.resolve({ Items: mockPutResults }),
-   //       });
-   //       const event = {
-   //          httpMethod: 'POST',
-   //          body: JSON.stringify({
-   //             reviewAuthor: 'Tester',
-   //             authorUserName: 'testUser',
-   //             authorProfilePicture: 's3bucket.com',
-   //             stars: 4,
-   //             reviewTitle: 'Great food!',
-   //             description: 'Great food, great place!',
-   //             pictures: ['image1.com'],
-   //             ts: 1637019432,
-   //          }),
-   //          pathParameters: {
-   //             businessId: 'testBusiness',
-   //          },
-   //       };
+         const reviewBody = {
+            reviewAuthor: 'Tester',
+            authorUserName: 'testUser',
+            authorProfilePicture: 's3bucket.com',
+            stars: 4,
+            reviewTitle: 'Great food!',
+            description: 'Great food, great place!',
+            pictures: ['image1.com'],
+            ts: '1637019432',
+            state: 'CA', 
+            city: 'San Luis Obispo', 
+            category: 'Restaurants',
+         };
 
-   //       const expectedItem = {
-   //          reviewAuthor: 'Tester',
-   //          authorUserName: 'testUser',
-   //          authorProfilePicture: 's3bucket.com',
-   //          stars: 4,
-   //          reviewTitle: 'Great food!',
-   //          description: 'Great food, great place!',
-   //          pictures: ['image1.com'],
-   //          ts: 1637019432,
-   //       };
+         const event = {
+            httpMethod: 'POST',
+            body: JSON.stringify(reviewBody),
+            pathParameters: {
+               businessId: 'testBusiness',
+            },
+         };
 
-   //       // act
-   //       const result = await postReviewHandler(event);
-   //       const resultBody = JSON.parse(result.body);
-   //       // assert
-   //       expect(resultBody).toEqual(expectedItem);
-   //       expect(putSpy).toHaveBeenCalledWith({
-   //          TableName: BUSINESS_TABLE,
-   //          Item: {
-   //             pk: 'testBusiness',
-   //             sk: 'REVIEW#1637019432#testUser',
-   //             reviewAuthor: 'Tester',
-   //             authorUserName: 'testUser',
-   //             authorProfilePicture: 's3bucket.com',
-   //             stars: 4,
-   //             reviewTitle: 'Great food!',
-   //             description: 'Great food, great place!',
-   //             pictures: ['image1.com'],
-   //             ts: 1637019432,
-   //          },
-   //       });
-   //    });
-
-   //    it('Should post review with all optional parameters empty and return review details', async () => {
-   //       // arrange
-   //       mockPutResults = {
-   //          pk: 'testBusiness',
-   //          sk: 'REVIEW#1637019432#testUser',
-   //          reviewAuthor: 'Tester',
-   //          authorUserName: 'testUser',
-   //          authorProfilePicture: '',
-   //          stars: 4,
-   //          reviewTitle: '',
-   //          description: '',
-   //          pictures: [],
-   //          ts: 1637019432,
-   //       };
-
-   //       putSpy.mockReturnValue({
-   //          promise: () => Promise.resolve({ Items: mockPutResults }),
-   //       });
-   //       const event = {
-   //          httpMethod: 'POST',
-   //          body: JSON.stringify({
-   //             reviewAuthor: 'Tester',
-   //             authorUserName: 'testUser',
-   //             stars: 4,
-   //             ts: 1637019432,
-   //          }),
-   //          pathParameters: {
-   //             businessId: 'testBusiness',
-   //          },
-   //       };
-
-   //       const expectedItem = {
-   //          reviewAuthor: 'Tester',
-   //          authorUserName: 'testUser',
-   //          authorProfilePicture: '',
-   //          stars: 4,
-   //          reviewTitle: '',
-   //          description: '',
-   //          pictures: [],
-   //          ts: 1637019432,
-   //       };
-
-   //       // act
-   //       const result = await postReviewHandler(event);
-   //       const resultBody = JSON.parse(result.body);
-   //       // assert
-   //       expect(resultBody).toEqual(expectedItem);
-   //       expect(putSpy).toHaveBeenCalledWith({
-   //          TableName: BUSINESS_TABLE,
-   //          Item: {
-   //             pk: 'testBusiness',
-   //             sk: 'REVIEW#1637019432#testUser',
-   //             reviewAuthor: 'Tester',
-   //             authorUserName: 'testUser',
-   //             authorProfilePicture: '',
-   //             stars: 4,
-   //             reviewTitle: '',
-   //             description: '',
-   //             pictures: [],
-   //             ts: 1637019432,
-   //          },
-   //       });
-   //    });
-   // });
+         // act
+         await postReviewHandler(event);
+         
+         // assert
+         expect(putSpy).toHaveBeenCalledWith({
+            TableName: BUSINESS_TABLE,
+            Item: {
+               pk: 'testBusiness',
+               sk: `REVIEW#${reviewBody.ts}#${reviewBody.authorUserName}`,
+               reviewAuthor: reviewBody.reviewAuthor,
+               authorUserName: reviewBody.authorUserName,
+               authorProfilePicture: reviewBody.authorProfilePicture,
+               stars: reviewBody.stars,
+               reviewTitle: reviewBody.reviewTitle,
+               description: reviewBody.description,
+               pictures: reviewBody.pictures,
+               ts: reviewBody.ts,
+               state: reviewBody.state, 
+               city: reviewBody.city, 
+               category: reviewBody.category,
+            },
+            ReturnValues: 'ALL_OLD'
+         });
+      });
+   });
 });
