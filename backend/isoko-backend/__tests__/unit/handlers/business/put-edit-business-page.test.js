@@ -238,9 +238,12 @@ describe('PutEditBusinessPageHandler tests', () => {
                pk: '-664125567',
                sk: 'INFO',
             },
-            UpdateExpression: `set city = :a`,
+            UpdateExpression: `set #city = :a`,
             ExpressionAttributeValues: {
                ':a': 'Venice Beach',
+            },
+            ExpressionAttributeNames: {
+               '#city': 'city'
             },
             ReturnValues: 'ALL_NEW',
          });
@@ -331,6 +334,7 @@ describe('PutEditBusinessPageHandler tests', () => {
             ExpressionAttributeValues: {
                ':a': 'Lindsay Bluth',
             },
+            ExpressionAttributeNames: {},
             ReturnValues: 'ALL_NEW',
          });
       });
@@ -418,11 +422,15 @@ describe('PutEditBusinessPageHandler tests', () => {
                pk: '-664125567',
                sk: 'INFO',
             },
-            UpdateExpression: `set name = :a, aboutOwner.ownerName = :b, shortDesc = :c`,
+            UpdateExpression: `set #name = :a, aboutOwner.ownerName = :b, #shortDesc = :c`,
             ExpressionAttributeValues: {
                ':a': "Lindsay Bluth's Original Frozen Banana",
                ':b': 'Lindsay Bluth',
                ':c': "There's always money in the banana stand.",
+            },
+            ExpressionAttributeNames: {
+               '#name': 'name',
+               '#shortDesc': 'shortDesc',
             },
             ReturnValues: 'ALL_NEW',
          });
@@ -454,9 +462,12 @@ describe('PutEditBusinessPageHandler tests', () => {
                pk: '-664125567',
                sk: 'INFO',
             },
-            UpdateExpression: `set tags = :a`,
+            UpdateExpression: `set #tags = :a`,
             ExpressionAttributeValues: {
                ':a': ['Asian-Owned'],
+            },
+            ExpressionAttributeNames: {
+               '#tags': 'tags',
             },
             ReturnValues: 'ALL_NEW',
          });
@@ -542,10 +553,14 @@ describe('PutEditBusinessPageHandler tests', () => {
                pk: '-664125567',
                sk: 'INFO',
             },
-            UpdateExpression: `set name = :a, type = :b`,
+            UpdateExpression: `set #name = :a, #type = :b`,
             ExpressionAttributeValues: {
                ':a': "Lindsay Bluth's Original Frozen Banana",
                ':b': 'Online',
+            },
+            ExpressionAttributeNames: {
+               '#name': 'name',
+               '#type': 'type',
             },
             ReturnValues: 'ALL_NEW',
          });
