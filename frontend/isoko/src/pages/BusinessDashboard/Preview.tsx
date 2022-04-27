@@ -1,6 +1,7 @@
 import React from 'react';
-import Business from '../Business';
+import Business from '../../components/business/Business';
 import styled from 'styled-components';
+import { Business as BusinessType } from '../../types/GlobalTypes';
 
 const Container = styled.div`
    position: relative;
@@ -13,11 +14,18 @@ const Container = styled.div`
    margin-top: 25px;
 `;
 
-const Preview: React.FC = () => {
+interface PreviewProps extends React.HTMLProps<HTMLDivElement> {
+   businessDetails: BusinessType;
+}
+
+const Preview: React.FC<PreviewProps> = (props) => {
    return (
       <main>
          <Container>
-            <Business showInPreview={false}></Business>
+            <Business
+               showInPreview={false}
+               businessDetails={props.businessDetails}
+            ></Business>
          </Container>
       </main>
    );

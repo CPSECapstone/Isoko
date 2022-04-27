@@ -8,6 +8,7 @@ import {
    CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
 import { environment } from '../../environment/environment';
+import { Form } from 'react-bootstrap';
 
 const LeftDiv = styled.div`
    width: 50%;
@@ -69,22 +70,42 @@ const InputContainer = styled.div`
    width: 70%;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled(Form.Control)`
    width: 100%;
+   font-size: 1.0625em;
+   padding: 0px 12px 0px 4px;
    border-radius: 10px;
    border: none;
    height: 32px;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    text-indent: 10px;
+
+   &:focus {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgb(249, 125, 11);
+   }
+   ::placeholder {
+      color: #aaaaaa;
+   }
 `;
 
-const HalfStyledInput = styled.input`
+const HalfStyledInput = styled(Form.Control)`
    width: 100%;
+   font-size: 1.0625em;
+   padding: 0px 12px 0px 4px;
    border-radius: 10px;
    border: none;
    height: 32px;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    text-indent: 10px;
+
+   &:focus {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgb(249, 125, 11);
+   }
+   ::placeholder {
+      color: #aaaaaa;
+   }
 `;
 
 const StyledLabel = styled.label`
@@ -108,6 +129,15 @@ const WideButton = styled(StyledButton)`
    height: 32px;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
    text-indent: 10px;
+
+   &:focus {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgb(249, 125, 11);
+      outline: none;
+   }
+   ::placeholder {
+      color: #aaaaaa;
+   }
 `;
 
 const MainContent = styled.div`
@@ -227,6 +257,13 @@ const SignUp: React.FC = () => {
       );
    };
 
+   const handleEnterPress = (event) => {
+      // keyCode 13 is Enter
+      if (event.keyCode === 13) {
+         checkAllFieldsEnteredProperly();
+      }
+   };
+
    return (
       <main>
          <Container>
@@ -238,7 +275,7 @@ const SignUp: React.FC = () => {
                   owners in your very own community!{' '}
                </Description>
             </LeftDiv>
-            <RightDiv>
+            <RightDiv onKeyDown={handleEnterPress}>
                <MainContent>
                   <RowDiv>
                      <Title>ISOKO</Title>

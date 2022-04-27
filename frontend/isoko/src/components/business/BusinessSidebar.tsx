@@ -8,6 +8,7 @@ import {
    faLink,
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { Hours, Day } from '../../types/GlobalTypes';
 
 interface SidebarContainerProps {
    width?: string;
@@ -46,26 +47,6 @@ const StyledLabel = styled.span<StyledLabelProps>`
    display: inline-block;
    font-weight: 600;
 `;
-
-export enum Day {
-   Mon = 'Mon',
-   Tue = 'Tue',
-   Wed = 'Wed',
-   Thu = 'Thu',
-   Fri = 'Fri',
-   Sat = 'Sat',
-   Sun = 'Sun',
-}
-
-interface Hours {
-   [Day.Mon]?: string;
-   [Day.Tue]?: string;
-   [Day.Wed]?: string;
-   [Day.Thu]?: string;
-   [Day.Fri]?: string;
-   [Day.Sat]?: string;
-   [Day.Sun]?: string;
-}
 
 interface HoursProps extends React.HTMLProps<HTMLDivElement> {
    hours: Hours;

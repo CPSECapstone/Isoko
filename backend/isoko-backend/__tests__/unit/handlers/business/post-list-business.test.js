@@ -291,7 +291,7 @@ describe('PostListBusinessHandler tests', () => {
          const result = await postListBusinessHandler(event);
 
          // assert
-         expect(result.body).toEqual(postBusiness);
+         expect(result.body).toEqual(JSON.stringify(postBusiness));
          expect(putSpy).toHaveBeenNthCalledWith(2, {
             TableName: BUSINESS_TABLE,
             Item: {

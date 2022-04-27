@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import GlobalStyle from './styles/globalStyles';
-import Business from './pages/Business';
+import BusinessPage from './pages/BusinessPage';
 import BusinessDash from './pages/BusinessDashboard/BusinessDash';
 import Home from './pages/Home';
 import ListBusiness from './pages/ListBusiness';
 import Login from './pages/Authentication/Login';
 import ForgotPassword from './pages/Authentication/ForgotPassword';
 import PasswordResetSuccess from './pages/Authentication/PasswordResetSuccess';
+import ProtectedPage from './pages/ProtectedPage';
 import ModDash from './pages/ModDash';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
@@ -17,6 +18,12 @@ import { Routes, Route } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './App.css';
 import ResetPassword from './pages/Authentication/ResetPassword';
+import { useAppDispatch } from './app/hooks';
+import { useAppSelector } from './app/hooks';
+import { fetchProfileAsync } from '../src/features/profile/ProfileSlice';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { environment } from './environment/environment';
+import ReactGA from 'react-ga';
 
 const App: React.FC = () => {
    AWS.config.update({
@@ -25,6 +32,23 @@ const App: React.FC = () => {
       }),
       region: 'us-west-2',
    });
+
+   const userPool = new CognitoUserPool({
+      UserPoolId: environment.cognitoUserPoolId,
+      ClientId: environment.cognitoAppClientId,
+   });
+
+   const dispatch = useAppDispatch();
+   const businessOwner = useAppSelector((store) => store.profile.businessOwner);
+
+   useEffect(() => {
+      const cognitoUser = userPool.getCurrentUser();
+      if (cognitoUser != null) {
+         dispatch(fetchProfileAsync(cognitoUser.getUsername()));
+      }
+   });
+   const TRACKING_ID = 'UA-225585021-1';
+   ReactGA.initialize(TRACKING_ID);
 
    return (
       <div className="App">
@@ -42,11 +66,14 @@ const App: React.FC = () => {
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route path="resetSuccess" element={<PasswordResetSuccess />} />
-            <Route
-               path="business"
-               element={<Business showInPreview={true} />}
-            />
-            <Route path="businessDash" element={<BusinessDash />} />
+            <Route path="business" element={<BusinessPage />} />
+            {businessOwner ? (
+               <Route path="businessDash" element={<BusinessDash />} />
+            ) : (
+               <Route path="businessDash" element={<ProtectedPage />}>
+                  {' '}
+               </Route>
+            )}
             <Route path="listBusiness" element={<ListBusiness />} />
             <Route path="moddash" element={<ModDash />} />
             <Route path="profile" element={<Profile />} />
