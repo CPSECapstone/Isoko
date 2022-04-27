@@ -160,7 +160,8 @@ const Login: React.FC = () => {
       });
 
       cognitoUser.authenticateUser(authDetails, {
-         onSuccess: () => {
+         onSuccess: (result) => {
+            console.log('id token: ' + result.getIdToken().getJwtToken());
             navigate('/');
          },
          onFailure: (err) => {
