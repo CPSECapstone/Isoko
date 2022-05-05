@@ -117,7 +117,7 @@ const Business: React.FC<BusinessProps> = (props) => {
       }
    }, []);
 
-   const reviewsList = businessDetails.reviews;
+   const reviewsList = businessDetails ? businessDetails.reviews : [];
 
    const [sortedReviews, setSortedReviews] = useState(
       reviewsList.sort((a, b) => b.ts - a.ts)

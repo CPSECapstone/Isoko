@@ -8,7 +8,6 @@ const BusinessPage: React.FC = () => {
 
    const businessStore = useAppSelector((store) => store.business);
    const businessDetails = businessStore.businesses[businessId];
-   console.log(businessStore);
 
    return (
       <main>

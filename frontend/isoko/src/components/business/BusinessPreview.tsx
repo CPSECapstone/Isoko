@@ -92,15 +92,11 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
 
    const dispatch = useAppDispatch();
 
-   const getClickedBusinessDetails = (businessId) => {
-      dispatch(getBusinessAsync(businessId));
-   };
-
    return (
       <BusinessContainer
          className={props.className}
          onClick={() => {
-            getClickedBusinessDetails(props.businessId);
+            dispatch(getBusinessAsync(props.businessId));
             navigate(props.path);
          }}
       >
