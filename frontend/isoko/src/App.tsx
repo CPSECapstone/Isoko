@@ -66,7 +66,7 @@ const App: React.FC = () => {
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route path="resetSuccess" element={<PasswordResetSuccess />} />
-            <Route path="business" element={<BusinessPage />} />
+            <Route path="business/:businessId" element={<BusinessPage />} />
             {businessOwner ? (
                <Route path="businessDash" element={<BusinessDash />} />
             ) : (
