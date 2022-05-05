@@ -39,6 +39,7 @@ export const getSearchParams = (
       tags: minorityTags.includes('Any Minority Owned') ? [] : minorityTags,
       ...(categoryList.includes(searchTerm)
          ? { category: searchTerm }
-         : { keyword: searchTerm }),
+         : // send '' as keyword if searching by "Anything"
+           { keyword: searchTerm === 'Anything' ? '' : searchTerm }),
    };
 };

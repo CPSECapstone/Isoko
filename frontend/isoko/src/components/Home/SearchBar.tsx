@@ -5,7 +5,7 @@ import KeywordSearchBar from './KeywordSearchBar';
 import MinoritySearchBar from './MinoritySearchBar';
 import LocationSearchBar from './LocationSearchBar';
 import { Row, Col } from 'react-bootstrap';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
    getSearchResultsAsync,
    setSearchFeatures,
@@ -97,9 +97,19 @@ const MiddleDiv = styled.div`
 `;
 
 const SearchBar: React.FC = () => {
-   const [minorityState, setMinorityState] = useState<Array<string>>([]);
-   const [locationState, setLocationState] = useState('');
-   const [keywordState, setKeywordState] = useState('');
+   const searchResultsStore = useAppSelector((store) => store.searchResults);
+
+   const [minorityState, setMinorityState] = useState<Array<string>>(
+      searchResultsStore.minorityTags
+         .filter((tag) => tag.selected)
+         .map((tag) => tag.text)
+   );
+   const [locationState, setLocationState] = useState(
+      searchResultsStore.location
+   );
+   const [keywordState, setKeywordState] = useState(
+      searchResultsStore.searchTerm
+   );
    const [isHome, setIsHome] = useState(true);
 
    useEffect(() => {
