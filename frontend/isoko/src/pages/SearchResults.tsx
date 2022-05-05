@@ -183,15 +183,17 @@ const SearchResults: React.FC = () => {
 
    // sort businesses by value of sort dropdown
    const sortBusinesses = (key) => {
+      const sorted = [...filteredBusinesses];
+
       if (key === 'reviews') {
-         setFilteredBusinesses([
-            ...filteredBusinesses.sort((a, b) => b.numReviews - a.numReviews),
-         ]);
+         sorted.sort((a, b) => b.numReviews - a.numReviews);
       } else if (key === 'recent') {
-         setFilteredBusinesses([
-            ...filteredBusinesses.sort((a, b) => a.timestamp - b.timestamp),
-         ]);
+         sorted.sort((a, b) => a.timestamp - b.timestamp);
+      } else if (key === 'rating') {
+         sorted.sort((a, b) => b.rating - a.rating);
       }
+
+      setFilteredBusinesses(sorted);
    };
 
    // Called when a user clicks confirm on Add Tag Modal
