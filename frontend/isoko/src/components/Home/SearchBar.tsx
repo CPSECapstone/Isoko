@@ -122,6 +122,14 @@ const SearchBar: React.FC = () => {
       }
    }, []);
 
+   useEffect(() => {
+      setMinorityState(
+         searchResultsStore.minorityTags
+            .filter((tag) => tag.selected)
+            .map((tag) => tag.text)
+      );
+   }, [searchResultsStore.minorityTags]);
+
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
 
