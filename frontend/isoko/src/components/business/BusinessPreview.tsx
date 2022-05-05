@@ -6,6 +6,8 @@ import StarRating from './StarRating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { getBusinessAsync } from '../../features/business/BusinessSlice';
+import { useAppDispatch } from '../../app/hooks';
 
 const BusinessContainer = styled.div`
    cursor: pointer;
@@ -82,15 +84,19 @@ interface BusinessPreviewProps extends React.HTMLProps<HTMLDivElement> {
    verified: boolean;
    path: string;
    numReviews: number;
+   businessId: string;
 }
 
 const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
    const navigate = useNavigate();
 
+   const dispatch = useAppDispatch();
+
    return (
       <BusinessContainer
          className={props.className}
          onClick={() => {
+            dispatch(getBusinessAsync(props.businessId));
             navigate(props.path);
          }}
       >
