@@ -74,6 +74,7 @@ const SortResultsDropdown: React.FC<SortDropdownProps> = (props) => {
             <div
                onClick={(e) => {
                   setSortKey((e.target as HTMLElement).textContent);
+                  props.sortFunction('rating');
                }}
             >
                Highest rated

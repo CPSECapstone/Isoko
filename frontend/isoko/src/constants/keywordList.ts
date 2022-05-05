@@ -42,6 +42,7 @@ const keywordList = [
    'Andalusian',
    'Anesthesiologists',
    'Animal Assisted Therapy',
+   'Anything',
    'Holistic Animal Care',
    'Animal Physical Therapy',
    'Animal Shelters',

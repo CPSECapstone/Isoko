@@ -154,32 +154,6 @@ const SearchResults: React.FC = () => {
       return false;
    };
 
-   // when a user clicks on one of the minority tags on the left, it will be remove the tag from the search
-   const removeTag = (business, tag) => {
-      const tags = business.tags;
-      const selectedTags = searchResultsStore.minorityTags.filter(
-         (t) => t.selected == true
-      );
-
-      const index = selectedTags.map((t) => t.text).indexOf(tag);
-      selectedTags.splice(index, 1);
-
-      // if the tag to remove isn't associated with this business, it should still be displayed
-      if (tags.indexOf(tag) === -1) {
-         return true;
-      }
-
-      // if the tag to remove is the only one associated with this business, it should be removed from results
-      if (tags.length === 1) {
-         return false;
-      }
-
-      // if there are more minorities to filter by, check if other tags associated with business fulfill them
-      if (selectedTags.length > 0) {
-         return selectedTags.some((t) => tags.includes(t.text));
-      }
-   };
-
    // filter businesses based on time
    const filterBusinessesByTime = (e, businesses) => {
       const day = dayOfWeek();
@@ -191,25 +165,35 @@ const SearchResults: React.FC = () => {
       }
    };
 
-   // filter business results when customer removes a tag
-   const filterBusinessesRemoveTag = (key, businesses) => {
+   // Research the database when a user removes a tag
+   const removeTag = (key) => {
       dispatch(removeMinorityTag(key));
-      setFilteredBusinesses(
-         businesses.filter((business) => removeTag(business, key))
+      dispatch(
+         getSearchResultsAsync(
+            getSearchParams(
+               searchResultsStore.location,
+               searchResultsStore.minorityTags
+                  .filter((tag) => tag.selected && tag.text !== key)
+                  .map((tag) => tag.text),
+               searchResultsStore.searchTerm
+            )
+         )
       );
    };
 
    // sort businesses by value of sort dropdown
    const sortBusinesses = (key) => {
+      const sorted = [...filteredBusinesses];
+
       if (key === 'reviews') {
-         setFilteredBusinesses([
-            ...filteredBusinesses.sort((a, b) => b.numReviews - a.numReviews),
-         ]);
+         sorted.sort((a, b) => b.numReviews - a.numReviews);
       } else if (key === 'recent') {
-         setFilteredBusinesses([
-            ...filteredBusinesses.sort((a, b) => a.timestamp - b.timestamp),
-         ]);
+         sorted.sort((a, b) => a.timestamp - b.timestamp);
+      } else if (key === 'rating') {
+         sorted.sort((a, b) => b.rating - a.rating);
       }
+
+      setFilteredBusinesses(sorted);
    };
 
    // Called when a user clicks confirm on Add Tag Modal
@@ -245,12 +229,7 @@ const SearchResults: React.FC = () => {
                            tag.selected === true ? (
                               <SelectedTagRow
                                  key={index}
-                                 onClick={() =>
-                                    filterBusinessesRemoveTag(
-                                       tag.text,
-                                       filteredBusinesses
-                                    )
-                                 }
+                                 onClick={() => removeTag(tag.text)}
                               >
                                  <MinorityTag
                                     key={index}
