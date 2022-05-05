@@ -195,6 +195,9 @@ const Business: React.FC<BusinessProps> = (props) => {
                                  handleClose={() => {
                                     setShowWriteReviewsModal(false);
                                  }}
+                                state={businessDetails.state}
+                                city={businessDetails.city}
+                                category={businessDetails.category}
                               />
                            ) : (
                               <RestrictedModal

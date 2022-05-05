@@ -61,6 +61,9 @@ exports.postReviewHandler = async (event) => {
          description: description,
          pictures: pictures,
          ts: ts,
+         state: state,  
+         city: city, 
+         category: category  
       },
       ReturnValues: 'ALL_OLD',
    };
@@ -73,9 +76,10 @@ exports.postReviewHandler = async (event) => {
          sk: 'INFO',
       },
       ExpressionAttributeValues: {
-         ":s": stars
+         ":s": stars, 
+         ":initial": 0
       },
-      UpdateExpression: "SET stars = stars + :s"
+      UpdateExpression: "SET stars = if_not_exists(stars, :initial) + :s"
    }
 
    // total reviews in Businesses 
@@ -86,9 +90,10 @@ exports.postReviewHandler = async (event) => {
          sk: 'INFO',
       },
       ExpressionAttributeValues: {
-         ":inc": 1
+         ":inc": 1, 
+         ":initial": 0
       },
-      UpdateExpression: "SET numReviews = numReviews + :inc"
+      UpdateExpression: "SET numReviews = if_not_exists(numReviews, :initial) + :inc"
    }
 
    //console.info(`update expression: ${businessParams.UpdateExpression}`)
@@ -100,9 +105,10 @@ exports.postReviewHandler = async (event) => {
          sk: `${category}#${businessId}`,
       },
       ExpressionAttributeValues: {
-         ":s": stars
+         ":s": stars, 
+         ":initial": 0
       },
-      UpdateExpression: "SET stars = stars + :s"
+      UpdateExpression: "SET stars = if_not_exists(stars, :initial) + :s"
    }
 
    // total reviews in Businesses 
@@ -113,24 +119,16 @@ exports.postReviewHandler = async (event) => {
          sk: `${category}#${businessId}`,
       },
       ExpressionAttributeValues: {
-         ":inc": 1
+         ":inc": 1,
+         ":initial": 0
       },
-      UpdateExpression: "SET numReviews = numReviews + :inc"
+      UpdateExpression: "SET numReviews = if_not_exists(numReviews, :initial) + :inc"
    }
 
    let response;
 
    try {
-      // const dynamoResult = await docClient.put(reviewParams).promise();
       
-      // let putResults = dynamoResult.Attributes;
-      
-      // delete putResults.pk;
-      // delete putResults.sk;
-
-      // const updateResult = await docClient.updateItem(businessParams).promise(); 
-      // console.info(`updated ${updateResult.Attributes}`)
-
       await Promise.all([
          docClient.put(reviewParams).promise(),
          docClient.update(businessStarsParams).promise(),

@@ -57,6 +57,9 @@ const StarContainer = styled.div`
 interface WriteReviewModalProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    handleClose: () => void;
+   state: string;
+   city: string;
+   category: string;
 }
 
 const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
@@ -92,6 +95,9 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
                description: content,
                pictures: listOfImages,
                ts: `${moment.now()}`,
+               state: props.state,
+               city: props.city,
+               category: props.category,
             }
          );
          props.handleClose();
