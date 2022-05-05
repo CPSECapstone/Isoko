@@ -315,8 +315,9 @@ const SearchResults: React.FC = () => {
                               minorityTags={business.tags}
                               keywordTags={business.keywords}
                               verified={business.verified}
-                              path="/business"
+                              path={`/business/${business.businessId}`}
                               numReviews={business.numReviews}
+                              businessId={business.businessId}
                            />
                         </ResultsRow>
                      ))

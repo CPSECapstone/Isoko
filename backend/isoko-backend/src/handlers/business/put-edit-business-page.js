@@ -38,8 +38,9 @@ const buildComplexObjectExpression = (
  * @param {*} names is a list of names representing attribute names to be updated
  * @param {*} requestBody is an object containing attribute names and new values
  * @param {*} attrValues is an object containing mappings that match update expression
+ * @param {*} attrValues is an object containing mappings that match update expression names
  */
-const buildUpdateExpression = (names, requestBody, attrValues) => {
+const buildUpdateExpression = (names, requestBody, attrValues, attrNames) => {
    let exp = `set `;
    let expArr = [];
    let count = 97;
@@ -55,7 +56,8 @@ const buildUpdateExpression = (names, requestBody, attrValues) => {
          );
       } else {
          const mapping = `:${String.fromCharCode(count)}`;
-         expArr.push(`${n} = ${mapping}`);
+         expArr.push(`#${n} = ${mapping}`);
+         attrNames[`#${n}`] = n;
          attrValues[mapping] = val;
          count += 1;
       }
@@ -99,10 +101,12 @@ exports.putEditBusinessPageHandler = async (event) => {
    ];
 
    let exprAttrVals = {};
+   let exprAttrNames = {};
    const updateExpr = buildUpdateExpression(
       fieldNames,
       requestBody,
-      exprAttrVals
+      exprAttrVals,
+      exprAttrNames,
    );
 
    const params = {
@@ -113,6 +117,7 @@ exports.putEditBusinessPageHandler = async (event) => {
       },
       UpdateExpression: updateExpr,
       ExpressionAttributeValues: exprAttrVals,
+      ExpressionAttributeNames: exprAttrNames,
       ReturnValues: 'ALL_NEW',
    };
 

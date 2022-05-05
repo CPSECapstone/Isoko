@@ -47,6 +47,7 @@ exports.getBusinessPageHandler = async (event) => {
       const businessResult = await docClient.get(businessParams).promise();
 
       let businessDetails = businessResult.Item;
+      businessDetails.businessId = businessDetails.pk;
       delete businessDetails.pk;
       delete businessDetails.sk;
 

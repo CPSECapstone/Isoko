@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from '../../environment/environment';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Review from '../reviews/Review';
 import BusinessHeader from '../business/BusinessHeader';
 import AboutTheOwner from '../business/AboutTheOwner';
@@ -14,6 +14,7 @@ import WriteReviewModal from '../reviews/WriteReviewModal';
 import SortReviewsDropdown from '../business_dashboard/SortReviewsDropdown';
 import RestrictedModal from '../../pages/RestrictedModal';
 import { Business as BusinessType } from '../../types/GlobalTypes';
+import { SpinnerCircularFixed } from 'spinners-react';
 
 const PositionedSidebar = styled(BusinessSidebar)`
    position: absolute;
@@ -69,9 +70,28 @@ const WriteReviewContainer = styled(WriteReview)`
    margin: 1em 0em 1em 1.5em;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const StyledSpinner = styled(SpinnerCircularFixed)`
+   position: absolute;
+   top: 50%;
+   left: 50%;
+
+   animation: ${fadeIn} 0.5s linear;
+`;
+
 interface BusinessProps extends React.HTMLProps<HTMLDivElement> {
    showInPreview: boolean;
    businessDetails: BusinessType;
+   loading?: boolean;
 }
 
 const Business: React.FC<BusinessProps> = (props) => {
@@ -97,7 +117,7 @@ const Business: React.FC<BusinessProps> = (props) => {
       }
    }, []);
 
-   const reviewsList = businessDetails.reviews;
+   const reviewsList = businessDetails ? businessDetails.reviews : [];
 
    const [sortedReviews, setSortedReviews] = useState(
       reviewsList.sort((a, b) => b.ts - a.ts)
@@ -120,101 +140,105 @@ const Business: React.FC<BusinessProps> = (props) => {
    return (
       <div>
          {props.showInPreview ? <NavbarComponent /> : null}
-         <ContainerDiv>
-            <StyledRow>
-               <StyledCarousel images={businessDetails.photos} />
-            </StyledRow>
-            <StyledRow>
-               <StyledCol lg={12} xl={7}>
-                  <BusinessHeader
-                     name={businessDetails.name}
-                     description={businessDetails.shortDesc}
-                     stars={businessDetails.rating}
-                     minorityTags={businessDetails.tags}
-                     keywordTags={businessDetails.keywords}
-                     verified={businessDetails.claimed}
-                     numReviews={businessDetails.numReviews}
-                  />
-                  {businessDetails.aboutOwner ? (
-                     <div>
-                        <Title>About the Owner</Title>
-                        <AboutTheOwner
-                           ownerImageUrl={businessDetails.aboutOwner.photo}
-                           content={businessDetails.aboutOwner.ownerDesc}
-                        />
-                     </div>
-                  ) : null}
-
-                  {props.showInPreview ? (
-                     <>
-                        <Title>Ratings & Reviews</Title>
-                        <div
-                           onClick={() => {
-                              if (isLoggedIn) {
-                                 setShowWriteReviewsModal(true);
-                              } else {
-                                 setShowRestrictedModal(true);
-                              }
-                           }}
-                        >
-                           <WriteReviewContainer />
+         {props.loading ? (
+            <StyledSpinner thickness={125} color="#F97D0B" />
+         ) : (
+            <ContainerDiv>
+               <StyledRow>
+                  <StyledCarousel images={businessDetails.photos} />
+               </StyledRow>
+               <StyledRow>
+                  <StyledCol lg={12} xl={7}>
+                     <BusinessHeader
+                        name={businessDetails.name}
+                        description={businessDetails.shortDesc}
+                        stars={businessDetails.rating}
+                        minorityTags={businessDetails.tags}
+                        keywordTags={businessDetails.keywords}
+                        verified={businessDetails.claimed}
+                        numReviews={businessDetails.numReviews}
+                     />
+                     {businessDetails.aboutOwner ? (
+                        <div>
+                           <Title>About the Owner</Title>
+                           <AboutTheOwner
+                              ownerImageUrl={businessDetails.aboutOwner.photo}
+                              content={businessDetails.aboutOwner.ownerDesc}
+                           />
                         </div>
-                        <SortByContainer>
-                           <SortByText>Sort By: </SortByText>
-                           <SortReviewsDropdown
-                              sortFunction={sortReviews}
-                           ></SortReviewsDropdown>
-                        </SortByContainer>
+                     ) : null}
 
-                        {isLoggedIn ? (
-                           <WriteReviewModal
-                              show={showWriteReviewsModal}
-                              handleClose={() => {
-                                 setShowWriteReviewsModal(false);
+                     {props.showInPreview ? (
+                        <>
+                           <Title>Ratings & Reviews</Title>
+                           <div
+                              onClick={() => {
+                                 if (isLoggedIn) {
+                                    setShowWriteReviewsModal(true);
+                                 } else {
+                                    setShowRestrictedModal(true);
+                                 }
                               }}
-                              state={businessDetails.state}
-                              city={businessDetails.city}
-                              category={businessDetails.category}
-                           />
-                        ) : (
-                           <RestrictedModal
-                              show={showRestrictedModal}
-                              handleClose={() => {
-                                 setShowRestrictedModal(false);
-                              }}
-                           />
+                           >
+                              <WriteReviewContainer />
+                           </div>
+                           <SortByContainer>
+                              <SortByText>Sort By: </SortByText>
+                              <SortReviewsDropdown
+                                 sortFunction={sortReviews}
+                              ></SortReviewsDropdown>
+                           </SortByContainer>
+
+                           {isLoggedIn ? (
+                              <WriteReviewModal
+                                 show={showWriteReviewsModal}
+                                 handleClose={() => {
+                                    setShowWriteReviewsModal(false);
+                                 }}
+                                state={businessDetails.state}
+                                city={businessDetails.city}
+                                category={businessDetails.category}
+                              />
+                           ) : (
+                              <RestrictedModal
+                                 show={showRestrictedModal}
+                                 handleClose={() => {
+                                    setShowRestrictedModal(false);
+                                 }}
+                              />
+                           )}
+                           {sortedReviews.map((review, index) => (
+                              <Review
+                                 key={index}
+                                 reviewerName={review.reviewAuthor}
+                                 reviewerImageUrl={review.authorProfilePicture}
+                                 stars={review.rating}
+                                 subject={review.reviewTitle}
+                                 content={review.description}
+                                 imageUrls={review.pictures}
+                                 ts={review.ts}
+                              />
+                           ))}
+                        </>
+                     ) : null}
+                  </StyledCol>
+                  <StyledCol lg={4} md={12}>
+                     <PositionedSidebar
+                        id="sidebar"
+                        claimed={businessDetails.claimed}
+                        hours={businessDetails.hours}
+                        address={`${businessDetails.street} ${businessDetails.city}, ${businessDetails.state}`}
+                        links={Object.keys(businessDetails.links).map(
+                           (linkName) => ({
+                              title: linkName,
+                              link: businessDetails.links[linkName],
+                           })
                         )}
-                        {sortedReviews.map((review, index) => (
-                           <Review
-                              key={index}
-                              reviewerName={review.reviewAuthor}
-                              reviewerImageUrl={review.authorProfilePicture}
-                              stars={review.rating}
-                              subject={review.reviewTitle}
-                              content={review.description}
-                              imageUrls={review.pictures}
-                              ts={review.ts}
-                           />
-                        ))}
-                     </>
-                  ) : null}
-               </StyledCol>
-               <StyledCol lg={4} md={12}>
-                  <PositionedSidebar
-                     id="sidebar"
-                     claimed={businessDetails.claimed}
-                     hours={businessDetails.hours}
-                     address={`${businessDetails.street} ${businessDetails.city}, ${businessDetails.state}`}
-                     links={Object.keys(businessDetails.links).map(
-                        (linkName) => ({
-                           title: linkName,
-                           link: businessDetails.links[linkName],
-                        })
-                     )}
-                  />
-               </StyledCol>
-            </StyledRow>
-         </ContainerDiv>
+                     />
+                  </StyledCol>
+               </StyledRow>
+            </ContainerDiv>
+         )}
       </div>
    );
 };
