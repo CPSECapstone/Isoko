@@ -1,10 +1,47 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ResponsiveContainer } from 'recharts';
+import {
+   ResponsiveContainer,
+   LineChart,
+   Line,
+   XAxis,
+   YAxis,
+   CartesianGrid,
+   Tooltip,
+   Legend,
+} from 'recharts';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import { useAppSelector } from '../../app/hooks';
+
+const testData = [
+   {
+      name: 'January',
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
+   },
+   {
+      name: 'February',
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+   },
+   {
+      name: 'March',
+      uv: 2000,
+      pv: 5800,
+      amt: 2290,
+   },
+   {
+      name: 'April',
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+   },
+];
 
 const OptionContainer = styled.div`
    display: flex;
@@ -69,6 +106,10 @@ const CustomAnalytics: React.FC = () => {
    const toggleStartDayPicker = () => {
       setActive(!isActive);
    };
+
+   const dashboardStore = useAppSelector((store) => store.dashboard);
+   console.log('STORE: ', dashboardStore);
+   console.log('Analytics: ', dashboardStore.analytics);
 
    return (
       <>
@@ -142,7 +183,7 @@ const CustomAnalytics: React.FC = () => {
                      mode="single"
                      selected={endDay}
                      onSelect={setEndDay}
-                     footer={'Select your start date'}
+                     footer={'Select your end date'}
                   />
                </StyledDropdownButton>
             </div>
@@ -153,7 +194,31 @@ const CustomAnalytics: React.FC = () => {
             minWidth={500}
             minHeight={250}
          >
-            <div>Placeholder for graph</div>
+            <div>
+               <LineChart
+                  width={500}
+                  height={300}
+                  data={testData}
+                  margin={{
+                     top: 5,
+                     right: 30,
+                     left: 20,
+                     bottom: 5,
+                  }}
+               >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                     type="monotone"
+                     dataKey="pv"
+                     stroke="#8884d8"
+                     activeDot={{ r: 8 }}
+                  />
+               </LineChart>
+            </div>
          </ResponsiveContainer>
       </>
    );
