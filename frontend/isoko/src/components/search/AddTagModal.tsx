@@ -20,8 +20,6 @@ interface AddTagModalProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const AddTagModal: React.FC<AddTagModalProps> = (props) => {
-   const newTags = [];
-
    const [tagState, setTagState] = useState(props.tags);
 
    // When a tag is removed in SearchResults, update it here as well
@@ -43,12 +41,23 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
       setTagState(updatedTagState);
    };
 
-   const addNewTags = () => {
+   const onModalSubmit = () => {
+      const newTags = [];
+
       tagState.forEach((t) => {
          if (t.selected) {
             newTags.push(t.text);
          }
       });
+
+      // Check for invalid new tag selection
+      if (newTags.includes('Any Minority Owned') && newTags.length > 1) {
+         alert(
+            'Cannot search by "Any Minority Owned" and an additional minority group. Please pick one or the other and try again'
+         );
+      } else {
+         props.applyNewTags(newTags);
+      }
    };
 
    return (
@@ -78,8 +87,7 @@ const AddTagModal: React.FC<AddTagModalProps> = (props) => {
             <StyledButton
                primary
                onClick={() => {
-                  addNewTags();
-                  props.applyNewTags(newTags);
+                  onModalSubmit();
                }}
             >
                Confirm

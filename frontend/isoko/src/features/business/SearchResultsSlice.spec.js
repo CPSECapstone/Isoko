@@ -239,6 +239,33 @@ describe('searchResultsReducer tests', () => {
             })
          );
       });
+
+      it('Should set minority tags to "Any Minority Owned" if no tags selected', () => {
+         // Arange
+         const newTags = [];
+
+         // Act
+         const store = searchResultsReducer(
+            initialState,
+            setMinorityTags(newTags)
+         );
+
+         // Assert
+         expect(store.minorityTags).toEqual(
+            minorityGroups.map((group) => {
+               if (group === 'Any Minority Owned') {
+                  return {
+                     text: group,
+                     selected: true,
+                  };
+               }
+               return {
+                  text: group,
+                  selected: false,
+               };
+            })
+         );
+      });
    });
 
    describe('setSearchFeatures tests', () => {
@@ -262,6 +289,35 @@ describe('searchResultsReducer tests', () => {
          expect(store.minorityTags).toEqual(
             minorityGroups.map((group, idx) => {
                if (idx === 0 || idx === 1) {
+                  return {
+                     text: group,
+                     selected: true,
+                  };
+               }
+               return {
+                  text: group,
+                  selected: false,
+               };
+            })
+         );
+      });
+
+      it('Should update searchTerm, location, and minorityTags', () => {
+         // Arange
+         const searchFeatures = {
+            minorityTags: [],
+         };
+
+         // Act
+         const store = searchResultsReducer(
+            initialState,
+            setSearchFeatures(searchFeatures)
+         );
+
+         // Assert
+         expect(store.minorityTags).toEqual(
+            minorityGroups.map((group) => {
+               if (group === 'Any Minority Owned') {
                   return {
                      text: group,
                      selected: true,

@@ -48,14 +48,26 @@ export const searchResultsSlice = createSlice({
          state.searchTerm = action.payload.searchTerm;
          state.location = action.payload.location;
 
-         state.minorityTags = state.minorityTags.map((tag) => {
-            if (action.payload.minorityTags.includes(tag.text)) {
-               tag.selected = true;
-            } else {
-               tag.selected = false;
-            }
-            return tag;
-         });
+         // If no tags are selected, auto select "Any Minority Owned"
+         if (action.payload.minorityTags.length === 0) {
+            state.minorityTags.map((tag) => {
+               if (tag.text === 'Any Minority Owned') {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         } else {
+            state.minorityTags = state.minorityTags.map((tag) => {
+               if (action.payload.minorityTags.includes(tag.text)) {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         }
       },
       removeMinorityTag: (state, action: PayloadAction<string>) => {
          state.minorityTags = state.minorityTags.map((tag) => {
@@ -66,14 +78,26 @@ export const searchResultsSlice = createSlice({
          });
       },
       setMinorityTags: (state, action: PayloadAction<Array<string>>) => {
-         state.minorityTags = state.minorityTags.map((tag) => {
-            if (action.payload.includes(tag.text)) {
-               tag.selected = true;
-            } else {
-               tag.selected = false;
-            }
-            return tag;
-         });
+         // If no tags are selected, auto select "Any Minority Owned"
+         if (action.payload.length === 0) {
+            state.minorityTags.map((tag) => {
+               if (tag.text === 'Any Minority Owned') {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         } else {
+            state.minorityTags = state.minorityTags.map((tag) => {
+               if (action.payload.includes(tag.text)) {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         }
       },
    },
    extraReducers: (builder) => {

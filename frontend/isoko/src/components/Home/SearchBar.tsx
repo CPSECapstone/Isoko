@@ -134,22 +134,32 @@ const SearchBar: React.FC = () => {
    const navigate = useNavigate();
 
    const dispatchSearch = async () => {
-      const searchParams = getSearchParams(
-         locationState,
-         minorityState,
-         keywordState
-      );
-      if (searchParams) {
-         dispatch(getSearchResultsAsync(searchParams));
-         dispatch(
-            setSearchFeatures({
-               // Default to "Anything" if they don't specify a keyword
-               searchTerm: keywordState || 'Anything',
-               location: locationState,
-               minorityTags: searchParams.tags,
-            })
+      // Check for valid minority state
+      if (
+         minorityState.includes('Any Minority Owned') &&
+         minorityState.length > 1
+      ) {
+         alert(
+            'Cannot search by "Any Minority Owned" and an additional minority group. Please pick one or the other and try again'
          );
-         navigate('/search');
+      } else {
+         const searchParams = getSearchParams(
+            locationState,
+            minorityState,
+            keywordState
+         );
+         if (searchParams) {
+            dispatch(getSearchResultsAsync(searchParams));
+            dispatch(
+               setSearchFeatures({
+                  // Default to "Anything" if they don't specify a keyword
+                  searchTerm: keywordState || 'Anything',
+                  location: locationState,
+                  minorityTags: searchParams.tags,
+               })
+            );
+            navigate('/search');
+         }
       }
    };
 
