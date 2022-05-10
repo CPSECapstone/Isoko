@@ -19,7 +19,10 @@ describe('searchResultsReducer tests', () => {
    });
 
    const initialState = {
-      businesses: [],
+      results: {
+         brickMortar: [],
+         online: [],
+      },
       searchTerm: '',
       minorityTags: minorityGroups.map((group) => ({
          text: group,
@@ -44,65 +47,7 @@ describe('searchResultsReducer tests', () => {
    describe('getSearchResultsAsync tests', () => {
       it('should set businesses', async () => {
          // Arrange
-         axios.post.mockResolvedValue({
-            data: {
-               results: [
-                  {
-                     name: 'Firestone Grill',
-                     city: 'San Luis Obispo',
-                     type: 'B&M',
-                     tags: ['Black-Owned'],
-                     keywords: ['Burgers', 'Tri-tip'],
-                     rating: 4.5,
-                     shortDesc: 'Firstone grill is lit',
-                     numReviews: 49,
-                     verified: true,
-                     businessId: 'FIRESTONE_GRILL',
-                     photo: 'photo-link',
-                     zipCode: 93405,
-                  },
-                  {
-                     name: 'Lincoln Deli',
-                     city: 'San Luis Obispo',
-                     type: 'B&M',
-                     tags: ['Asian-Owned'],
-                     keywords: ['Sandwiches'],
-                     rating: 4.5,
-                     shortDesc: 'Lincoln deli is lit',
-                     numReviews: 49,
-                     verified: true,
-                     businessId: 'LINCOLN_DELI',
-                     photo: 'photo-link',
-                     zipCode: 93405,
-                  },
-                  {
-                     name: 'High St. Deli',
-                     city: 'San Luis Obispo',
-                     type: 'B&M',
-                     tags: ['Viet-Owned'],
-                     keywords: ['Sandwiches'],
-                     rating: 4.5,
-                     shortDesc: 'High St. Deli is lit',
-                     numReviews: 49,
-                     verified: true,
-                     businessId: 'HIGH_ST_DELI',
-                     photo: 'photo-link',
-                     zipCode: 93405,
-                  },
-               ],
-            },
-         });
-
-         // Act
-         const resultState = searchResultsReducer(
-            initialState,
-            await getSearchResultsAsync({
-               location: 'CA/San Luis Obispo',
-            })(dispatch)
-         );
-
-         // Assert
-         expect(resultState.businesses).toEqual([
+         const brickMortarResults = [
             {
                name: 'Firestone Grill',
                city: 'San Luis Obispo',
@@ -145,7 +90,41 @@ describe('searchResultsReducer tests', () => {
                photo: 'photo-link',
                zipCode: 93405,
             },
-         ]);
+         ];
+
+         const onlineResults = [
+            {
+               name: 'Firestone Grill',
+               type: 'Online',
+               tags: ['Black-Owned'],
+               keywords: ['Burgers', 'Tri-tip'],
+               rating: 4.5,
+               shortDesc: 'Firstone grill is lit',
+               numReviews: 49,
+               verified: true,
+               businessId: 'FIRESTONE_GRILL_ONLINE',
+               photo: 'photo-link',
+            },
+         ];
+
+         axios.post.mockResolvedValue({
+            data: {
+               brickMortar: brickMortarResults,
+               online: onlineResults,
+            },
+         });
+
+         // Act
+         const resultState = searchResultsReducer(
+            initialState,
+            await getSearchResultsAsync({
+               location: 'CA/San Luis Obispo',
+            })(dispatch)
+         );
+
+         // Assert
+         expect(resultState.results.brickMortar).toEqual(brickMortarResults);
+         expect(resultState.results.online).toEqual(onlineResults);
       });
 
       it('Should send a properly formatted POST request', async () => {
