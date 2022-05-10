@@ -20,6 +20,7 @@ import {
    getSearchResultsAsync,
 } from '../features/business/SearchResultsSlice';
 import { getSearchParams } from '../features/business/SearchResultsAPI';
+import { ONLINE } from '../constants/constants';
 
 const Sidebar = styled.div`
    padding: 0.2rem;
@@ -297,30 +298,66 @@ const SearchResults: React.FC = () => {
             </Col>
             <Col>
                <ResultsContainer>
-                  <StyledH2>
-                     {searchResultsStore.searchTerm} near{' '}
-                     {searchResultsStore.location}
-                  </StyledH2>
+                  {searchResultsStore.location === ONLINE ? (
+                     <StyledH2>
+                        Online results for {searchResultsStore.searchTerm}
+                     </StyledH2>
+                  ) : (
+                     <StyledH2>
+                        {searchResultsStore.searchTerm} near{' '}
+                        {searchResultsStore.location}
+                     </StyledH2>
+                  )}
+
                   {searchResultsStore.status === 'loading' ? (
                      <StyledSpinner thickness={125} color="#F97D0B" />
                   ) : (
-                     filteredResults.brickMortar.map((business, index) => (
-                        <ResultsRow key={index}>
-                           <StyledBusinessPreview
-                              key={index}
-                              name={business.name}
-                              imageUrl={business.photo}
-                              description={business.shortDesc}
-                              stars={business.rating}
-                              minorityTags={business.tags}
-                              keywordTags={business.keywords}
-                              verified={business.verified}
-                              path={`/business/${business.businessId}`}
-                              numReviews={business.numReviews}
-                              businessId={business.businessId}
-                           />
-                        </ResultsRow>
-                     ))
+                     <div>
+                        {filteredResults.brickMortar.map((business, index) => (
+                           <ResultsRow key={index}>
+                              <StyledBusinessPreview
+                                 key={index}
+                                 name={business.name}
+                                 imageUrl={business.photo}
+                                 description={business.shortDesc}
+                                 stars={business.rating}
+                                 minorityTags={business.tags}
+                                 keywordTags={business.keywords}
+                                 verified={business.verified}
+                                 path={`/business/${business.businessId}`}
+                                 numReviews={business.numReviews}
+                                 businessId={business.businessId}
+                              />
+                           </ResultsRow>
+                        ))}
+
+                        {searchResultsStore.location !== ONLINE &&
+                        searchResultsStore.results.online.length > 0 ? (
+                           <div>
+                              <StyledH2>
+                                 Online results for{' '}
+                                 {searchResultsStore.searchTerm}
+                              </StyledH2>
+                              {filteredResults.online.map((business, index) => (
+                                 <ResultsRow key={index}>
+                                    <StyledBusinessPreview
+                                       key={index}
+                                       name={business.name}
+                                       imageUrl={business.photo}
+                                       description={business.shortDesc}
+                                       stars={business.rating}
+                                       minorityTags={business.tags}
+                                       keywordTags={business.keywords}
+                                       verified={business.verified}
+                                       path={`/business/${business.businessId}`}
+                                       numReviews={business.numReviews}
+                                       businessId={business.businessId}
+                                    />
+                                 </ResultsRow>
+                              ))}
+                           </div>
+                        ) : null}
+                     </div>
                   )}
                </ResultsContainer>
             </Col>
