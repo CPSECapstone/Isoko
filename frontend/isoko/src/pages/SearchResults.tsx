@@ -8,7 +8,10 @@ import AddTagModal from '../components/search/AddTagModal';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import { useAppSelector } from '../app/hooks';
-import { BusinessPreview as BusinessPreviewType } from '../types/GlobalTypes';
+import {
+   BusinessPreview as BusinessPreviewType,
+   SearchResults as SearchResultsType,
+} from '../types/GlobalTypes';
 import { SpinnerCircularFixed } from 'spinners-react';
 import { useAppDispatch } from '../app/hooks';
 import {
@@ -103,13 +106,13 @@ const SearchResults: React.FC = () => {
    const dispatch = useAppDispatch();
 
    // filtered business results stored separately so they can be reverted if user unchecks the box
-   const [filteredBusinesses, setFilteredBusinesses] = useState<
-      Array<BusinessPreviewType>
-   >(searchResultsStore.businesses);
+   const [filteredResults, setFilteredResults] = useState<SearchResultsType>(
+      searchResultsStore.results
+   );
 
    useEffect(() => {
-      setFilteredBusinesses(searchResultsStore.businesses);
-   }, [searchResultsStore.businesses]);
+      setFilteredResults(searchResultsStore.results);
+   }, [searchResultsStore.results]);
 
    const dayOfWeek = () => {
       const dateComponents = time.split(',');
@@ -155,13 +158,18 @@ const SearchResults: React.FC = () => {
    };
 
    // filter businesses based on time
-   const filterBusinessesByTime = (e, businesses) => {
+   const filterBusinessesByTime = (e) => {
       const day = dayOfWeek();
       // filter by time if box is checked, if unchecked, revert to original results
       if (e.target.checked) {
-         setFilteredBusinesses(businesses.filter((b) => filterByTime(b, day)));
+         setFilteredResults({
+            brickMortar: filteredResults.brickMortar.filter((b) =>
+               filterByTime(b, day)
+            ),
+            online: filteredResults.online.filter((b) => filterByTime(b, day)),
+         });
       } else {
-         setFilteredBusinesses(searchResultsStore.businesses);
+         setFilteredResults(searchResultsStore.results);
       }
    };
 
@@ -189,17 +197,24 @@ const SearchResults: React.FC = () => {
 
    // sort businesses by value of sort dropdown
    const sortBusinesses = (key) => {
-      const sorted = [...filteredBusinesses];
+      const sortedBrickMortar = [...filteredResults.brickMortar];
+      const sortedOnline = [...filteredResults.online];
 
       if (key === 'reviews') {
-         sorted.sort((a, b) => b.numReviews - a.numReviews);
+         sortedBrickMortar.sort((a, b) => b.numReviews - a.numReviews);
+         sortedOnline.sort((a, b) => b.numReviews - a.numReviews);
       } else if (key === 'recent') {
-         sorted.sort((a, b) => a.timestamp - b.timestamp);
+         sortedBrickMortar.sort((a, b) => a.timestamp - b.timestamp);
+         sortedOnline.sort((a, b) => a.timestamp - b.timestamp);
       } else if (key === 'rating') {
-         sorted.sort((a, b) => b.rating - a.rating);
+         sortedBrickMortar.sort((a, b) => b.rating - a.rating);
+         sortedOnline.sort((a, b) => b.rating - a.rating);
       }
 
-      setFilteredBusinesses(sorted);
+      setFilteredResults({
+         brickMortar: sortedBrickMortar,
+         online: sortedOnline,
+      });
    };
 
    // Called when a user clicks confirm on Add Tag Modal
@@ -273,7 +288,7 @@ const SearchResults: React.FC = () => {
                            type="checkbox"
                            label={`Open now: ${displayTime()}`}
                            onChange={(e) => {
-                              filterBusinessesByTime(e, filteredBusinesses);
+                              filterBusinessesByTime(e);
                            }}
                         />
                      </LeftDiv>
@@ -289,7 +304,7 @@ const SearchResults: React.FC = () => {
                   {searchResultsStore.status === 'loading' ? (
                      <StyledSpinner thickness={125} color="#F97D0B" />
                   ) : (
-                     filteredBusinesses.map((business, index) => (
+                     filteredResults.brickMortar.map((business, index) => (
                         <ResultsRow key={index}>
                            <StyledBusinessPreview
                               key={index}
