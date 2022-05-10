@@ -165,20 +165,26 @@ const SearchResults: React.FC = () => {
       }
    };
 
-   // Research the database when a user removes a tag
+   // Re-search the database when a user removes a tag
    const removeTag = (key) => {
-      dispatch(removeMinorityTag(key));
-      dispatch(
-         getSearchResultsAsync(
-            getSearchParams(
-               searchResultsStore.location,
-               searchResultsStore.minorityTags
-                  .filter((tag) => tag.selected && tag.text !== key)
-                  .map((tag) => tag.text),
-               searchResultsStore.searchTerm
+      if (key === 'Any Minority Owned') {
+         alert(
+            'Searching by no tags is equivalent to searching by "Any Minority Owned"'
+         );
+      } else {
+         dispatch(removeMinorityTag(key));
+         dispatch(
+            getSearchResultsAsync(
+               getSearchParams(
+                  searchResultsStore.location,
+                  searchResultsStore.minorityTags
+                     .filter((tag) => tag.selected && tag.text !== key)
+                     .map((tag) => tag.text),
+                  searchResultsStore.searchTerm
+               )
             )
-         )
-      );
+         );
+      }
    };
 
    // sort businesses by value of sort dropdown
