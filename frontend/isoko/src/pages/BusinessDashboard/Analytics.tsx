@@ -3,6 +3,7 @@ import Stat from '../../components/business_dashboard/Stat';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import RatingGraph from '../../components/business_dashboard/RatingGraph';
+import CustomAnalytics from '../../components/business_dashboard/CustomAnalytics';
 
 const StyledDiv = styled.div`
    text-align: left;
@@ -83,6 +84,14 @@ const Analytics: React.FC = () => (
          <StyledRow>
             <RatingGraph ratings={ratings} />
          </StyledRow>
+         <Row>
+            <StyledDiv>
+               <h2>Custom Analytics</h2>
+            </StyledDiv>
+            <StyledRow>
+               <CustomAnalytics />
+            </StyledRow>
+         </Row>
       </Container>
    </main>
 );
