@@ -20,11 +20,13 @@ const Input = styled.input`
    display: none;
 `;
 
+const AvatarContainer = styled.div`
+   width: 250px;
+`;
 const Label = styled.label`
    color: white;
    background-color: #f97d0b;
    margin: 15px;
-   margin-top: 75px;
    padding: 15px;
    border-radius: 40px;
    font-size: 15px;
@@ -32,6 +34,7 @@ const Label = styled.label`
 
 interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {
    initialImage?: string;
+   label?: string;
 }
 
 const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
@@ -54,10 +57,11 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
             onChange={onImageChange}
          />
          <Row>
-            <Col>
+            <AvatarContainer>
+               <Photo src={displayImage} />
                <Label htmlFor="avatar-upload">Upload a Profile Pic</Label>
-               <h2>This picture will appear in the About the Owner section</h2>
-            </Col>
+               <h2>{props.label}</h2>
+            </AvatarContainer>
             <CropModal
                show={showCrop}
                imgURL={imageURL}
@@ -68,9 +72,6 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
                   setdisplayImage(croppedImg);
                }}
             />
-            <Col>
-               <Photo src={displayImage} />
-            </Col>
          </Row>
       </Container>
    );

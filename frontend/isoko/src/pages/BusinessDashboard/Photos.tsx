@@ -9,7 +9,10 @@ interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
 
 const Photos: React.FC<PhotoProps> = (props) => (
    <main>
-      <SingleImageUpload initialImage={props.ownerPhoto}></SingleImageUpload>
+      <SingleImageUpload
+         initialImage={props.ownerPhoto}
+         label={'This picture will appear in the About the Owner section'}
+      ></SingleImageUpload>
       <MultiImageUpload photos={props.photos}></MultiImageUpload>
    </main>
 );
