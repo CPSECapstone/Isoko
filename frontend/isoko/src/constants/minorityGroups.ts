@@ -1,13 +1,13 @@
-// Placeholder: Still needs to be defined
 const minorityGroups = [
    'Black Owned',
-   'Mexican Owned',
    'LGBTQ+ Owned',
    'Women Owned',
-   'Any Minority Owned',
    'Asian Owned',
-   'Latinx Owned',
+   'Hispanic or Latinx Owned',
+   'Native Hawaiian Owned',
+   'Pacific Islander Owned',
    'Indigenous Owned',
+   'Any Minority Owned',
 ];
 
 export default minorityGroups;
