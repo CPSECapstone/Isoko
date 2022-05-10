@@ -3,13 +3,6 @@ import CropModal from './Crop';
 import { Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
-const Container = styled.div`
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
-   margin-top: 8%;
-`;
-
 const Photo = styled.img`
    position: relative;
    height: 200px;
@@ -22,7 +15,9 @@ const Input = styled.input`
 
 const AvatarContainer = styled.div`
    width: 250px;
+   justify-content: left;
 `;
+
 const Label = styled.label`
    color: white;
    background-color: #f97d0b;
@@ -49,7 +44,7 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    };
 
    return (
-      <Container>
+      <div>
          <Input
             id="avatar-upload"
             type="file"
@@ -73,7 +68,7 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
                }}
             />
          </Row>
-      </Container>
+      </div>
    );
 };
 

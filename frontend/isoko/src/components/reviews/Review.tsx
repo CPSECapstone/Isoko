@@ -49,6 +49,7 @@ const UserContainer = styled.div`
 
 const UserText = styled.div`
    padding: 0.5em 0em 0.5em 0.5em;
+   font-size: 1.2em;
 `;
 
 const ContentText = styled.div`
@@ -72,8 +73,8 @@ const StyledCarousel = styled(ImageCarousel)`
 `;
 
 interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
-   reviewerName: string;
-   reviewerImageUrl: string;
+   name: string; //must be reviewer name for businessDash or business name for profile
+   reviewerImageUrl?: string; //required for businessDash, not in profile
    stars: number;
    subject?: string;
    content?: string;
@@ -92,7 +93,7 @@ const Review: React.FC<ReviewProps> = (props: ReviewProps) => {
       <ReviewContainer className={props.className}>
          <UserContainer>
             <UserPhoto src={props.reviewerImageUrl} />
-            <UserText> {props.reviewerName} </UserText>
+            <UserText> {props.name} </UserText>
          </UserContainer>
          {props.subject ? <h3>{props.subject}</h3> : <br></br>}
          <StarContainer>

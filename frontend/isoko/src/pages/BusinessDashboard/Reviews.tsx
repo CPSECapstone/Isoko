@@ -60,7 +60,7 @@ const Reviews: React.FC<ReviewProps> = (props) => {
             {sortedReviews.map((review, index) => (
                <Row key={index}>
                   <Review
-                     reviewerName={review.reviewAuthor}
+                     name={review.reviewAuthor}
                      reviewerImageUrl={review.authorProfilePicture}
                      stars={review.stars}
                      subject={review.reviewTitle}
