@@ -48,7 +48,9 @@ const ReviewIcon = styled(FontAwesomeIcon)`
 `;
 
 const PageContainer = styled.div`
-   border: 1px solid black;
+   border: 1px solid darkgrey;
+   padding: 12px;
+   border-radius: 10px;
    margin-left: 150px;
    margin-right: 150px;
 `;
