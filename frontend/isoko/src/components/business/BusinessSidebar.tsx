@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { Hours, Day } from '../../types/GlobalTypes';
+import ClaimBusinessModal from './ClaimBusinessModal';
 
 interface SidebarContainerProps {
    width?: string;
@@ -131,6 +132,7 @@ const LinkSection = (props: LinkProps) => (
 
 const ClaimBusinessSection = () => {
    const navigate = useNavigate();
+   const [showModal, setShowModal] = useState(false);
 
    return (
       <div>
@@ -145,9 +147,16 @@ const ClaimBusinessSection = () => {
          <ClaimBusinessButton
             primary
             onClick={() => {
-               navigate('/claim');
+               setShowModal(true);
             }}
          >
+            <ClaimBusinessModal
+               show={showModal}
+               handleClose={() => {
+                  console.log('TRYNNA CLOSE');
+                  setShowModal(false);
+               }}
+            />
             Claim Business
          </ClaimBusinessButton>
       </div>
