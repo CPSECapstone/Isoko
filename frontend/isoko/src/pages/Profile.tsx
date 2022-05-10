@@ -3,20 +3,20 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Review from '../components/reviews/Review';
 import NavbarComponent from '../components/NavbarComponent';
-import SignOutButton from '../../src/components/SignOutButton';
 import SingleImageUpload from '../components/imageUpload/singleImageUpoad';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ProfileInfo = styled.div`
-   position: relative;
-   margin-left: 205px;
-   margin-top: 75px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   margin-left: 80px;
+   margin-top: 15px;
 `;
 
 const ReviewsContainer = styled.div`
-   margin-left: 225px;
-   margin-right: 300px;
+   max-width: 700px;
 `;
 
 const ReviewsTitle = styled.h2`
@@ -32,31 +32,31 @@ const PageTitle = styled.h1`
 `;
 
 const UserName = styled.h2`
-   text-align: left;
-   margin-bottom: 1em;
-   margin-top: 0.7em;
-   font-size: 1.7rem;
-   margin-left: 0px;
+   font-size: 1.5rem;
+   margin-right: 2.5em;
 `;
 
 const NumReviews = styled.h2`
-   position: absolute;
-   text-align: left;
-   margin-bottom: 1em;
-   margin-top: 0.7em;
    font-size: 1rem;
-   margin-left: 0px;
+   margin-left: 15px;
 `;
 
 const ReviewIcon = styled(FontAwesomeIcon)`
-   position: absolute;
-   margin-left: 0.5em;
-   margin-top: 7px;
-   font-size: 2em;
+   margin-left: 10px;
+   margin-bottom: 15px;
+   font-size: 2.5em;
 `;
 
-const ReviewContainer = styled.div`
-   text-align: center;
+const PageContainer = styled.div`
+   border: 1px solid black;
+   margin-left: 150px;
+   margin-right: 150px;
+`;
+
+const ReviewsHeader = styled.div`
+   display: flex;
+   flex-direction: row;
+   align-items: center;
 `;
 
 interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
@@ -104,42 +104,42 @@ const Profile: React.FC<PhotoProps> = (props) => {
       <main>
          <NavbarComponent />
          <PageTitle>User Profile</PageTitle>
-         <ProfileInfo>
-            <Row sm={6} lg={6}>
-               <Col>
-                  <SingleImageUpload
-                     initialImage={props.ownerPhoto}
-                  ></SingleImageUpload>
+         <PageContainer>
+            <Row>
+               <Col lg={3}>
+                  <ProfileInfo>
+                     <UserName>Eric Koston</UserName>
+                     <SingleImageUpload
+                        initialImage={props.ownerPhoto}
+                     ></SingleImageUpload>
+                  </ProfileInfo>
                </Col>
                <Col>
-                  <UserName>Eric Koston</UserName>
-                  <ReviewContainer>
-                     {' '}
-                     <NumReviews>23 Reviews</NumReviews>
-                     <ReviewIcon icon={faComment} color="#72D3FC" />
-                  </ReviewContainer>
-                  {/* <SignOutButton /> */}
+                  <ReviewsContainer>
+                     <ReviewsHeader>
+                        <ReviewsTitle>Your Reviews</ReviewsTitle>
+                        <ReviewIcon icon={faComment} color="#72D3FC" />
+                        <NumReviews>23 Reviews</NumReviews>
+                     </ReviewsHeader>
+                     <Col>
+                        {reviewsList.map((review, index) => (
+                           <Row key={index}>
+                              <Review
+                                 name={"Jeanie's Bonchon"}
+                                 reviewerImageUrl={review.authorProfilePicture}
+                                 stars={review.stars}
+                                 subject={review.reviewTitle}
+                                 content={review.description}
+                                 imageUrls={review.pictures}
+                                 ts={review.ts}
+                              />
+                           </Row>
+                        ))}
+                     </Col>
+                  </ReviewsContainer>
                </Col>
             </Row>
-         </ProfileInfo>
-         <ReviewsContainer>
-            <ReviewsTitle>Your Reviews</ReviewsTitle>
-            <Col>
-               {reviewsList.map((review, index) => (
-                  <Row key={index}>
-                     <Review
-                        name={"Jeanie's Bonchon"}
-                        reviewerImageUrl={review.authorProfilePicture}
-                        stars={review.stars}
-                        subject={review.reviewTitle}
-                        content={review.description}
-                        imageUrls={review.pictures}
-                        ts={review.ts}
-                     />
-                  </Row>
-               ))}
-            </Col>
-         </ReviewsContainer>
+         </PageContainer>
       </main>
    );
 };
