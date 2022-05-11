@@ -4,6 +4,7 @@
    "version": "0.0.1",
    "private": true,
    "dependencies": {
+      "@google-analytics/data": "^2.8.0",
       "aws-sdk": "^2.799.0",
       "lodash": "^4.17.21"
    },
