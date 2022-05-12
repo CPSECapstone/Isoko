@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BusinessPreview } from '../../types/GlobalTypes';
+import { BusinessPreview, SearchResults } from '../../types/GlobalTypes';
 import { fetchSearchResults, SearchParams } from './SearchResultsAPI';
 import minorityGroups from '../../constants/minorityGroups';
 
 export interface SearchResultsState {
-   businesses: Array<BusinessPreview>;
+   results: SearchResults;
    searchTerm: string;
    minorityTags: Array<MinorityTag>;
    location: string;
@@ -23,7 +23,10 @@ export interface SearchFeatures {
 }
 
 const initialState: SearchResultsState = {
-   businesses: [],
+   results: {
+      brickMortar: [],
+      online: [],
+   },
    searchTerm: '',
    minorityTags: minorityGroups.map((group) => ({
       text: group,
@@ -48,14 +51,26 @@ export const searchResultsSlice = createSlice({
          state.searchTerm = action.payload.searchTerm;
          state.location = action.payload.location;
 
-         state.minorityTags = state.minorityTags.map((tag) => {
-            if (action.payload.minorityTags.includes(tag.text)) {
-               tag.selected = true;
-            } else {
-               tag.selected = false;
-            }
-            return tag;
-         });
+         // If no tags are selected, auto select "Any Minority Owned"
+         if (action.payload.minorityTags.length === 0) {
+            state.minorityTags.map((tag) => {
+               if (tag.text === 'Any Minority Owned') {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         } else {
+            state.minorityTags = state.minorityTags.map((tag) => {
+               if (action.payload.minorityTags.includes(tag.text)) {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         }
       },
       removeMinorityTag: (state, action: PayloadAction<string>) => {
          state.minorityTags = state.minorityTags.map((tag) => {
@@ -66,14 +81,26 @@ export const searchResultsSlice = createSlice({
          });
       },
       setMinorityTags: (state, action: PayloadAction<Array<string>>) => {
-         state.minorityTags = state.minorityTags.map((tag) => {
-            if (action.payload.includes(tag.text)) {
-               tag.selected = true;
-            } else {
-               tag.selected = false;
-            }
-            return tag;
-         });
+         // If no tags are selected, auto select "Any Minority Owned"
+         if (action.payload.length === 0) {
+            state.minorityTags.map((tag) => {
+               if (tag.text === 'Any Minority Owned') {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         } else {
+            state.minorityTags = state.minorityTags.map((tag) => {
+               if (action.payload.includes(tag.text)) {
+                  tag.selected = true;
+               } else {
+                  tag.selected = false;
+               }
+               return tag;
+            });
+         }
       },
    },
    extraReducers: (builder) => {
@@ -83,9 +110,9 @@ export const searchResultsSlice = createSlice({
          })
          .addCase(
             getSearchResultsAsync.fulfilled,
-            (state, action: PayloadAction<Array<BusinessPreview>>) => {
+            (state, action: PayloadAction<SearchResults>) => {
                state.status = 'idle';
-               state.businesses = action.payload;
+               state.results = action.payload;
             }
          );
    },
