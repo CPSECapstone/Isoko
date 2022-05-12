@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { environment } from '../../environment/environment';
-import { BusinessPreview } from '../../types/GlobalTypes';
+import { BusinessPreview, SearchResults } from '../../types/GlobalTypes';
 import categoryList from '../../constants/categoryList';
 
 export interface SearchParams {
@@ -12,13 +12,16 @@ export interface SearchParams {
 
 export const fetchSearchResults = async (
    params: SearchParams
-): Promise<Array<BusinessPreview>> => {
+): Promise<SearchResults> => {
    const response = await axios.post(`${environment.prodURL}/searchBusiness`, {
       ...params,
    });
 
-   const searchResults = response.data.results;
-   return searchResults as Array<BusinessPreview>;
+   const searchResults = {
+      brickMortar: response.data.brickMortar,
+      online: response.data.online,
+   };
+   return searchResults;
 };
 
 export const getSearchParams = (

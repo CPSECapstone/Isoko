@@ -83,3 +83,8 @@ export interface User {
    businessOwner: boolean;
    businessId?: string;
 }
+
+export interface SearchResults {
+   brickMortar: Array<BusinessPreview>;
+   online: Array<BusinessPreview>;
+}
