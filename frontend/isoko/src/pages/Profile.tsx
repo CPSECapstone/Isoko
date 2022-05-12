@@ -10,13 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const ProfileInfo = styled.div`
    display: flex;
    flex-direction: column;
-   justify-content: center;
-   margin-left: 80px;
-   margin-top: 15px;
-`;
-
-const ReviewsContainer = styled.div`
-   max-width: 700px;
+   margin-top: 1.25em;
 `;
 
 const ReviewsTitle = styled.h2`
@@ -27,13 +21,12 @@ const ReviewsTitle = styled.h2`
 `;
 
 const PageTitle = styled.h1`
-   margin-top: 1.5em;
+   margin-top: 1em;
    font-size: 1.7rem;
 `;
 
 const UserName = styled.h2`
    font-size: 1.5rem;
-   margin-right: 2.5em;
 `;
 
 const NumReviews = styled.h2`
@@ -42,23 +35,30 @@ const NumReviews = styled.h2`
 `;
 
 const ReviewIcon = styled(FontAwesomeIcon)`
-   margin-left: 10px;
-   margin-bottom: 15px;
-   font-size: 2.5em;
+   margin-left: 15px;
+   margin-bottom: 10px;
+   font-size: 2.2em;
 `;
 
 const PageContainer = styled.div`
    border: 1px solid darkgrey;
-   padding: 12px;
    border-radius: 10px;
-   margin-left: 150px;
-   margin-right: 150px;
+   margin-left: 100px;
+   margin-right: 100px;
 `;
 
 const ReviewsHeader = styled.div`
    display: flex;
    flex-direction: row;
    align-items: center;
+`;
+const StyledDiv2 = styled.div`
+   margin: 0 auto;
+   width: 200px;
+`;
+
+const StyledDiv3 = styled.div`
+   margin-right: 20px;
 `;
 
 interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
@@ -108,22 +108,24 @@ const Profile: React.FC<PhotoProps> = (props) => {
          <PageTitle>User Profile</PageTitle>
          <PageContainer>
             <Row>
-               <Col lg={3}>
+               <Col xl={3} lg={4}>
                   <ProfileInfo>
                      <UserName>Eric Koston</UserName>
-                     <SingleImageUpload
-                        initialImage={props.ownerPhoto}
-                     ></SingleImageUpload>
+                     <StyledDiv2>
+                        <SingleImageUpload
+                           initialImage={props.ownerPhoto}
+                        ></SingleImageUpload>
+                     </StyledDiv2>
                   </ProfileInfo>
                </Col>
-               <Col>
-                  <ReviewsContainer>
+               <Col lg={8}>
+                  <div>
                      <ReviewsHeader>
                         <ReviewsTitle>Your Reviews</ReviewsTitle>
                         <ReviewIcon icon={faComment} color="#72D3FC" />
                         <NumReviews>23 Reviews</NumReviews>
                      </ReviewsHeader>
-                     <Col>
+                     <StyledDiv3>
                         {reviewsList.map((review, index) => (
                            <Row key={index}>
                               <Review
@@ -137,8 +139,8 @@ const Profile: React.FC<PhotoProps> = (props) => {
                               />
                            </Row>
                         ))}
-                     </Col>
-                  </ReviewsContainer>
+                     </StyledDiv3>
+                  </div>
                </Col>
             </Row>
          </PageContainer>
