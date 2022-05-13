@@ -75,7 +75,16 @@ const HamburgerComponent: React.FC = () => {
 
    const profile = useAppSelector((store) => store.profile);
 
-   console.log(profile);
+   const signOut = () => {
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
+
+      const user = userPool.getCurrentUser();
+      user?.signOut();
+      navigate('/login');
+   };
 
    useEffect(() => {
       const userPool = new CognitoUserPool({
@@ -149,9 +158,15 @@ const HamburgerComponent: React.FC = () => {
                         >
                            Profile
                         </StyledLink>
-                        <StyledLink onClick={() => navigate('/signup')}>
-                           Sign Up/Login
-                        </StyledLink>
+                        {isLoggedIn ? (
+                           <StyledLink onClick={() => signOut()}>
+                              Sign Out
+                           </StyledLink>
+                        ) : (
+                           <StyledLink onClick={() => navigate('/signup')}>
+                              Sign Up/Login
+                           </StyledLink>
+                        )}
                      </Nav>
                   </Offcanvas.Body>
                </StyledOffcanvas>
