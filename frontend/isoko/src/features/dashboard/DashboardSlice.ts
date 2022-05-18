@@ -17,6 +17,8 @@ export interface DashboardState {
 const initialState: DashboardState = {
    business: null,
    analytics: {
+      // Page views stored in list of dates in YYYYMMDD format. Multiple records
+      // for same date represent multiple page views on the same day.
       pageViews: [],
    },
    status: 'idle',
