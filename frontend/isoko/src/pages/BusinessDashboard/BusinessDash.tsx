@@ -16,7 +16,7 @@ import Reviews from './Reviews';
 import Photos from './Photos';
 import Analytics from './Analytics';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { initializeBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
+import { initializeBusinessDashboardAsync } from '../../features/dashboard/DashboardSlice';
 import { SpinnerCircularFixed } from 'spinners-react';
 
 const StyledCol1 = styled(Col)`
@@ -92,7 +92,7 @@ const BusinessDash: React.FC = () => {
    useEffect(() => {
       // Don't need to worry about ownedBusinessId being undefined bc auth protections
       // Should handle that case
-      dispatch(initializeBusinessDetailsAsync(ownedBusinessId));
+      dispatch(initializeBusinessDashboardAsync(ownedBusinessId));
    }, []);
 
    return (

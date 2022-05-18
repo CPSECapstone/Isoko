@@ -1,23 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Business } from '../../types/GlobalTypes';
-import { fetchBusiness, updateBusinessDetails } from '../business/BusinessAPI';
+import {
+   fetchBusiness,
+   updateBusinessDetails,
+   fetchPageViews,
+} from '../business/BusinessAPI';
 
 export interface DashboardState {
    business: Business | null;
-   analytics: null;
+   analytics: {
+      pageViews: Array<string>;
+   };
    status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: DashboardState = {
    business: null,
-   analytics: null,
+   analytics: {
+      pageViews: [],
+   },
    status: 'idle',
 };
 
-export const initializeBusinessDetailsAsync = createAsyncThunk(
-   'dashboard/initializeBusinessDetails',
+export const initializeBusinessDashboardAsync = createAsyncThunk(
+   'dashboard/initializeBusinessDashboard',
    async (businessId: string) => {
-      return await fetchBusiness(businessId);
+      const fetchBusinessPromise = fetchBusiness(businessId);
+      const fetchPageViewsPromise = fetchPageViews(businessId);
+
+      const [business, pageViews] = await Promise.all([
+         fetchBusinessPromise,
+         fetchPageViewsPromise,
+      ]);
+
+      return {
+         business,
+         pageViews,
+      };
    }
 );
 
@@ -41,13 +60,17 @@ export const dashboardSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => {
       builder
-         .addCase(initializeBusinessDetailsAsync.pending, (state) => {
+         .addCase(initializeBusinessDashboardAsync.pending, (state) => {
             state.status = 'loading';
          })
-         .addCase(initializeBusinessDetailsAsync.fulfilled, (state, action) => {
-            state.status = 'idle';
-            state.business = action.payload;
-         })
+         .addCase(
+            initializeBusinessDashboardAsync.fulfilled,
+            (state, action) => {
+               state.status = 'idle';
+               state.business = action.payload.business;
+               state.analytics.pageViews = action.payload.pageViews;
+            }
+         )
          .addCase(updateBusinessDetailsAsync.pending, (state) => {
             state.status = 'loading';
          })

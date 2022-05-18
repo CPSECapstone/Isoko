@@ -11,6 +11,16 @@ export const fetchBusiness = async (businessId: string): Promise<Business> => {
    return business as Business;
 };
 
+export const fetchPageViews = async (
+   businessId: string
+): Promise<Array<string>> => {
+   const response = await axios.get(
+      `${environment.prodURL}/analytics/business/${businessId}`
+   );
+
+   return response.data;
+};
+
 export const updateBusinessDetails = async (
    businessId: string,
    fieldUpdates: {

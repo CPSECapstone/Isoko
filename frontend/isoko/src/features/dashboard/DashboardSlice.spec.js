@@ -1,5 +1,5 @@
 import dashboardReducer, {
-   initializeBusinessDetailsAsync,
+   initializeBusinessDashboardAsync,
    updateBusinessDetailsAsync,
 } from './DashboardSlice';
 import axios from 'axios';
@@ -18,7 +18,9 @@ describe('DashboardSlice tests', () => {
 
    const initialState = {
       business: null,
-      analytics: null,
+      analytics: {
+         pageViews: [],
+      },
       status: 'idle',
    };
 
@@ -32,7 +34,7 @@ describe('DashboardSlice tests', () => {
       expect(store).toEqual(initialState);
    });
 
-   describe('initializeBusinessDetailsAsync tests', () => {
+   describe('initializeBusinessDashboardAsync tests', () => {
       it('Should send a properly formatted GET request to our API', async () => {
          // Arrange
          axios.get.mockResolvedValue({
@@ -43,7 +45,7 @@ describe('DashboardSlice tests', () => {
          // Act
          dashboardReducer(
             initialState,
-            await initializeBusinessDetailsAsync(businessId)(dispatch)
+            await initializeBusinessDashboardAsync(businessId)(dispatch)
          );
 
          // Assert
@@ -72,20 +74,26 @@ describe('DashboardSlice tests', () => {
             address: '987 Honfleur Ct.',
             reviews: [],
          };
+         const mockPageViews = ['20220511', '20220511'];
 
-         axios.get.mockResolvedValue({
+         axios.get.mockResolvedValueOnce({
             data: businessDetails,
          });
+         axios.get.mockResolvedValueOnce({
+            data: mockPageViews,
+         });
+
          const businessId = 'JP_TEST_ID';
 
          // Act
          const store = dashboardReducer(
             initialState,
-            await initializeBusinessDetailsAsync(businessId)(dispatch)
+            await initializeBusinessDashboardAsync(businessId)(dispatch)
          );
 
          // Assert
          expect(store.business).toEqual(businessDetails);
+         expect(store.analytics.pageViews).toEqual(mockPageViews);
       });
    });
 
