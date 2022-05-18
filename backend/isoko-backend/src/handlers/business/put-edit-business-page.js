@@ -106,7 +106,7 @@ exports.putEditBusinessPageHandler = async (event) => {
       fieldNames,
       requestBody,
       exprAttrVals,
-      exprAttrNames,
+      exprAttrNames
    );
 
    const params = {

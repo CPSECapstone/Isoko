@@ -243,7 +243,7 @@ describe('PutEditBusinessPageHandler tests', () => {
                ':a': 'Venice Beach',
             },
             ExpressionAttributeNames: {
-               '#city': 'city'
+               '#city': 'city',
             },
             ReturnValues: 'ALL_NEW',
          });
