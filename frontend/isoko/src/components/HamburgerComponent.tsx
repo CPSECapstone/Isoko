@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import RestrictedModal from '../pages/RestrictedModal';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { environment } from '../environment/environment';
+import { useAppSelector } from '../app/hooks';
 
 const Position = styled.div`
    position: absolute;
@@ -72,6 +73,19 @@ const HamburgerComponent: React.FC = () => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [showRestrictedModal, setShowRestrictedModal] = useState(false);
 
+   const profile = useAppSelector((store) => store.profile);
+
+   const signOut = () => {
+      const userPool = new CognitoUserPool({
+         UserPoolId: environment.cognitoUserPoolId,
+         ClientId: environment.cognitoAppClientId,
+      });
+
+      const user = userPool.getCurrentUser();
+      user?.signOut();
+      navigate('/login');
+   };
+
    useEffect(() => {
       const userPool = new CognitoUserPool({
          UserPoolId: environment.cognitoUserPoolId,
@@ -120,17 +134,19 @@ const HamburgerComponent: React.FC = () => {
                         >
                            List A Business
                         </StyledLink>
-                        <StyledLink
-                           onClick={() => {
-                              if (isLoggedIn) {
-                                 navigate('/businessDash');
-                              } else {
-                                 setShowRestrictedModal(true);
-                              }
-                           }}
-                        >
-                           Business Dashboard
-                        </StyledLink>
+                        {profile.businessOwner ? (
+                           <StyledLink
+                              onClick={() => {
+                                 if (isLoggedIn) {
+                                    navigate('/businessDash');
+                                 } else {
+                                    setShowRestrictedModal(true);
+                                 }
+                              }}
+                           >
+                              Business Dashboard
+                           </StyledLink>
+                        ) : null}
                         <StyledLink
                            onClick={() => {
                               if (isLoggedIn) {
@@ -142,9 +158,15 @@ const HamburgerComponent: React.FC = () => {
                         >
                            Profile
                         </StyledLink>
-                        <StyledLink onClick={() => navigate('/login')}>
-                           Sign Up
-                        </StyledLink>
+                        {isLoggedIn ? (
+                           <StyledLink onClick={() => signOut()}>
+                              Sign Out
+                           </StyledLink>
+                        ) : (
+                           <StyledLink onClick={() => navigate('/signup')}>
+                              Sign Up/Login
+                           </StyledLink>
+                        )}
                      </Nav>
                   </Offcanvas.Body>
                </StyledOffcanvas>
