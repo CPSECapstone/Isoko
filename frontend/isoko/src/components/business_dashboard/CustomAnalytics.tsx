@@ -6,6 +6,7 @@ import {
    Line,
    XAxis,
    YAxis,
+   Label,
    CartesianGrid,
    Tooltip,
    Legend,
@@ -16,30 +17,293 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { useAppSelector } from '../../app/hooks';
 
-const testData = [
+const yearTestData = [
+   {
+      name: '2019',
+      uv: 4000,
+      value: 430,
+      amt: 430,
+   },
+   {
+      name: '2020',
+      uv: 3000,
+      value: 1398,
+      amt: 1398,
+   },
+   {
+      name: '2021',
+      uv: 2000,
+      value: 1742,
+      amt: 1742,
+   },
+   {
+      name: '2022',
+      uv: 2780,
+      value: 1231,
+      amt: 1231,
+   },
+];
+
+const monthTestData = [
    {
       name: 'January',
       uv: 4000,
-      pv: 2400,
-      amt: 2400,
+      value: 61,
+      amt: 61,
    },
    {
       name: 'February',
       uv: 3000,
-      pv: 1398,
-      amt: 2210,
+      value: 92,
+      amt: 92,
    },
    {
       name: 'March',
       uv: 2000,
-      pv: 5800,
-      amt: 2290,
+      value: 112,
+      amt: 112,
    },
    {
       name: 'April',
       uv: 2780,
-      pv: 3908,
-      amt: 2000,
+      value: 77,
+      amt: 77,
+   },
+   {
+      name: 'May',
+      uv: 2780,
+      value: 80,
+      amt: 80,
+   },
+   {
+      name: 'June',
+      uv: 2780,
+      value: 12,
+      amt: 12,
+   },
+];
+
+const weekTestData = [
+   {
+      name: 'May 5',
+      uv: 2780,
+      value: 10,
+      amt: 10,
+   },
+   {
+      name: 'May 12',
+      uv: 2780,
+      value: 14,
+      amt: 14,
+   },
+   {
+      name: 'May 19',
+      uv: 2000,
+      value: 12,
+      amt: 12,
+   },
+
+   {
+      name: 'May 26',
+      uv: 3000,
+      value: 15,
+      amt: 15,
+   },
+   {
+      name: 'June 2',
+      uv: 4000,
+      value: 23,
+      amt: 23,
+   },
+];
+
+const dayTestData = [
+   {
+      name: 'May 27',
+      uv: 2780,
+      value: 3,
+      amt: 3,
+   },
+   {
+      name: 'May 28',
+      uv: 2780,
+      value: 2,
+      amt: 2,
+   },
+   {
+      name: 'May 29',
+      uv: 2780,
+      value: 2,
+      amt: 2,
+   },
+   {
+      name: 'May 30',
+      uv: 2780,
+      value: 1,
+      amt: 1,
+   },
+   {
+      name: 'May 31',
+      uv: 2000,
+      value: 6,
+      amt: 6,
+   },
+   {
+      name: 'June 1',
+      uv: 3000,
+      value: 3,
+      amt: 3,
+   },
+   {
+      name: 'June 2',
+      uv: 4000,
+      value: 4,
+      amt: 4,
+   },
+];
+
+const yearTestDataRating = [
+   {
+      name: '2019',
+      uv: 5,
+      value: 3.7,
+      amt: 3.7,
+   },
+   {
+      name: '2020',
+      uv: 5,
+      value: 3.9,
+      amt: 3.9,
+   },
+   {
+      name: '2021',
+      uv: 5,
+      value: 4.4,
+      amt: 4.4,
+   },
+   {
+      name: '2022',
+      uv: 5,
+      value: 4.8,
+      amt: 4.8,
+   },
+];
+
+const monthTestDataRating = [
+   {
+      name: 'January',
+      uv: 5,
+      value: 3.2,
+      amt: 3.2,
+   },
+   {
+      name: 'February',
+      uv: 5,
+      value: 3.7,
+      amt: 3.7,
+   },
+   {
+      name: 'March',
+      uv: 5,
+      value: 3.9,
+      amt: 3.9,
+   },
+   {
+      name: 'April',
+      uv: 5,
+      value: 3.7,
+      amt: 3.7,
+   },
+   {
+      name: 'May',
+      uv: 5,
+      value: 4.0,
+      amt: 4.0,
+   },
+   {
+      name: 'June',
+      uv: 5,
+      value: 4.7,
+      amt: 4.7,
+   },
+];
+
+const weekTestDataRating = [
+   {
+      name: 'May 5',
+      uv: 5,
+      value: 3.2,
+      amt: 3.2,
+   },
+   {
+      name: 'May 12',
+      uv: 5,
+      value: 4.1,
+      amt: 4.1,
+   },
+   {
+      name: 'May 19',
+      uv: 5,
+      value: 3.6,
+      amt: 3.6,
+   },
+
+   {
+      name: 'May 26',
+      uv: 5,
+      value: 4.4,
+      amt: 4.4,
+   },
+   {
+      name: 'June 2',
+      uv: 5,
+      value: 4.6,
+      amt: 4.6,
+   },
+];
+
+const dayTestDataRating = [
+   {
+      name: 'May 27',
+      uv: 5,
+      value: 3,
+      amt: 3,
+   },
+   {
+      name: 'May 28',
+      uv: 5,
+      value: 2.5,
+      amt: 2.5,
+   },
+   {
+      name: 'May 29',
+      uv: 5,
+      value: 0,
+      amt: 0,
+   },
+   {
+      name: 'May 30',
+      uv: 5,
+      value: 5.0,
+      amt: 5.0,
+   },
+   {
+      name: 'May 31',
+      uv: 5,
+      value: 3.5,
+      amt: 3.5,
+   },
+   {
+      name: 'June 1',
+      uv: 5,
+      value: 4.0,
+      amt: 4.0,
+   },
+   {
+      name: 'June 2',
+      uv: 5,
+      value: 4.7,
+      amt: 4.7,
    },
 ];
 
@@ -97,7 +361,7 @@ const CustomAnalytics: React.FC = () => {
    const oneWeekAgo = new Date();
    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
    const [graphType, setGraphType] = useState('Page Views');
-   const [graphFrequency, setGraphFrequency] = useState('Month');
+   const [graphFrequency, setGraphFrequency] = useState('Day');
    const [startDay, setStartDay] = useState<Date>(oneWeekAgo);
    const [endDay, setEndDay] = useState<Date>(now);
 
@@ -110,6 +374,20 @@ const CustomAnalytics: React.FC = () => {
    const dashboardStore = useAppSelector((store) => store.dashboard);
    console.log('STORE: ', dashboardStore);
    console.log('Analytics: ', dashboardStore.analytics);
+
+   const getCorrectData = () => {
+      if (graphFrequency === 'Day') {
+         return graphType === 'Page Views' ? dayTestData : dayTestDataRating;
+      } else if (graphFrequency === 'Week') {
+         return graphType === 'Page Views' ? weekTestData : weekTestDataRating;
+      } else if (graphFrequency === 'Month') {
+         return graphType === 'Page Views'
+            ? monthTestData
+            : monthTestDataRating;
+      } else if (graphFrequency === 'Year') {
+         return graphType === 'Page Views' ? yearTestData : yearTestDataRating;
+      }
+   };
 
    return (
       <>
@@ -125,11 +403,6 @@ const CustomAnalytics: React.FC = () => {
                      </div>
                   </Dropdown.Item>
                   <Dropdown.Item as="button">
-                     <div onClick={() => setGraphType('Links Clicked')}>
-                        Links Clicked
-                     </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item as="button">
                      <div onClick={() => setGraphType('Average Rating')}>
                         Average Rating
                      </div>
@@ -142,16 +415,54 @@ const CustomAnalytics: React.FC = () => {
             <div>
                <StyledDropdownButton title={graphFrequency}>
                   <Dropdown.Item as="button">
-                     <div onClick={() => setGraphFrequency('Day')}>Day</div>
+                     <div
+                        onClick={() => {
+                           setGraphFrequency('Day');
+                           const oneWeekAgo = new Date();
+                           oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                           setStartDay(oneWeekAgo);
+                        }}
+                     >
+                        Day
+                     </div>
                   </Dropdown.Item>
                   <Dropdown.Item as="button">
-                     <div onClick={() => setGraphFrequency('Week')}>Week</div>
+                     <div
+                        onClick={() => {
+                           setGraphFrequency('Week');
+                           const oneMonthAgo = new Date();
+                           oneMonthAgo.setDate(oneMonthAgo.getDate() - 35);
+                           setStartDay(oneMonthAgo);
+                        }}
+                     >
+                        Week
+                     </div>
                   </Dropdown.Item>
                   <Dropdown.Item as="button">
-                     <div onClick={() => setGraphFrequency('Month')}>Month</div>
+                     <div
+                        onClick={() => {
+                           setGraphFrequency('Month');
+                           const sixMonthsAgo = new Date();
+                           sixMonthsAgo.setDate(sixMonthsAgo.getDate() - 150);
+                           setStartDay(sixMonthsAgo);
+                        }}
+                     >
+                        Month
+                     </div>
                   </Dropdown.Item>
                   <Dropdown.Item as="button">
-                     <div onClick={() => setGraphFrequency('Year')}>Year</div>
+                     <div
+                        onClick={() => {
+                           setGraphFrequency('Year');
+                           const fourYearsAgo = new Date();
+                           fourYearsAgo.setDate(
+                              fourYearsAgo.getDate() - 365 * 3
+                           );
+                           setStartDay(fourYearsAgo);
+                        }}
+                     >
+                        Year
+                     </div>
                   </Dropdown.Item>
                </StyledDropdownButton>
             </div>
@@ -188,37 +499,33 @@ const CustomAnalytics: React.FC = () => {
                </StyledDropdownButton>
             </div>
          </OptionContainer>
-         <ResponsiveContainer
-            height="100%"
-            width="80%"
-            minWidth={500}
-            minHeight={250}
-         >
-            <div>
-               <LineChart
-                  width={500}
-                  height={300}
-                  data={testData}
-                  margin={{
-                     top: 5,
-                     right: 30,
-                     left: 20,
-                     bottom: 5,
-                  }}
-               >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                     type="monotone"
-                     dataKey="pv"
-                     stroke="#8884d8"
-                     activeDot={{ r: 8 }}
-                  />
-               </LineChart>
-            </div>
+         <ResponsiveContainer maxHeight={300} width="85%" minHeight={250}>
+            <LineChart
+               width={500}
+               height={300}
+               data={getCorrectData()}
+               margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+               }}
+            >
+               <CartesianGrid strokeDasharray="3 3" />
+               <XAxis dataKey="name">
+                  <Label value="Dates" offset={0} position="insideBottom" />
+               </XAxis>
+               <YAxis>
+                  <Label value={graphType} angle={-90} position="insideLeft" />
+               </YAxis>
+               <Tooltip />
+               <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+               />
+            </LineChart>
          </ResponsiveContainer>
       </>
    );
