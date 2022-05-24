@@ -1,6 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import MultiImageUpload from '../../components/imageUpload/multiImageUpload';
 import SingleImageUpload from '../../components/imageUpload/singleImageUpoad';
+
+const Container = styled.div`
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   margin-top: 8%;
+`;
 
 interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
    ownerPhoto?: string;
@@ -9,7 +17,12 @@ interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
 
 const Photos: React.FC<PhotoProps> = (props) => (
    <main>
-      <SingleImageUpload initialImage={props.ownerPhoto}></SingleImageUpload>
+      <Container>
+         <SingleImageUpload
+            initialImage={props.ownerPhoto}
+            label={'This picture will appear in the About the Owner section'}
+         ></SingleImageUpload>
+      </Container>
       <MultiImageUpload photos={props.photos}></MultiImageUpload>
    </main>
 );

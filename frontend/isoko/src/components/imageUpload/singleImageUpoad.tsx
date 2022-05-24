@@ -3,28 +3,25 @@ import CropModal from './Crop';
 import { Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
-const Container = styled.div`
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
-   margin-top: 8%;
-`;
-
 const Photo = styled.img`
    position: relative;
    height: 200px;
-   margin-top: 20px;
+   // margin-top: 20px;
 `;
 
 const Input = styled.input`
    display: none;
 `;
 
+const AvatarContainer = styled.div`
+   width: 250px;
+   justify-content: left;
+`;
+
 const Label = styled.label`
    color: white;
    background-color: #f97d0b;
    margin: 15px;
-   margin-top: 75px;
    padding: 15px;
    border-radius: 40px;
    font-size: 15px;
@@ -32,12 +29,16 @@ const Label = styled.label`
 
 interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {
    initialImage?: string;
+   label?: string;
 }
 
 const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [displayImage, setdisplayImage] = useState(props.initialImage || '');
+   const [displayImage, setdisplayImage] = useState(
+      props.initialImage ||
+         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
+   );
 
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
@@ -46,7 +47,7 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    };
 
    return (
-      <Container>
+      <div>
          <Input
             id="avatar-upload"
             type="file"
@@ -54,10 +55,11 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
             onChange={onImageChange}
          />
          <Row>
-            <Col>
+            <AvatarContainer>
+               <Photo src={displayImage} />
                <Label htmlFor="avatar-upload">Upload a Profile Pic</Label>
-               <h2>This picture will appear in the About the Owner section</h2>
-            </Col>
+               <h2>{props.label}</h2>
+            </AvatarContainer>
             <CropModal
                show={showCrop}
                imgURL={imageURL}
@@ -68,11 +70,8 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
                   setdisplayImage(croppedImg);
                }}
             />
-            <Col>
-               <Photo src={displayImage} />
-            </Col>
          </Row>
-      </Container>
+      </div>
    );
 };
 

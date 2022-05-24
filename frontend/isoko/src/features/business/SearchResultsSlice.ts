@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BusinessPreview } from '../../types/GlobalTypes';
+import { BusinessPreview, SearchResults } from '../../types/GlobalTypes';
 import { fetchSearchResults, SearchParams } from './SearchResultsAPI';
 import minorityGroups from '../../constants/minorityGroups';
 
 export interface SearchResultsState {
-   businesses: Array<BusinessPreview>;
+   results: SearchResults;
    searchTerm: string;
    minorityTags: Array<MinorityTag>;
    location: string;
@@ -23,7 +23,10 @@ export interface SearchFeatures {
 }
 
 const initialState: SearchResultsState = {
-   businesses: [],
+   results: {
+      brickMortar: [],
+      online: [],
+   },
    searchTerm: '',
    minorityTags: minorityGroups.map((group) => ({
       text: group,
@@ -107,9 +110,9 @@ export const searchResultsSlice = createSlice({
          })
          .addCase(
             getSearchResultsAsync.fulfilled,
-            (state, action: PayloadAction<Array<BusinessPreview>>) => {
+            (state, action: PayloadAction<SearchResults>) => {
                state.status = 'idle';
-               state.businesses = action.payload;
+               state.results = action.payload;
             }
          );
    },
