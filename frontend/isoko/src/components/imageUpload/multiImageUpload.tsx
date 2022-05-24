@@ -51,7 +51,9 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
    const [croppedImgList, setCroppedImgList] = useState(props.photos);
-
+   const [busPreviewImg, setBusPreviewImg] = useState('');
+   // console.log("bus", busPreviewImg);
+   // console.log(croppedImgList[0]);
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
       setShowCrop(true);
@@ -69,7 +71,8 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
          <Label htmlFor="file-upload">Upload an Image</Label>
          <h2>
             These pictures will appear in the carousel at the top of your
-            business page
+            business page. The first picture uploaded will also appear as the
+            thumbnail on the search results page.
          </h2>
          <CropModal
             show={showCrop}
@@ -79,6 +82,7 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
             }}
             updateCroppedList={(croppedImg) => {
                setCroppedImgList([...croppedImgList, croppedImg]);
+               // setBusPreviewImg(croppedImgList[0]);
             }}
          />
          <Container>
