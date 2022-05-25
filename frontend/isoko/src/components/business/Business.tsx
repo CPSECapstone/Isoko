@@ -14,6 +14,7 @@ import WriteReviewModal from '../reviews/WriteReviewModal';
 import SortReviewsDropdown from '../business_dashboard/SortReviewsDropdown';
 import RestrictedModal from '../../pages/RestrictedModal';
 import { Business as BusinessType } from '../../types/GlobalTypes';
+import { User as UserType } from '../../types/GlobalTypes';
 import { SpinnerCircularFixed } from 'spinners-react';
 
 const PositionedSidebar = styled(BusinessSidebar)`
@@ -92,6 +93,7 @@ interface BusinessProps extends React.HTMLProps<HTMLDivElement> {
    showInPreview: boolean;
    businessDetails: BusinessType;
    loading?: boolean;
+   profileDetails: UserType;
 }
 
 const Business: React.FC<BusinessProps> = (props) => {
@@ -234,6 +236,8 @@ const Business: React.FC<BusinessProps> = (props) => {
                               link: businessDetails.links[linkName],
                            })
                         )}
+                        businessDetails={businessDetails}
+                        profileDetails={props.profileDetails}
                      />
                   </StyledCol>
                </StyledRow>

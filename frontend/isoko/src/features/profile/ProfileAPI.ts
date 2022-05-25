@@ -18,3 +18,15 @@ export const updateProfilePic = async (
 
    return response.data as User;
 };
+
+export const updateUserToBusinessOwner = async (
+   userSub: string,
+   businessId: string
+): Promise<User> => {
+   const response = await axios.put(`${environment.prodURL}/user/${userSub}`, {
+      businessId,
+      businessOwner: true,
+   });
+
+   return response.data as User;
+};

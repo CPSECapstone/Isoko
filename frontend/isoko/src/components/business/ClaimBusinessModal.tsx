@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
-import { Modal, Row, Col, Container } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { environment } from '../../environment/environment';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Business as BusinessType } from '../../types/GlobalTypes';
+import { User as UserType } from '../../types/GlobalTypes';
+import { useAppDispatch } from '../../app/hooks';
+import { updateBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
+import axios from 'axios';
+import { updateUserToBusinessOwnerAsync } from '../../features/profile/ProfileSlice';
 
 const NotLoggedInError = styled.div`
    align-items: center;
    color: red;
 `;
 
-interface ClaimBusinessModal extends React.HTMLProps<HTMLDivElement> {
+interface ClaimBusinessModalProps extends React.HTMLProps<HTMLDivElement> {
    show: boolean;
    handleClose: () => void;
+   profileDetails: UserType;
+   businessDetails: BusinessType;
 }
 
-const ClaimBusinessModal: React.FC<ClaimBusinessModal> = (props) => {
+export interface UpdateParams {
+   businessId: string;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   [key: string]: any;
+}
+
+const ClaimBusinessModal: React.FC<ClaimBusinessModalProps> = (props) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [err, setErr] = useState('');
+
+   const dispatch = useAppDispatch();
 
    useEffect(() => {
       const userPool = new CognitoUserPool({
@@ -37,8 +53,24 @@ const ClaimBusinessModal: React.FC<ClaimBusinessModal> = (props) => {
    }, []);
 
    const claimBusiness = () => {
-      console.log('Confirm claim business clicked');
-      //TODO: add put request for user and business to update
+      // dispatch(
+      //    updateBusinessDetailsAsync({
+      //       ...props.businessDetails,
+      //       businessId: props.businessDetails.businessId,
+      //       aboutOwner: {
+      //          owner: props.profileDetails.userSub,
+      //          ownerName: props.profileDetails.name,
+      //          profilePicture: props.profileDetails.profilePicture,
+      //       },
+      //    })
+      // )
+
+      dispatch(
+         updateUserToBusinessOwnerAsync({
+            userSub: props.profileDetails.userSub,
+            businessId: props.businessDetails.businessId,
+         })
+      );
    };
 
    return (
@@ -69,7 +101,6 @@ const ClaimBusinessModal: React.FC<ClaimBusinessModal> = (props) => {
                         'You are not logged in. Please log in to claim this business.'
                      );
                   }
-                  props.handleClose();
                }}
             >
                Confirm
