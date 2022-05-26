@@ -8,6 +8,7 @@ import { environment } from '../../environment/environment';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { useAppSelector } from '../../app/hooks';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 
 const CONTENTMAXLENGTH = 300;
 
@@ -84,22 +85,41 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
       if (isValid()) {
          // NOTE: This will not work until IS-122 is merged in bc we need to get
          // the businessId from the URL.
-         axios.post(
-            `${environment.prodURL}/business/${location.pathname}/review`,
-            {
-               reviewAuthor: profile.userSub,
-               authorUserName: profile.name,
-               authorProfilePicture: profile.profilePicture,
-               stars: rating / 20,
-               reviewTitle: subject,
-               description: content,
-               pictures: listOfImages,
-               ts: `${moment.now()}`,
-               state: props.state,
-               city: props.city,
-               category: props.category,
+
+         //get value for authorization header
+         const userPool = new CognitoUserPool({
+            UserPoolId: environment.cognitoUserPoolId,
+            ClientId: environment.cognitoAppClientId,
+         });
+
+         const user = userPool.getCurrentUser();
+         const session = user.getSession(function (err, result) {
+            if (result) {
+               const config = {
+                  headers: {
+                     Authorization: result.idToken.jwtToken,
+                  },
+               };
+               axios.post(
+                  `${environment.prodURL}${location.pathname}/review`,
+                  {
+                     reviewAuthor: profile.userSub,
+                     authorUserName: profile.name,
+                     authorProfilePicture: profile.profilePicture,
+                     stars: rating / 20,
+                     reviewTitle: subject,
+                     description: content,
+                     pictures: listOfImages,
+                     ts: `${moment.now()}`,
+                     state: props.state,
+                     city: props.city,
+                     category: props.category,
+                  },
+                  config
+               );
             }
-         );
+         });
+
          props.handleClose();
       }
    };
