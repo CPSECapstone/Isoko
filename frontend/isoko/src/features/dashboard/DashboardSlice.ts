@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Business } from '../../types/GlobalTypes';
+import { Business, PageViewAnalytics } from '../../types/GlobalTypes';
 import {
    fetchBusiness,
    updateBusinessDetails,
@@ -8,19 +8,13 @@ import {
 
 export interface DashboardState {
    business: Business | null;
-   analytics: {
-      pageViews: Array<string>;
-   };
+   analytics: PageViewAnalytics | null;
    status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: DashboardState = {
    business: null,
-   analytics: {
-      // Page views stored in list of dates in YYYYMMDD format. Multiple records
-      // for same date represent multiple page views on the same day.
-      pageViews: [],
-   },
+   analytics: null,
    status: 'idle',
 };
 
@@ -28,16 +22,16 @@ export const initializeBusinessDashboardAsync = createAsyncThunk(
    'dashboard/initializeBusinessDashboard',
    async (businessId: string) => {
       const fetchBusinessPromise = fetchBusiness(businessId);
-      const fetchPageViewsPromise = fetchPageViews(businessId);
+      const fetchPageViewAnalyticsPromise = fetchPageViews(businessId);
 
-      const [business, pageViews] = await Promise.all([
+      const [business, pageViewAnalytics] = await Promise.all([
          fetchBusinessPromise,
-         fetchPageViewsPromise,
+         fetchPageViewAnalyticsPromise,
       ]);
 
       return {
          business,
-         pageViews,
+         pageViewAnalytics,
       };
    }
 );
@@ -70,7 +64,7 @@ export const dashboardSlice = createSlice({
             (state, action) => {
                state.status = 'idle';
                state.business = action.payload.business;
-               state.analytics.pageViews = action.payload.pageViews;
+               state.analytics = action.payload.pageViewAnalytics;
             }
          )
          .addCase(updateBusinessDetailsAsync.pending, (state) => {

@@ -30,6 +30,14 @@ async function runReport() {
             name: 'pagePath',
          },
       ],
+      metrics: [
+         {
+            name: 'eventCount',
+         },
+         {
+            name: 'eventCountPerUser',
+         },
+      ],
       dimensionFilter: {
          filter: {
             fieldName: 'pagePath',
@@ -48,7 +56,7 @@ async function runReport() {
    //   console.log(row.dimensionValues, row.metricValues[0]);
    // });
 
-   console.log(response.rows.map((row) => row.dimensionValues[0].value));
+   console.log(response.rows.map((row) => row.metricValues[0].value));
 }
 
 runReport();
