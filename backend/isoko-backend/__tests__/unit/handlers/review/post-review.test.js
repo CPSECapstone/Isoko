@@ -98,8 +98,8 @@ describe('PostReviewHandler tests', () => {
             description: 'Great food, great place!',
             pictures: ['image1.com'],
             ts: '1637019432',
-            state: 'CA', 
-            city: 'San Luis Obispo', 
+            state: 'CA',
+            city: 'San Luis Obispo',
             category: 'Restaurants',
          };
 
@@ -113,7 +113,7 @@ describe('PostReviewHandler tests', () => {
 
          // act
          await postReviewHandler(event);
-         
+
          // assert
          expect(putSpy).toHaveBeenCalledWith({
             TableName: BUSINESS_TABLE,
@@ -128,11 +128,11 @@ describe('PostReviewHandler tests', () => {
                description: reviewBody.description,
                pictures: reviewBody.pictures,
                ts: reviewBody.ts,
-               state: reviewBody.state, 
-               city: reviewBody.city, 
+               state: reviewBody.state,
+               city: reviewBody.city,
                category: reviewBody.category,
             },
-            ReturnValues: 'ALL_OLD'
+            ReturnValues: 'ALL_OLD',
          });
       });
    });

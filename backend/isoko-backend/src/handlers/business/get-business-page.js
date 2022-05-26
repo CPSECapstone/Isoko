@@ -1,7 +1,9 @@
-const dynamodb = require('aws-sdk/clients/dynamodb');
-const docClient = new dynamodb.DocumentClient();
 const { BUSINESS_TABLE } = require('../../constants');
 const { get400Response } = require('../util/response-utils');
+const {
+   getItemFromTablePromise,
+   getReviewsForBusinessPromise,
+} = require('../util/database-utils');
 
 /**
  * HTTP get method to get business page with details and reviews for specific businessId.
@@ -22,36 +24,21 @@ exports.getBusinessPageHandler = async (event) => {
       );
    }
 
-   // params to get business info
-   const businessParams = {
-      TableName: BUSINESS_TABLE,
-      Key: {
-         pk: `${businessId}`,
-         sk: 'INFO',
-      },
-   };
-
-   // params to get reviews for business
-   const reviewParams = {
-      TableName: BUSINESS_TABLE,
-      KeyConditionExpression: 'pk = :id and begins_with(sk, :r)',
-      ExpressionAttributeValues: {
-         ':id': `${businessId}`,
-         ':r': 'REVIEW',
-      },
-   };
-
    let response;
 
    try {
-      const businessResult = await docClient.get(businessParams).promise();
+      const businessResult = await getItemFromTablePromise(
+         BUSINESS_TABLE,
+         `${businessId}`,
+         'INFO'
+      );
 
       let businessDetails = businessResult.Item;
       businessDetails.businessId = businessDetails.pk;
       delete businessDetails.pk;
       delete businessDetails.sk;
 
-      const reviewResult = await docClient.query(reviewParams).promise();
+      const reviewResult = await getReviewsForBusinessPromise(`${businessId}`);
 
       let reviews = reviewResult.Items;
       businessDetails['reviews'] = reviews;
