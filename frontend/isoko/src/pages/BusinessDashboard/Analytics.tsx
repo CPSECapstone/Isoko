@@ -3,6 +3,7 @@ import Stat from '../../components/business_dashboard/Stat';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import RatingGraph from '../../components/business_dashboard/RatingGraph';
+import CustomAnalytics from '../../components/business_dashboard/CustomAnalytics';
 import { Review as ReviewType } from '../../types/GlobalTypes';
 
 const StyledDiv = styled.div`
@@ -94,6 +95,14 @@ const Analytics: React.FC<ReviewProps> = (props) => {
             <StyledRow>
                <RatingGraph ratings={buildRatingCount(ratingArray)} />
             </StyledRow>
+            <Row>
+               <StyledDiv>
+                  <h2>Custom Analytics</h2>
+               </StyledDiv>
+               <StyledRow>
+                  <CustomAnalytics />
+               </StyledRow>
+            </Row>
          </Container>
       </main>
    );
