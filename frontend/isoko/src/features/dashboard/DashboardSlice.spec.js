@@ -18,9 +18,7 @@ describe('DashboardSlice tests', () => {
 
    const initialState = {
       business: null,
-      analytics: {
-         pageViews: [],
-      },
+      analytics: null,
       status: 'idle',
    };
 
@@ -74,13 +72,26 @@ describe('DashboardSlice tests', () => {
             address: '987 Honfleur Ct.',
             reviews: [],
          };
-         const mockPageViews = ['20220511', '20220511'];
+         const mockPageViewAnalytics = {
+            uniquePageViewers: 104,
+            pageViewCountByDate: [
+               {
+                  date: '20220502',
+                  count: 10,
+               },
+               {
+                  date: '20220503',
+                  count: 11,
+               },
+            ],
+            totalPageViews: 249,
+         };
 
          axios.get.mockResolvedValueOnce({
             data: businessDetails,
          });
          axios.get.mockResolvedValueOnce({
-            data: mockPageViews,
+            data: mockPageViewAnalytics,
          });
 
          const businessId = 'JP_TEST_ID';
@@ -93,7 +104,7 @@ describe('DashboardSlice tests', () => {
 
          // Assert
          expect(store.business).toEqual(businessDetails);
-         expect(store.analytics.pageViews).toEqual(mockPageViews);
+         expect(store.analytics).toEqual(mockPageViewAnalytics);
       });
    });
 
