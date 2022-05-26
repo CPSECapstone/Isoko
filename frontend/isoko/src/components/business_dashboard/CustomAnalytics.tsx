@@ -522,7 +522,7 @@ const CustomAnalytics: React.FC = () => {
                <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#8884d8"
+                  stroke="#F97D0B"
                   activeDot={{ r: 8 }}
                />
             </LineChart>
