@@ -8,6 +8,7 @@ const BusinessPage: React.FC = () => {
 
    const businessStore = useAppSelector((store) => store.business);
    const businessDetails = businessStore.businesses[businessId];
+   const profileDetails = useAppSelector((store) => store.profile);
 
    return (
       <main>
@@ -15,6 +16,7 @@ const BusinessPage: React.FC = () => {
             showInPreview={true}
             businessDetails={businessDetails}
             loading={businessStore.status === 'loading'}
+            profileDetails={profileDetails}
          />
       </main>
    );

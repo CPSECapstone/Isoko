@@ -1,6 +1,7 @@
 import profileReducer, {
    fetchProfileAsync,
    updateProfilePicAsync,
+   updateUserToBusinessOwnerAsync,
 } from './ProfileSlice';
 import axios from 'axios';
 import { environment } from '../../environment/environment';
@@ -136,6 +137,69 @@ describe('ProfileSlice tests', () => {
          expect(store).toEqual({
             ...initialUser,
             profilePicture: newProfilePic,
+            status: 'idle',
+         });
+      });
+   });
+
+   describe('updateUserToBusinessOwnerAsync tests', () => {
+      it('Should send a properly formatted PUT request to our API', async () => {
+         // Arrange
+         axios.put.mockResolvedValue({
+            data: {},
+         });
+
+         const businessId = 'test-business-id';
+
+         // Act
+         profileReducer(
+            initialState,
+            await updateUserToBusinessOwnerAsync({ userSub, businessId })(
+               dispatch
+            )
+         );
+
+         // Assert
+         expect(axios.put).toHaveBeenCalledWith(
+            `${environment.prodURL}/user/${userSub}`,
+            { businessId, businessOwner: true }
+         );
+      });
+
+      it('Should set store based on PUT response body', async () => {
+         // Arrange
+         const initialUser = {
+            userSub,
+            name: 'Justin Poist',
+            email: 'test@test.com',
+            profilePicture: 'old link',
+            businessOwner: false,
+         };
+
+         const newBusinessId = 'new-business-id';
+
+         axios.put.mockResolvedValue({
+            data: {
+               ...initialUser,
+               businessId: newBusinessId,
+               businessOwner: true,
+            },
+         });
+
+         // Act
+         const store = profileReducer(
+            initialUser,
+            await updateUserToBusinessOwnerAsync({
+               userSub,
+               businessId: newBusinessId,
+            })(dispatch)
+         );
+
+         // Assert
+         expect(store).toEqual({
+            ...initialUser,
+            businessId: newBusinessId,
+            businessOwner: true,
             status: 'idle',
          });
       });

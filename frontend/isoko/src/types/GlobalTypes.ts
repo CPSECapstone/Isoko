@@ -36,13 +36,15 @@ export interface Hours {
 
 export interface Review {
    reviewAuthor: string;
+   city?: string;
+   state?: string;
    authorUserName: string;
    authorProfilePicture: string;
-   rating: number;
+   stars: number;
    reviewTitle?: string;
    description: string;
    pictures: Array<string>;
-   ts: number;
+   ts: string;
 }
 
 export interface Business {

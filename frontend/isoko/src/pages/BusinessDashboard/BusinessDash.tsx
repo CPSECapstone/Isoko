@@ -206,7 +206,12 @@ const BusinessDash: React.FC = () => {
                            photos={dashboardStore.business.photos}
                         />
                      ) : null}
-                     {activeComponent === 'Analytics' ? <Analytics /> : null}
+                     {activeComponent === 'Analytics' ? (
+                        <Analytics
+                           rating={dashboardStore.business.rating}
+                           reviews={dashboardStore.business.reviews}
+                        />
+                     ) : null}
                   </Content>
                )}
             </Row>
