@@ -9,7 +9,6 @@ import { Business as BusinessType } from '../../types/GlobalTypes';
 import { User as UserType } from '../../types/GlobalTypes';
 import { useAppDispatch } from '../../app/hooks';
 import { updateBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
-import axios from 'axios';
 import { updateUserToBusinessOwnerAsync } from '../../features/profile/ProfileSlice';
 
 const NotLoggedInError = styled.div`
@@ -53,17 +52,16 @@ const ClaimBusinessModal: React.FC<ClaimBusinessModalProps> = (props) => {
    }, []);
 
    const claimBusiness = () => {
-      // dispatch(
-      //    updateBusinessDetailsAsync({
-      //       ...props.businessDetails,
-      //       businessId: props.businessDetails.businessId,
-      //       aboutOwner: {
-      //          owner: props.profileDetails.userSub,
-      //          ownerName: props.profileDetails.name,
-      //          profilePicture: props.profileDetails.profilePicture,
-      //       },
-      //    })
-      // )
+      dispatch(
+         updateBusinessDetailsAsync({
+            businessId: props.businessDetails.businessId,
+            aboutOwner: {
+               owner: props.profileDetails.userSub,
+               ownerName: props.profileDetails.name,
+               profilePicture: props.profileDetails.profilePicture,
+            },
+         })
+      );
 
       dispatch(
          updateUserToBusinessOwnerAsync({
