@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import StyledButton from '../../styles/StyledButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +9,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { Hours, Day } from '../../types/GlobalTypes';
+import ClaimBusinessModal from './ClaimBusinessModal';
+import { Business as BusinessType } from '../../types/GlobalTypes';
+import { User as UserType } from '../../types/GlobalTypes';
 
 interface SidebarContainerProps {
    width?: string;
@@ -65,11 +68,18 @@ interface LinkProps extends React.HTMLProps<HTMLDivElement> {
    links: Link[];
 }
 
+interface ClaimBusinessProps extends React.HTMLProps<HTMLDivElement> {
+   profileDetails: UserType;
+   businessDetails: BusinessType;
+}
+
 interface BusinessSidebarProps extends React.HTMLProps<HTMLDivElement> {
    hours?: Hours;
    address?: string;
    links?: Link[];
    claimed: boolean;
+   businessDetails: BusinessType;
+   profileDetails: UserType;
 }
 
 const HoursSection = (props: HoursProps) => {
@@ -129,8 +139,8 @@ const LinkSection = (props: LinkProps) => (
    </div>
 );
 
-const ClaimBusinessSection = () => {
-   const navigate = useNavigate();
+const ClaimBusinessSection = (props: ClaimBusinessProps) => {
+   const [showClaimBusinessModal, setShowClaimBusinessModal] = useState(false);
 
    return (
       <div>
@@ -145,11 +155,19 @@ const ClaimBusinessSection = () => {
          <ClaimBusinessButton
             primary
             onClick={() => {
-               navigate('/claim');
+               setShowClaimBusinessModal(true);
             }}
          >
             Claim Business
          </ClaimBusinessButton>
+         <ClaimBusinessModal
+            show={showClaimBusinessModal}
+            handleClose={() => {
+               setShowClaimBusinessModal(false);
+            }}
+            profileDetails={props.profileDetails}
+            businessDetails={props.businessDetails}
+         />
       </div>
    );
 };
@@ -169,7 +187,12 @@ const BusinessSidebar: React.FC<BusinessSidebarProps> = (
          {props.links ? <LinkSection links={props.links} /> : null}
 
          {/* CLAIMED BUSSINESS */}
-         {props.claimed ? null : <ClaimBusinessSection />}
+         {props.claimed ? null : (
+            <ClaimBusinessSection
+               businessDetails={props.businessDetails}
+               profileDetails={props.profileDetails}
+            />
+         )}
       </SidebarContainer>
    );
 };
