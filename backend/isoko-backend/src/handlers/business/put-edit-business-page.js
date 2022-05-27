@@ -1,7 +1,8 @@
 const dynamodb = require('aws-sdk/clients/dynamodb');
 const _ = require('lodash');
 const docClient = new dynamodb.DocumentClient();
-const { BUSINESS_TABLE } = require('../../constants');
+const { BUSINESS_TABLE, SEARCH_RESULTS_TABLE, BRICK_AND_MORTAR,
+   ONLINE } = require('../../constants');
 const { get400Response } = require('../util/response-utils');
 
 /**
@@ -89,7 +90,43 @@ exports.putEditBusinessPageHandler = async (event) => {
    const requestBody = event.body && JSON.parse(event.body);
    const fieldNames = _.keys(requestBody);
 
-   // following fields should not be modified
+   //update search results thumbnail with photos[0]
+   const photos = requestBody.photos
+   if (photos & len(photos) > 0) {
+      const type = _.get(requestBody, 'type');
+      const category = _.get(requestBody, 'category');
+      const state = _.get(requestBody, 'state');
+      const city = _.get(requestBody, 'city');
+   
+      if (!type || !category) {
+         return get400Response('Required field type or category is missing');
+      }
+
+      try {
+         const searchResultsImgParams = {
+            TableName: SEARCH_RESULTS_TABLE,
+            Key: {
+               pk: type == BRICK_AND_MORTAR ? `${state}#${city}` : ONLINE,
+               sk: `${category}#${businessId}`,
+            },
+            UpdateExpression: `set #photo = :a`,
+            ExpressionAttributeValues: {
+               ':a': photos[0],
+            },
+            ExpressionAttributeNames: {
+               '#photo': 'photo'
+            },
+            ReturnValues: 'ALL_NEW',
+         }
+
+      const dynamoRes = await docClient.update(searchResultsImgParams).promise();
+
+      } catch (e) {
+         response = get400Response('Not able to update business preview thumbnail image');
+      }
+   }
+
+   //following fields should not be modified
    const restrictedFields = [
       'pk',
       'sk',

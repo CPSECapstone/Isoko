@@ -30,15 +30,16 @@ const Label = styled.label`
 interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {
    initialImage?: string;
    label?: string;
+   changeImageState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [displayImage, setdisplayImage] = useState(
-      props.initialImage ||
-         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
-   );
+   // const [displayImage, setdisplayImage] = useState(
+   //    props.initialImage ||
+   //       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
+   // );
 
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));

@@ -45,15 +45,12 @@ const Label = styled.label`
 
 interface MultiImageUploadProps extends React.HTMLProps<HTMLDivElement> {
    photos: Array<string>;
+   changePhotosState: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [croppedImgList, setCroppedImgList] = useState(props.photos);
-   const [busPreviewImg, setBusPreviewImg] = useState('');
-   // console.log("bus", busPreviewImg);
-   // console.log(croppedImgList[0]);
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
       setShowCrop(true);
@@ -81,13 +78,12 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
                setShowCrop(false);
             }}
             updateCroppedList={(croppedImg) => {
-               setCroppedImgList([...croppedImgList, croppedImg]);
-               // setBusPreviewImg(croppedImgList[0]);
+               props.changePhotosState([...props.photos, croppedImg]);
             }}
          />
          <Container>
             <Row>
-               {croppedImgList.map((imageSrc, index) => (
+               {props.photos.map((imageSrc, index) => (
                   <Col key={index}>
                      <PhotoContainer>
                         <div key={imageSrc} className="image">
@@ -96,8 +92,8 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
                               variant="secondary"
                               size="sm"
                               onClick={() =>
-                                 setCroppedImgList(
-                                    croppedImgList.filter((e) => e !== imageSrc)
+                                 props.changePhotosState(
+                                    props.photos.filter((e) => e !== imageSrc)
                                  )
                               }
                            >
