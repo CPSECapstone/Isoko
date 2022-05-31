@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Stat from '../../components/business_dashboard/Stat';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import RatingGraph from '../../components/business_dashboard/RatingGraph';
 import CustomAnalytics from '../../components/business_dashboard/CustomAnalytics';
 import { Review as ReviewType } from '../../types/GlobalTypes';
+import { useAppSelector } from '../../app/hooks';
 
 const StyledDiv = styled.div`
    text-align: left;
@@ -29,6 +30,8 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
 // will be calculated by retrieving ratings from reviews of a business
 
 const Analytics: React.FC<ReviewProps> = (props) => {
+   const analyticsStore = useAppSelector((store) => store.dashboard.analytics);
+
    const ratingArray = [
       {
          rating: 5,
@@ -75,10 +78,16 @@ const Analytics: React.FC<ReviewProps> = (props) => {
             </Row>
             <StyledRow>
                <Col>
-                  <Stat stat="Page Views" value={130} />
+                  <Stat
+                     stat="Page Views"
+                     value={analyticsStore.totalPageViews}
+                  />
                </Col>
                <Col>
-                  <Stat stat="Unique Views" value={94} />
+                  <Stat
+                     stat="Unique Views"
+                     value={analyticsStore.uniquePageViewers}
+                  />
                </Col>
                <Col>
                   <Stat stat="Total Ratings" value={totalRatings} />

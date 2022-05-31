@@ -33,21 +33,19 @@ exports.postReviewHandler = async (event) => {
    const description = _.get(requestBody, 'description', '');
    const pictures = _.get(requestBody, 'pictures', []);
    const ts = _.get(requestBody, 'ts');
-   const state = _.get(requestBody, 'state', ''); 
-   const city = _.get(requestBody, 'city', ''); 
-   const category = _.get(requestBody, 'category'); 
+   const state = _.get(requestBody, 'state', '');
+   const city = _.get(requestBody, 'city', '');
+   const category = _.get(requestBody, 'category');
 
-   let pkString; 
+   let pkString;
 
    if (state === '') {
-      pkString = 'ONLINE'
-   }
-   else {
-      pkString = `${state}#${city}`
+      pkString = 'ONLINE';
+   } else {
+      pkString = `${state}#${city}`;
    }
 
-    
-   // post review to Businesses 
+   // post review to Businesses
    const reviewParams = {
       TableName: BUSINESS_TABLE,
       Item: {
@@ -61,80 +59,81 @@ exports.postReviewHandler = async (event) => {
          description: description,
          pictures: pictures,
          ts: ts,
-         state: state,  
-         city: city, 
-         category: category  
+         state: state,
+         city: city,
+         category: category,
       },
       ReturnValues: 'ALL_OLD',
    };
 
-   // update stars in Businesses 
+   // update stars in Businesses
    const businessStarsParams = {
-      TableName: BUSINESS_TABLE, 
+      TableName: BUSINESS_TABLE,
       Key: {
          pk: `${businessId}`,
          sk: 'INFO',
       },
       ExpressionAttributeValues: {
-         ":s": stars, 
-         ":initial": 0
+         ':s': stars,
+         ':initial': 0,
       },
-      UpdateExpression: "SET stars = if_not_exists(stars, :initial) + :s"
-   }
+      UpdateExpression: 'SET stars = if_not_exists(stars, :initial) + :s',
+   };
 
-   // total reviews in Businesses 
+   // total reviews in Businesses
    const businessReviewsParams = {
-      TableName: BUSINESS_TABLE, 
+      TableName: BUSINESS_TABLE,
       Key: {
          pk: `${businessId}`,
          sk: 'INFO',
       },
       ExpressionAttributeValues: {
-         ":inc": 1, 
-         ":initial": 0
+         ':inc': 1,
+         ':initial': 0,
       },
-      UpdateExpression: "SET numReviews = if_not_exists(numReviews, :initial) + :inc"
-   }
+      UpdateExpression:
+         'SET numReviews = if_not_exists(numReviews, :initial) + :inc',
+   };
 
    //console.info(`update expression: ${businessParams.UpdateExpression}`)
    // update stars in SearchResults
    const searchStarsParams = {
-      TableName: SEARCH_RESULTS_TABLE, 
+      TableName: SEARCH_RESULTS_TABLE,
       Key: {
          pk: pkString,
          sk: `${category}#${businessId}`,
       },
       ExpressionAttributeValues: {
-         ":s": stars, 
-         ":initial": 0
+         ':s': stars,
+         ':initial': 0,
       },
-      UpdateExpression: "SET stars = if_not_exists(stars, :initial) + :s"
-   }
+      UpdateExpression: 'SET stars = if_not_exists(stars, :initial) + :s',
+   };
 
-   // total reviews in Businesses 
+   // total reviews in Businesses
    const searchReviewsParams = {
-      TableName: SEARCH_RESULTS_TABLE, 
+      TableName: SEARCH_RESULTS_TABLE,
       Key: {
          pk: pkString,
          sk: `${category}#${businessId}`,
       },
       ExpressionAttributeValues: {
-         ":inc": 1,
-         ":initial": 0
+         ':inc': 1,
+         ':initial': 0,
       },
-      UpdateExpression: "SET numReviews = if_not_exists(numReviews, :initial) + :inc"
-   }
+      UpdateExpression:
+         'SET numReviews = if_not_exists(numReviews, :initial) + :inc',
+   };
 
    let response;
 
    try {
-      
       await Promise.all([
          docClient.put(reviewParams).promise(),
          docClient.update(businessStarsParams).promise(),
          docClient.update(businessReviewsParams).promise(),
          docClient.update(searchStarsParams).promise(),
-         docClient.update(searchReviewsParams).promise()
+         docClient.update(searchReviewsParams).promise(),
       ]);
 
       response = {

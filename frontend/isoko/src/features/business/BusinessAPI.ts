@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { environment } from '../../environment/environment';
-import { Business, Hours } from '../../types/GlobalTypes';
+import { Business, Hours, PageViewAnalytics } from '../../types/GlobalTypes';
 
 export const fetchBusiness = async (businessId: string): Promise<Business> => {
    const response = await axios.get(
@@ -9,6 +9,16 @@ export const fetchBusiness = async (businessId: string): Promise<Business> => {
 
    const business = response.data;
    return business as Business;
+};
+
+export const fetchPageViews = async (
+   businessId: string
+): Promise<PageViewAnalytics> => {
+   const response = await axios.get(
+      `${environment.prodURL}/analytics/business/${businessId}`
+   );
+
+   return response.data;
 };
 
 export const updateBusinessDetails = async (

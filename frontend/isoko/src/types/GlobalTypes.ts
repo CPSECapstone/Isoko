@@ -90,3 +90,14 @@ export interface SearchResults {
    brickMortar: Array<BusinessPreview>;
    online: Array<BusinessPreview>;
 }
+
+export interface PageViewByDate {
+   date: string;
+   count: number;
+}
+
+export interface PageViewAnalytics {
+   uniquePageViewers: number;
+   pageViewCountByDate: Array<PageViewByDate>;
+   totalPageViews: number;
+}

@@ -54,6 +54,24 @@ Resources:
             Path: /business
             Method: POST
             RestApiId: !Ref IsokoBackendApi
+
+  getBusinessPageViewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/analytics/get-business-page-views.getBusinessPageViewsHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Includes a HTTP get method to get business page views for specific businessId.
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /analytics/business/{businessId}
+            Method: GET
+            RestApiId: !Ref IsokoBackendApi
   
   getBusinessPageFunction:
     Type: AWS::Serverless::Function

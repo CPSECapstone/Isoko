@@ -1,5 +1,5 @@
 import dashboardReducer, {
-   initializeBusinessDetailsAsync,
+   initializeBusinessDashboardAsync,
    updateBusinessDetailsAsync,
 } from './DashboardSlice';
 import axios from 'axios';
@@ -32,7 +32,7 @@ describe('DashboardSlice tests', () => {
       expect(store).toEqual(initialState);
    });
 
-   describe('initializeBusinessDetailsAsync tests', () => {
+   describe('initializeBusinessDashboardAsync tests', () => {
       it('Should send a properly formatted GET request to our API', async () => {
          // Arrange
          axios.get.mockResolvedValue({
@@ -43,7 +43,7 @@ describe('DashboardSlice tests', () => {
          // Act
          dashboardReducer(
             initialState,
-            await initializeBusinessDetailsAsync(businessId)(dispatch)
+            await initializeBusinessDashboardAsync(businessId)(dispatch)
          );
 
          // Assert
@@ -72,20 +72,39 @@ describe('DashboardSlice tests', () => {
             address: '987 Honfleur Ct.',
             reviews: [],
          };
+         const mockPageViewAnalytics = {
+            uniquePageViewers: 104,
+            pageViewCountByDate: [
+               {
+                  date: '20220502',
+                  count: 10,
+               },
+               {
+                  date: '20220503',
+                  count: 11,
+               },
+            ],
+            totalPageViews: 249,
+         };
 
-         axios.get.mockResolvedValue({
+         axios.get.mockResolvedValueOnce({
             data: businessDetails,
          });
+         axios.get.mockResolvedValueOnce({
+            data: mockPageViewAnalytics,
+         });
+
          const businessId = 'JP_TEST_ID';
 
          // Act
          const store = dashboardReducer(
             initialState,
-            await initializeBusinessDetailsAsync(businessId)(dispatch)
+            await initializeBusinessDashboardAsync(businessId)(dispatch)
          );
 
          // Assert
          expect(store.business).toEqual(businessDetails);
+         expect(store.analytics).toEqual(mockPageViewAnalytics);
       });
    });
 
