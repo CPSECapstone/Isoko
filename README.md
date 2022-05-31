@@ -78,8 +78,10 @@ For minority and socially conscious consumers who are looking to support minorit
 1. We are using AWS codebuild for continuous integration. You can view our <a href="https://us-west-2.console.aws.amazon.com/codesuite/codebuild/builds/build-history?region=us-west-2&builds-meta=eyJmIjp7InRleHQiOiIifSwicyI6e30sIm4iOjUwLCJpIjowfQ" target="_blank"> build history here. </a>
 
 <a name="techspecs"></a>
-## Tech Spec Guide
+## More Project Information
 1. For more detailed information about our project's specifics, check out our <a href="https://docs.google.com/document/d/1ZXuMEAB2FJuRg9m0L3j22Jd5vqAORDWLx7ZzBlTzTp8/edit?usp=sharing" target="_blank"> Technical Specification Guide here. </a>
+2. For more details on our project's privacy policy, EULA, and contact information checkout our <a href="https://cpsecapstone.github.io/Isoko/" target="_blank"> Github Pages/Alpha Site here. </a>
+
 
 <a name="arch"></a>
 ## Project Architecture
