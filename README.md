@@ -1,6 +1,8 @@
 # Isoko
 2021 Software Engineering Capstone - AWS Minority Owned Business Team
 
+Visit the ALPHA Version of ISOKO here: https://master.db75ilqlzlmt4.amplifyapp.com/
+
 # Table of Contents
 1. [ Overview ](#over)
 2. [ Vision Statements ](#vision)
@@ -17,10 +19,10 @@ Despite making up 32% of the population, ethnic minorities own only 18% of busin
 <a name="vision"></a>
 ## Vision Statements
 ### For Business Owners
-For business owners who are minorities the Minority Markets (Application)  is a web application that displays various minority owned businesses unlike Yelp/Google, our product strives to increase traction for minority owned businesses specifically .
+For business owners who are minorities Isoko is a web application that displays various minority owned businesses unlike Yelp/Google, our product strives to increase traction for minority owned businesses specifically .
 
 ### For Consumers
-For minority and socially conscious consumers who are looking to support minority owned businesses the Minority Markets is a web application that displays various minority owned businesses unlike Yelp/Google, our product is not oversaturated and serves a specific need to find a variety of minority group owned businesses.
+For minority and socially conscious consumers who are looking to support minority owned businesses Isoko is a web application that displays various minority owned businesses unlike Yelp/Google, our product is not oversaturated and serves a specific need to find a variety of minority group owned businesses.
 
 <a name="meet"></a>
 ## Meet the Team
