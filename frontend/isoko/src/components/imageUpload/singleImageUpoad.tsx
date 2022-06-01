@@ -36,10 +36,6 @@ interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {
 const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   // const [displayImage, setdisplayImage] = useState(
-   //    props.initialImage ||
-   //       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
-   // );
 
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
@@ -57,7 +53,7 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
          />
          <Row>
             <AvatarContainer>
-               <Photo src={displayImage} />
+               <Photo src={props.initialImage} />
                <Label htmlFor="avatar-upload">Upload a Profile Pic</Label>
                <h2>{props.label}</h2>
             </AvatarContainer>
@@ -68,7 +64,7 @@ const SingleImageUpload: React.FC<ImageUploadProps> = (props) => {
                   setShowCrop(false);
                }}
                updateCroppedList={(croppedImg) => {
-                  setdisplayImage(croppedImg);
+                  props.changeImageState(croppedImg);
                }}
             />
          </Row>
