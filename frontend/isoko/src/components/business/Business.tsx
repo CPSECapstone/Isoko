@@ -127,7 +127,9 @@ const Business: React.FC<BusinessProps> = (props) => {
    const [sortedReviews, setSortedReviews] = useState(copyReviewList);
 
    useEffect(() => {
-      const sortedNewReviews = [...businessDetails.reviews];
+      const sortedNewReviews = businessDetails
+         ? [...businessDetails.reviews]
+         : [];
       sortedNewReviews.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
 
       setSortedReviews(sortedNewReviews);
