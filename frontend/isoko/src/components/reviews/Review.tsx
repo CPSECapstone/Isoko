@@ -87,8 +87,9 @@ const Review: React.FC<ReviewProps> = (props: ReviewProps) => {
    if (images == null) {
       images = [];
    }
-   const reviewDate = new Date(props.ts * 1000);
-   const formattedReviewDate = moment(reviewDate).format('MM/DD/YYYY');
+   const formattedReviewDate = moment
+      .unix(props.ts / 1000)
+      .format('MM/DD/YYYY');
    return (
       <ReviewContainer className={props.className}>
          <UserContainer>

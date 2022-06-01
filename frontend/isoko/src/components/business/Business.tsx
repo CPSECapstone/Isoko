@@ -121,21 +121,29 @@ const Business: React.FC<BusinessProps> = (props) => {
 
    const reviewsList = businessDetails ? businessDetails.reviews : [];
 
-   const [sortedReviews, setSortedReviews] = useState(
-      reviewsList.sort((a, b) => b.ts - a.ts)
-   );
+   const copyReviewList = [...reviewsList];
+   copyReviewList.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
+
+   const [sortedReviews, setSortedReviews] = useState(copyReviewList);
+
+   useEffect(() => {
+      const sortedNewReviews = businessDetails
+         ? [...businessDetails.reviews]
+         : [];
+      sortedNewReviews.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
+
+      setSortedReviews(sortedNewReviews);
+   }, [businessDetails]);
 
    const sortReviews = (key) => {
       if (key === 'recent') {
-         setSortedReviews([...sortedReviews.sort((a, b) => b.ts - a.ts)]);
+         setSortedReviews([
+            ...sortedReviews.sort((a, b) => parseInt(b.ts) - parseInt(a.ts)),
+         ]);
       } else if (key === 'highestRated') {
-         setSortedReviews([
-            ...sortedReviews.sort((a, b) => b.rating - a.rating),
-         ]);
+         setSortedReviews([...sortedReviews.sort((a, b) => b.stars - a.stars)]);
       } else if (key === 'lowestRated') {
-         setSortedReviews([
-            ...sortedReviews.sort((a, b) => a.rating - b.rating),
-         ]);
+         setSortedReviews([...sortedReviews.sort((a, b) => a.stars - b.stars)]);
       }
    };
 
@@ -154,7 +162,9 @@ const Business: React.FC<BusinessProps> = (props) => {
                      <BusinessHeader
                         name={businessDetails.name}
                         description={businessDetails.shortDesc}
-                        stars={businessDetails.rating}
+                        stars={
+                           businessDetails.stars / businessDetails.numReviews
+                        }
                         minorityTags={businessDetails.tags}
                         keywordTags={businessDetails.keywords}
                         verified={businessDetails.claimed}
@@ -212,13 +222,13 @@ const Business: React.FC<BusinessProps> = (props) => {
                            {sortedReviews.map((review, index) => (
                               <Review
                                  key={index}
-                                 reviewerName={review.reviewAuthor}
+                                 name={review.authorUserName}
                                  reviewerImageUrl={review.authorProfilePicture}
-                                 stars={review.rating}
+                                 stars={review.stars}
                                  subject={review.reviewTitle}
                                  content={review.description}
                                  imageUrls={review.pictures}
-                                 ts={review.ts}
+                                 ts={parseInt(review.ts)}
                               />
                            ))}
                         </>

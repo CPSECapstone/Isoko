@@ -7,8 +7,9 @@ import axios from 'axios';
 import { environment } from '../../environment/environment';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { postReviewAsync } from '../../features/business/BusinessSlice';
 
 const CONTENTMAXLENGTH = 300;
 
@@ -70,6 +71,7 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
    // TODO: Add image upload and display
    const [listOfImages, setListOfImages] = useState([]);
    const [err, setErr] = useState('');
+   const dispatch = useAppDispatch();
 
    const location = useLocation();
    const profile = useAppSelector((store) => store.profile);
@@ -81,11 +83,7 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
    };
 
    const handleConfirm = () => {
-      // TODO: Replace this with a post request to send review to database
       if (isValid()) {
-         // NOTE: This will not work until IS-122 is merged in bc we need to get
-         // the businessId from the URL.
-
          //get value for authorization header
          const userPool = new CognitoUserPool({
             UserPoolId: environment.cognitoUserPoolId,
@@ -93,29 +91,26 @@ const WriteReviewModal: React.FC<WriteReviewModalProps> = (props) => {
          });
 
          const user = userPool.getCurrentUser();
-         const session = user.getSession(function (err, result) {
+         user.getSession(function (err, result) {
             if (result) {
-               const config = {
-                  headers: {
-                     Authorization: result.idToken.jwtToken,
-                  },
-               };
-               axios.post(
-                  `${environment.prodURL}${location.pathname}/review`,
-                  {
-                     reviewAuthor: profile.userSub,
-                     authorUserName: profile.name,
-                     authorProfilePicture: profile.profilePicture,
-                     stars: rating / 20,
-                     reviewTitle: subject,
-                     description: content,
-                     pictures: listOfImages,
-                     ts: `${moment.now()}`,
-                     state: props.state,
-                     city: props.city,
+               dispatch(
+                  postReviewAsync({
+                     businessId: location.pathname.split('/')[2],
+                     authToken: result.idToken.jwtToken,
+                     review: {
+                        reviewAuthor: profile.userSub,
+                        authorUserName: profile.name,
+                        authorProfilePicture: profile.profilePicture,
+                        stars: rating / 20,
+                        reviewTitle: subject,
+                        description: content,
+                        pictures: listOfImages,
+                        ts: `${moment.now()}`,
+                        state: props.state,
+                        city: props.city,
+                     },
                      category: props.category,
-                  },
-                  config
+                  })
                );
             }
          });

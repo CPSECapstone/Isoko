@@ -57,7 +57,7 @@ export interface Business {
    tags: Array<string>;
    keywords: Array<string>;
    category: string;
-   rating: number;
+   stars: number;
    shortDesc: string;
    numReviews: number;
    claimed: boolean;
