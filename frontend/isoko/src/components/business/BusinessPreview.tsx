@@ -92,8 +92,6 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
 
    const dispatch = useAppDispatch();
 
-   console.log(props);
-
    return (
       <BusinessContainer
          className={props.className}

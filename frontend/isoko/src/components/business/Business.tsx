@@ -167,7 +167,7 @@ const Business: React.FC<BusinessProps> = (props) => {
                         }
                         minorityTags={businessDetails.tags}
                         keywordTags={businessDetails.keywords}
-                        verified={businessDetails.claimed}
+                        verified={businessDetails.verified}
                         numReviews={businessDetails.numReviews}
                      />
                      {businessDetails.aboutOwner ? (
@@ -237,7 +237,7 @@ const Business: React.FC<BusinessProps> = (props) => {
                   <StyledCol lg={4} md={12}>
                      <PositionedSidebar
                         id="sidebar"
-                        claimed={businessDetails.claimed}
+                        claimed={businessDetails.verified}
                         hours={businessDetails.hours}
                         address={`${businessDetails.street} ${businessDetails.city}, ${businessDetails.state}`}
                         links={Object.keys(businessDetails.links).map(

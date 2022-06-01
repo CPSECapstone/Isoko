@@ -4,7 +4,7 @@ export interface BusinessPreview {
    type: string;
    tags: Array<string>;
    keywords: Array<string>;
-   rating: number;
+   stars: number;
    shortDesc: string;
    numReviews: number;
    verified: boolean;
@@ -60,7 +60,7 @@ export interface Business {
    stars: number;
    shortDesc: string;
    numReviews: number;
-   claimed: boolean;
+   verified: boolean;
    businessId: string;
    hours: Hours;
    links: {
