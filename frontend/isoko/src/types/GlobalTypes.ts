@@ -60,7 +60,7 @@ export interface Business {
    stars: number;
    shortDesc: string;
    numReviews: number;
-   claimed: boolean;
+   verified: boolean;
    businessId: string;
    hours: Hours;
    links: {
