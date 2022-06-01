@@ -136,7 +136,7 @@ const Home: React.FC = () => {
                      'https://s3-media1.fl.yelpcdn.com/bphoto/D_3vgv0Hd8u4XKkDjSvr9w/o.jpg'
                   }
                   description={
-                     'Come enjoy a fancy cocktail with our scenic creek views.'
+                     'The best donuts in the land. Eating here will increase your donut standards.'
                   }
                   stars={0}
                   minorityTags={['LGBTQ+ Owned, Women Owned']}
