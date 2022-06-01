@@ -162,7 +162,9 @@ const Business: React.FC<BusinessProps> = (props) => {
                      <BusinessHeader
                         name={businessDetails.name}
                         description={businessDetails.shortDesc}
-                        stars={businessDetails.rating}
+                        stars={
+                           businessDetails.stars / businessDetails.numReviews
+                        }
                         minorityTags={businessDetails.tags}
                         keywordTags={businessDetails.keywords}
                         verified={businessDetails.claimed}

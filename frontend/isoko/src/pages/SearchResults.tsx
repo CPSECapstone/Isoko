@@ -320,7 +320,7 @@ const SearchResults: React.FC = () => {
                                  name={business.name}
                                  imageUrl={business.photo}
                                  description={business.shortDesc}
-                                 stars={business.rating}
+                                 stars={business.stars}
                                  minorityTags={business.tags}
                                  keywordTags={business.keywords}
                                  verified={business.verified}

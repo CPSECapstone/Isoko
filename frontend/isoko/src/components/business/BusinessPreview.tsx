@@ -92,6 +92,8 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
 
    const dispatch = useAppDispatch();
 
+   console.log(props);
+
    return (
       <BusinessContainer
          className={props.className}
@@ -116,7 +118,7 @@ const BusinessPreview: React.FC<BusinessPreviewProps> = (props) => {
             </TagRow>
 
             <TagRow>
-               <StyledStarRating rating={props.stars} />
+               <StyledStarRating rating={props.stars / props.numReviews} />
                <ReviewLabel>{props.numReviews} Reviews</ReviewLabel>
             </TagRow>
 
