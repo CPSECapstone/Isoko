@@ -109,52 +109,64 @@ const CenterDiv = styled.div`
    width: 90%;
 `;
 
-const Home: React.FC = () => (
-   <main>
-      <TopContent>
-         <HamburgerComponent />
-         <ImageContainer>
-            <LeftImg></LeftImg>
-            <MidImg></MidImg>
-            <RightImg></RightImg>
-         </ImageContainer>
+const Home: React.FC = () => {
+   return (
+      <main>
+         <TopContent>
+            <HamburgerComponent />
+            <ImageContainer>
+               <LeftImg></LeftImg>
+               <MidImg></MidImg>
+               <RightImg></RightImg>
+            </ImageContainer>
 
-         <SearchBarContent>
-            <Title>ISOKO</Title>
-            <SubTitle>find something special</SubTitle>
-            <SearchBar />
-         </SearchBarContent>
-      </TopContent>
+            <SearchBarContent>
+               <Title>ISOKO</Title>
+               <SubTitle>find something special</SubTitle>
+               <SearchBar />
+            </SearchBarContent>
+         </TopContent>
 
-      <BottomContent>
-         <CenterDiv>
-            <FTitle>{'Featured Brick & Mortar Business'}</FTitle>
-            <StyledBusinessPreview
-               name="Bluth's Original Frozen Banana"
-               imageUrl="https://static3.srcdn.com/wordpress/wp-content/uploads/2020/02/Arrested-Development-Banana-Stand.jpg"
-               description="There's always money in the banana stand"
-               stars={4.5}
-               minorityTags={['Black-Owned', 'Woman-Owned']}
-               keywordTags={['Smoothies', 'Bananas']}
-               verified={true}
-               path="/business"
-               numReviews={150}
-            />
-            <FTitle>{'Featured Online Business'}</FTitle>
-            <StyledBusinessPreview
-               name="Bob's Burgers"
-               imageUrl="https://www.pluggedin.com/wp-content/uploads/2020/01/bobs-burgers-review-image.jpg"
-               description="Bob rallies the team to cook up some business, so he sends middle child Gene to push something or other here this is long"
-               stars={3}
-               minorityTags={['Black-Owned']}
-               keywordTags={['Burgers']}
-               verified={false}
-               path="/business"
-               numReviews={80}
-            />
-         </CenterDiv>
-      </BottomContent>
-   </main>
-);
+         <BottomContent>
+            <CenterDiv>
+               <FTitle>{'Featured Brick & Mortar Business'}</FTitle>
+               <StyledBusinessPreview
+                  name={'SloDoCo Donuts'}
+                  imageUrl={
+                     'https://s3-media1.fl.yelpcdn.com/bphoto/D_3vgv0Hd8u4XKkDjSvr9w/o.jpg'
+                  }
+                  description={
+                     'Come enjoy a fancy cocktail with our scenic creek views.'
+                  }
+                  stars={0}
+                  minorityTags={['LGBTQ+ Owned, Women Owned']}
+                  keywordTags={['Donuts']}
+                  verified={true}
+                  path={`/business/1669197307`}
+                  numReviews={0}
+                  businessId={'1669197307'}
+               />
+               <FTitle>{'Featured Online Business'}</FTitle>
+               <StyledBusinessPreview
+                  name={'Paris Nail Lounge'}
+                  imageUrl={
+                     'https://s3-media2.fl.yelpcdn.com/bphoto/fN6NslNHWmB909Mk3XVjuw/o.jpg'
+                  }
+                  description={
+                     "The first shop of it's kind to open up in San Luis Obispo!"
+                  }
+                  stars={0}
+                  minorityTags={['LGBTQ+ Owned', 'Women Owned']}
+                  keywordTags={['Nail Salon']}
+                  verified={true}
+                  path={`/business/-1002763084`}
+                  numReviews={0}
+                  businessId={'-1002763084'}
+               />
+            </CenterDiv>
+         </BottomContent>
+      </main>
+   );
+};
 
 export default Home;
