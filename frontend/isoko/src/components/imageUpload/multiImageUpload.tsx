@@ -9,6 +9,9 @@ const Container = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
+   margin-left: 10%;
+   margin-right: 10%;
+   margin-bottom: 10%;
 `;
 
 const PhotoContainer = styled.div`
@@ -41,17 +44,23 @@ const Label = styled.label`
    padding: 15px;
    border-radius: 40px;
    font-size: 15px;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   &:hover {
+      background: #e06c00;
+   }
+   &:active {
+      background: #e06c00;
+   }
 `;
 
 interface MultiImageUploadProps extends React.HTMLProps<HTMLDivElement> {
    photos: Array<string>;
+   changePhotosState: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
    const [imageURL, setImageURL] = useState('');
    const [showCrop, setShowCrop] = useState(false);
-   const [croppedImgList, setCroppedImgList] = useState(props.photos);
-
    const onImageChange = (e) => {
       setImageURL(URL.createObjectURL(e.target.files[0]));
       setShowCrop(true);
@@ -69,7 +78,8 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
          <Label htmlFor="file-upload">Upload an Image</Label>
          <h2>
             These pictures will appear in the carousel at the top of your
-            business page
+            business page. The first picture uploaded will also appear as the
+            thumbnail on the search results page.
          </h2>
          <CropModal
             show={showCrop}
@@ -78,12 +88,12 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
                setShowCrop(false);
             }}
             updateCroppedList={(croppedImg) => {
-               setCroppedImgList([...croppedImgList, croppedImg]);
+               props.changePhotosState([...props.photos, croppedImg]);
             }}
          />
          <Container>
             <Row>
-               {croppedImgList.map((imageSrc, index) => (
+               {props.photos.map((imageSrc, index) => (
                   <Col key={index}>
                      <PhotoContainer>
                         <div key={imageSrc} className="image">
@@ -92,8 +102,8 @@ const MultiImageUpload: React.FC<MultiImageUploadProps> = (props) => {
                               variant="secondary"
                               size="sm"
                               onClick={() =>
-                                 setCroppedImgList(
-                                    croppedImgList.filter((e) => e !== imageSrc)
+                                 props.changePhotosState(
+                                    props.photos.filter((e) => e !== imageSrc)
                                  )
                               }
                            >

@@ -31,11 +31,14 @@ export const updateBusinessDetails = async (
    fieldUpdates: {
       name?: string;
       city?: string;
+      state?: string;
       type?: 'B&M' | 'Online';
+      category?: string;
       tags?: Array<string>;
       keywords?: Array<string>;
       shortDesc?: string;
       hours?: Hours;
+      photos?: Array<string>;
       links?: {
          [key: string]: string;
       };
