@@ -63,6 +63,11 @@ export const businessSlice = createSlice({
                   action.payload.review,
                   ...state.businesses[action.payload.businessId].reviews,
                ];
+               state.businesses[action.payload.businessId].stars =
+                  state.businesses[action.payload.businessId].stars +
+                  action.payload.review.stars;
+               state.businesses[action.payload.businessId].numReviews =
+                  state.businesses[action.payload.businessId].numReviews + 1;
             }
          );
    },
