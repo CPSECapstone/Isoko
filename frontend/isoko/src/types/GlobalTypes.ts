@@ -4,7 +4,7 @@ export interface BusinessPreview {
    type: string;
    tags: Array<string>;
    keywords: Array<string>;
-   rating: number;
+   stars: number;
    shortDesc: string;
    numReviews: number;
    verified: boolean;

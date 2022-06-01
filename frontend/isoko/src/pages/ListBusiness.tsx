@@ -423,6 +423,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
          type: isBrickAndMortar === 'true' ? 'B&M' : 'Online',
          tags: tags,
          category,
+         keywords,
          shortDesc,
          hours:
             isBrickAndMortar === 'true'
