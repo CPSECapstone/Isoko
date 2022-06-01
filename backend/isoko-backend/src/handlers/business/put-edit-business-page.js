@@ -116,13 +116,12 @@ exports.putEditBusinessPageHandler = async (event) => {
             ExpressionAttributeNames: {
                '#photo': 'photo'
             },
-            ReturnValues: 'ALL_NEW',
          }
 
       const dynamoRes = await docClient.update(searchResultsImgParams).promise();
 
       } catch (e) {
-         response = get400Response('Not able to update business preview thumbnail image');
+         response = get400Response('Not able to update business preview thumbnail image\n' + "Error: " + e.message)
       }
    }
 

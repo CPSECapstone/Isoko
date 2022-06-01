@@ -25,6 +25,13 @@ const Label = styled.label`
    padding: 15px;
    border-radius: 40px;
    font-size: 15px;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   &:hover {
+      background: #e06c00;
+   }
+   &:active {
+      background: #e06c00;
+   }
 `;
 
 interface ImageUploadProps extends React.HTMLProps<HTMLDivElement> {

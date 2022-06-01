@@ -15,17 +15,30 @@ const Container = styled.div`
 `;
 
 const WideButton = styled(StyledButton)`
-   width: 120px;
-   border-radius: 10px;
+   width: 150px;
+   border-radius: 40px;
+   font-size: 15px;
    border: none;
-   height: 32px;
+   height: 50px;
    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   margin-top: 7%;
+   background: #72d3fc;
+   &:hover {
+      background: #67bce0;
+   }
+   &:active {
+      background: #67bce0;
+   }
 `;
 
 interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
    ownerPhoto?: string;
    photos: Array<string>;
    businessId: string;
+   city?: string;
+   state?: string;
+   type?: 'B&M' | 'Online';
+   category?: string;
 }
 
 const Photos: React.FC<PhotoProps> = (props) => {
@@ -68,7 +81,7 @@ const Photos: React.FC<PhotoProps> = (props) => {
          'https://image-bucket-isoko.s3.us-west-2.amazonaws.com/' +
          photoId +
          '.jpg';
-      // setPermURLS([...permURLS, permUrl]);
+
       return permUrl;
    };
 
@@ -84,6 +97,10 @@ const Photos: React.FC<PhotoProps> = (props) => {
             aboutOwner: {
                photo: aboutOwnerPic,
             },
+            type: props.type,
+            category: props.category,
+            state: props.state,
+            city: props.city,
          })
       );
    };
@@ -91,13 +108,12 @@ const Photos: React.FC<PhotoProps> = (props) => {
    return (
       <main>
          <WideButton
-            //permanent urls for endpoint
             primary
             onClick={(e) => {
                updatePhotos();
             }}
          >
-            Submit
+            Save Changes
          </WideButton>
          <Container>
             <SingleImageUpload

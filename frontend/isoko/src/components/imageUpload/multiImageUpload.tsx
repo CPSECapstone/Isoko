@@ -9,6 +9,9 @@ const Container = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
+   margin-left: 10%;
+   margin-right: 10%;
+   margin-bottom: 10%;
 `;
 
 const PhotoContainer = styled.div`
@@ -41,6 +44,13 @@ const Label = styled.label`
    padding: 15px;
    border-radius: 40px;
    font-size: 15px;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   &:hover {
+      background: #e06c00;
+   }
+   &:active {
+      background: #e06c00;
+   }
 `;
 
 interface MultiImageUploadProps extends React.HTMLProps<HTMLDivElement> {
