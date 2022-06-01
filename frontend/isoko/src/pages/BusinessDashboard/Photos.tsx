@@ -25,13 +25,11 @@ const WideButton = styled(StyledButton)`
 interface PhotoProps extends React.HTMLProps<HTMLDivElement> {
    ownerPhoto?: string;
    photos: Array<string>;
-   businessId?: string;
+   businessId: string;
 }
 
 const Photos: React.FC<PhotoProps> = (props) => {
    const [photosState, setPhotosState] = useState<Array<string>>(props.photos);
-   const [permURLS, setPermURLS] = useState([]);
-   console.log(permURLS);
    const [imageState, setImageState] = useState(
       props.ownerPhoto
          ? props.ownerPhoto
@@ -43,6 +41,14 @@ const Photos: React.FC<PhotoProps> = (props) => {
       s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 
    const getPermUrls = async (url: string) => {
+      if (
+         url.startsWith(
+            'https://image-bucket-isoko.s3.us-west-2.amazonaws.com/'
+         )
+      ) {
+         return url;
+      }
+
       const photoId = hashCode(url).toString();
       const getResponse = await axios.get(
          `https://xyalrvt8gb.execute-api.us-west-2.amazonaws.com/Prod/photos/${photoId}`
@@ -53,7 +59,7 @@ const Photos: React.FC<PhotoProps> = (props) => {
          type: 'image/jpeg',
       });
 
-      const result = fetch(uploadURL, {
+      await fetch(uploadURL, {
          method: 'PUT',
          body: blobData,
       });
@@ -62,26 +68,24 @@ const Photos: React.FC<PhotoProps> = (props) => {
          'https://image-bucket-isoko.s3.us-west-2.amazonaws.com/' +
          photoId +
          '.jpg';
-      setPermURLS([...permURLS, permUrl]);
+      // setPermURLS([...permURLS, permUrl]);
+      return permUrl;
    };
 
-   const updatePhotos = () => {
-      if (photosState.length != 0) {
-         photosState.forEach(getPermUrls);
-      }
-      getPermUrls(imageState);
-      //redux
-      // const businessInfo = gatherBusinessInfo();
+   const updatePhotos = async () => {
+      const photoPromises = photosState.map(getPermUrls);
+      const permanentURLS = await Promise.all(photoPromises);
+      const aboutOwnerPic = await getPermUrls(imageState);
+
       dispatch(
          updateBusinessDetailsAsync({
-            // ...businessInfo,
             businessId: props.businessId,
-            photos: permURLS,
+            photos: permanentURLS,
+            aboutOwner: {
+               photo: aboutOwnerPic,
+            },
          })
       );
-
-      //reset permUrl list
-      // setPermURLS([]);
    };
 
    return (

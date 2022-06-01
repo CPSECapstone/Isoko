@@ -202,8 +202,9 @@ const BusinessDash: React.FC = () => {
                      ) : null}
                      {activeComponent === 'Photos' ? (
                         <Photos
-                           ownerPhoto={dashboardStore.business.photos[0]}
+                           ownerPhoto={dashboardStore.business.aboutOwner.photo}
                            photos={dashboardStore.business.photos}
+                           businessId={dashboardStore.business.businessId}
                         />
                      ) : null}
                      {activeComponent === 'Analytics' ? <Analytics /> : null}
