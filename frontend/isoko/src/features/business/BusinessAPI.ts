@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { environment } from '../../environment/environment';
-import { Business, Hours, PageViewAnalytics } from '../../types/GlobalTypes';
+import {
+   Business,
+   Hours,
+   PageViewAnalytics,
+   Review,
+} from '../../types/GlobalTypes';
 
 export const fetchBusiness = async (businessId: string): Promise<Business> => {
    const response = await axios.get(
@@ -51,4 +56,28 @@ export const updateBusinessDetails = async (
 
    const updatedBusiness = response.data;
    return updatedBusiness as Business;
+};
+
+export const postReview = async (
+   businessId: string,
+   review: Review,
+   authToken: string,
+   category: string
+) => {
+   const config = {
+      headers: {
+         Authorization: authToken,
+      },
+   };
+
+   await axios.post(
+      `${environment.prodURL}/business/${businessId}/review`,
+      { ...review, category },
+      config
+   );
+
+   return {
+      review,
+      businessId,
+   };
 };

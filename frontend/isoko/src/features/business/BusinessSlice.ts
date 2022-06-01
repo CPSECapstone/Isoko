@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Business } from '../../types/GlobalTypes';
-import { fetchBusiness } from './BusinessAPI';
+import { Business, Review } from '../../types/GlobalTypes';
+import { fetchBusiness, postReview } from './BusinessAPI';
 
 export interface BusinessState {
    status: 'idle' | 'loading' | 'failed';
@@ -19,6 +19,23 @@ export const getBusinessAsync = createAsyncThunk(
    }
 );
 
+export const postReviewAsync = createAsyncThunk(
+   'business/postReview',
+   async (params: {
+      businessId: string;
+      review: Review;
+      authToken: string;
+      category: string;
+   }) => {
+      return await postReview(
+         params.businessId,
+         params.review,
+         params.authToken,
+         params.category
+      );
+   }
+);
+
 export const businessSlice = createSlice({
    name: 'business',
    initialState,
@@ -33,6 +50,19 @@ export const businessSlice = createSlice({
             (state, action: PayloadAction<Business>) => {
                state.status = 'idle';
                state.businesses[action.payload.businessId] = action.payload;
+            }
+         )
+         .addCase(
+            postReviewAsync.fulfilled,
+            (
+               state,
+               action: PayloadAction<{ businessId: string; review: Review }>
+            ) => {
+               state.status = 'idle';
+               state.businesses[action.payload.businessId].reviews = [
+                  action.payload.review,
+                  ...state.businesses[action.payload.businessId].reviews,
+               ];
             }
          );
    },
