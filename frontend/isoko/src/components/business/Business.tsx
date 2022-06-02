@@ -170,7 +170,7 @@ const Business: React.FC<BusinessProps> = (props) => {
                         minorityTags={businessDetails.tags}
                         keywordTags={businessDetails.keywords}
                         verified={businessDetails.verified}
-                        numReviews={businessDetails.numReviews}
+                        numReviews={businessDetails.numReviews || 0}
                      />
                      {businessDetails.aboutOwner &&
                      businessDetails.aboutOwner.photo ? (
