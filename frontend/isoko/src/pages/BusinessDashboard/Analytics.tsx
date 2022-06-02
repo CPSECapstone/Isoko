@@ -99,7 +99,9 @@ const Analytics: React.FC<ReviewProps> = (props) => {
                </StyledDiv>
             </Row>
             <Row>
-               <ChartTitle>Average Rating - {props.rating}</ChartTitle>
+               <ChartTitle>
+                  Average Rating - {props.rating / props.reviews.length}
+               </ChartTitle>
             </Row>
             <StyledRow>
                <RatingGraph ratings={buildRatingCount(ratingArray)} />

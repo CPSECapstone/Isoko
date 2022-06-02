@@ -138,12 +138,12 @@ const Home: React.FC = () => {
                   description={
                      'The best donuts in the land. Eating here will increase your donut standards.'
                   }
-                  stars={0}
+                  stars={70}
                   minorityTags={['LGBTQ+ Owned', 'Women Owned']}
                   keywordTags={['Donuts']}
                   verified={true}
                   path={`/business/1669197307`}
-                  numReviews={0}
+                  numReviews={15}
                   businessId={'1669197307'}
                />
                <FTitle>{'Featured Online Business'}</FTitle>
@@ -155,12 +155,12 @@ const Home: React.FC = () => {
                   description={
                      "The first shop of it's kind to open up in San Luis Obispo!"
                   }
-                  stars={0}
+                  stars={5}
                   minorityTags={['LGBTQ+ Owned', 'Women Owned']}
                   keywordTags={['Nail Salon']}
                   verified={true}
                   path={`/business/-1002763084`}
-                  numReviews={0}
+                  numReviews={1}
                   businessId={'-1002763084'}
                />
             </CenterDiv>

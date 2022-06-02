@@ -213,7 +213,7 @@ const BusinessDash: React.FC = () => {
                      ) : null}
                      {activeComponent === 'Analytics' ? (
                         <Analytics
-                           rating={dashboardStore.business.rating}
+                           rating={dashboardStore.business.stars}
                            reviews={dashboardStore.business.reviews}
                         />
                      ) : null}

@@ -239,7 +239,7 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    const dispatch = useAppDispatch();
 
    const [err, setErr] = useState('');
-   const [isOwner, setIsOwner] = useState(props.ownerDesc ? 'true' : '');
+   const [isOwner, setIsOwner] = useState(props.verified ? 'true' : '');
    const [isBrickAndMortar, setIsBrickAndMortar] = useState(
       props.street ? 'true' : props.links ? 'false' : ''
    );
@@ -335,29 +335,32 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
    }, []);
 
    const listABusiness = () => {
-      if (isValid() && isListBusiness) {
-         const businessInfo = gatherBusinessInfo();
-         postBusinessInfo({
-            ...businessInfo,
-            timestamp: new Date().getTime(),
-            photos: [],
-            links: isBrickAndMortar === 'true' ? {} : { Website: businessURL },
-         });
-      } else if (isValid() && !isListBusiness) {
-         const businessInfo = gatherBusinessInfo();
-         dispatch(
-            updateBusinessDetailsAsync({
+      if (isValid()) {
+         if (isListBusiness) {
+            const businessInfo = gatherBusinessInfo();
+            postBusinessInfo({
                ...businessInfo,
-               businessId: props.businessId,
-            })
-         );
-      } // no need for an else. Errors are set in isValid
+               timestamp: new Date().getTime(),
+               photos: [],
+               links:
+                  isBrickAndMortar === 'true' ? {} : { Website: businessURL },
+            });
+         } else if (!isListBusiness) {
+            const businessInfo = gatherBusinessInfo();
+            dispatch(
+               updateBusinessDetailsAsync({
+                  ...businessInfo,
+                  businessId: props.businessId,
+               })
+            );
+         } // no need for an else. Errors are set in isValid
 
-      alert('Business details have been successfully saved!');
-      if (isListBusiness) {
-         navigate('/');
-      } else {
-         props.setActiveComponent('Preview');
+         alert('Business details have been successfully saved!');
+         if (isListBusiness) {
+            navigate('/');
+         } else {
+            props.setActiveComponent('Preview');
+         }
       }
    };
 
@@ -467,12 +470,13 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                  }
                : {},
          verified: isOwner == 'true' ? true : false,
+         photoLink:
+            'https://image-bucket-isoko.s3.us-west-2.amazonaws.com/new-listing-image.webp',
       };
       return businessInfo;
    };
    const postBusinessInfo = async (businessInfo) => {
       if (isValid()) {
-         console.log('BusinessInfo: ', businessInfo);
          await axios.post(`${environment.prodURL}/business`, businessInfo);
       }
    };
@@ -749,38 +753,6 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                         </HourContainer>
                         <HourContainer className="mb-2">
                            <HourGroup>
-                              <HourLabel className="mt-2">Sunday </HourLabel>
-                              <StyledControl
-                                 className="mx-3"
-                                 type="text"
-                                 placeholder="8:00am"
-                                 value={openHours.Sun}
-                                 onChange={(e) =>
-                                    setOpenHours({
-                                       ...openHours,
-                                       Sun: e.target.value,
-                                    })
-                                 }
-                              />
-                           </HourGroup>
-                           <HourGroup>
-                              <Form.Label className="mt-2">to</Form.Label>
-                              <StyledControl
-                                 className="mx-3"
-                                 type="text"
-                                 value={closeHours.Sun}
-                                 onChange={(e) =>
-                                    setCloseHours({
-                                       ...closeHours,
-                                       Sun: e.target.value,
-                                    })
-                                 }
-                                 placeholder="7:00pm"
-                              />
-                           </HourGroup>
-                        </HourContainer>
-                        <HourContainer className="mb-2">
-                           <HourGroup>
                               <HourLabel className="mt-2">Monday </HourLabel>
                               <StyledControl
                                  className="mx-3"
@@ -968,6 +940,38 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                                     })
                                  }
                                  placeholder="5:00pm"
+                              />
+                           </HourGroup>
+                        </HourContainer>
+                        <HourContainer className="mb-2">
+                           <HourGroup>
+                              <HourLabel className="mt-2">Sunday </HourLabel>
+                              <StyledControl
+                                 className="mx-3"
+                                 type="text"
+                                 placeholder="8:00am"
+                                 value={openHours.Sun}
+                                 onChange={(e) =>
+                                    setOpenHours({
+                                       ...openHours,
+                                       Sun: e.target.value,
+                                    })
+                                 }
+                              />
+                           </HourGroup>
+                           <HourGroup>
+                              <Form.Label className="mt-2">to</Form.Label>
+                              <StyledControl
+                                 className="mx-3"
+                                 type="text"
+                                 value={closeHours.Sun}
+                                 onChange={(e) =>
+                                    setCloseHours({
+                                       ...closeHours,
+                                       Sun: e.target.value,
+                                    })
+                                 }
+                                 placeholder="7:00pm"
                               />
                            </HourGroup>
                         </HourContainer>

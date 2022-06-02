@@ -10,6 +10,7 @@ import { User as UserType } from '../../types/GlobalTypes';
 import { useAppDispatch } from '../../app/hooks';
 import { updateBusinessDetailsAsync } from '../../features/dashboard/DashboardSlice';
 import { updateUserToBusinessOwnerAsync } from '../../features/profile/ProfileSlice';
+import { useNavigate } from 'react-router-dom';
 
 const NotLoggedInError = styled.div`
    align-items: center;
@@ -32,6 +33,7 @@ export interface UpdateParams {
 const ClaimBusinessModal: React.FC<ClaimBusinessModalProps> = (props) => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const [err, setErr] = useState('');
+   const navigate = useNavigate();
 
    const dispatch = useAppDispatch();
 
@@ -55,10 +57,9 @@ const ClaimBusinessModal: React.FC<ClaimBusinessModalProps> = (props) => {
       dispatch(
          updateBusinessDetailsAsync({
             businessId: props.businessDetails.businessId,
+            verified: true,
             aboutOwner: {
-               owner: props.profileDetails.userSub,
-               ownerName: props.profileDetails.name,
-               profilePicture: props.profileDetails.profilePicture,
+               photo: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
             },
          })
       );
@@ -94,6 +95,9 @@ const ClaimBusinessModal: React.FC<ClaimBusinessModalProps> = (props) => {
                onClick={() => {
                   if (isLoggedIn) {
                      claimBusiness();
+                     props.handleClose();
+                     alert('You have successfully claimed your business!');
+                     navigate('/businessDash');
                   } else {
                      setErr(
                         'You are not logged in. Please log in to claim this business.'
