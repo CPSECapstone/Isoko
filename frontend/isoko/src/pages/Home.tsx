@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                      'The best donuts in the land. Eating here will increase your donut standards.'
                   }
                   stars={0}
-                  minorityTags={['LGBTQ+ Owned, Women Owned']}
+                  minorityTags={['LGBTQ+ Owned', 'Women Owned']}
                   keywordTags={['Donuts']}
                   verified={true}
                   path={`/business/1669197307`}
