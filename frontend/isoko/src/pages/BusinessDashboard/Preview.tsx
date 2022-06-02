@@ -22,6 +22,7 @@ const Preview: React.FC<PreviewProps> = (props) => {
    return (
       <main>
          <Container>
+            <h1>Business Preview</h1>
             <Business
                showInPreview={false}
                businessDetails={props.businessDetails}

@@ -155,12 +155,12 @@ const Home: React.FC = () => {
                   description={
                      "The first shop of it's kind to open up in San Luis Obispo!"
                   }
-                  stars={5}
+                  stars={10}
                   minorityTags={['LGBTQ+ Owned', 'Women Owned']}
                   keywordTags={['Nail Salon']}
                   verified={true}
                   path={`/business/-1002763084`}
-                  numReviews={1}
+                  numReviews={2}
                   businessId={'-1002763084'}
                />
             </CenterDiv>
