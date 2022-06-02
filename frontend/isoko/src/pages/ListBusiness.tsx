@@ -470,6 +470,8 @@ const ListBusiness: React.FC<ListBusinessProps> = (props) => {
                  }
                : {},
          verified: isOwner == 'true' ? true : false,
+         photoLink:
+            'https://image-bucket-isoko.s3.us-west-2.amazonaws.com/new-listing-image.webp',
       };
       return businessInfo;
    };
