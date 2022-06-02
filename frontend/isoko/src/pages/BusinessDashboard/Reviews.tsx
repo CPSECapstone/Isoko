@@ -32,15 +32,16 @@ interface ReviewProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const Reviews: React.FC<ReviewProps> = (props) => {
-   const reviewsList = props.reviews;
+   const reviewsList = [...props.reviews];
+   reviewsList.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
 
-   const [sortedReviews, setSortedReviews] = useState(
-      reviewsList.sort((a, b) => b.ts - a.ts)
-   );
+   const [sortedReviews, setSortedReviews] = useState(reviewsList);
 
    const sortReviews = (key) => {
       if (key === 'recent') {
-         setSortedReviews([...sortedReviews.sort((a, b) => b.ts - a.ts)]);
+         setSortedReviews([
+            ...sortedReviews.sort((a, b) => parseInt(b.ts) - parseInt(a.ts)),
+         ]);
       } else if (key === 'highestRated') {
          setSortedReviews([...sortedReviews.sort((a, b) => b.stars - a.stars)]);
       } else if (key === 'lowestRated') {
@@ -60,13 +61,13 @@ const Reviews: React.FC<ReviewProps> = (props) => {
             {sortedReviews.map((review, index) => (
                <Row key={index}>
                   <Review
-                     name={review.reviewAuthor}
+                     name={review.authorUserName}
                      reviewerImageUrl={review.authorProfilePicture}
                      stars={review.stars}
                      subject={review.reviewTitle}
                      content={review.description}
                      imageUrls={review.pictures}
-                     ts={review.ts}
+                     ts={parseInt(review.ts)}
                   />
                </Row>
             ))}

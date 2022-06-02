@@ -119,7 +119,8 @@ const Business: React.FC<BusinessProps> = (props) => {
       }
    }, []);
 
-   const reviewsList = businessDetails ? businessDetails.reviews : [];
+   const reviewsList =
+      businessDetails && businessDetails.reviews ? businessDetails.reviews : [];
 
    const copyReviewList = [...reviewsList];
    copyReviewList.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
@@ -127,9 +128,10 @@ const Business: React.FC<BusinessProps> = (props) => {
    const [sortedReviews, setSortedReviews] = useState(copyReviewList);
 
    useEffect(() => {
-      const sortedNewReviews = businessDetails
-         ? [...businessDetails.reviews]
-         : [];
+      const sortedNewReviews =
+         businessDetails && businessDetails.reviews
+            ? [...businessDetails.reviews]
+            : [];
       sortedNewReviews.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));
 
       setSortedReviews(sortedNewReviews);
@@ -170,7 +172,8 @@ const Business: React.FC<BusinessProps> = (props) => {
                         verified={businessDetails.verified}
                         numReviews={businessDetails.numReviews}
                      />
-                     {businessDetails.aboutOwner ? (
+                     {businessDetails.aboutOwner &&
+                     businessDetails.aboutOwner.photo ? (
                         <div>
                            <Title>About the Owner</Title>
                            <AboutTheOwner

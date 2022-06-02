@@ -31,7 +31,7 @@ const UpdateInfo: React.FC<updateInfoProps> = (props) => {
             minorityTags={businessDetails.tags}
             category={businessDetails.category}
             keywordTags={businessDetails.keywords}
-            verified={businessDetails.claimed}
+            verified={businessDetails.verified}
             numReviews={businessDetails.numReviews}
             setActiveComponent={props.setActiveComponent}
             businessId={businessDetails.businessId}
